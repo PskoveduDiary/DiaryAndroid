@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/DiaryFragment"
+    >
+
+    <fragment
+        android:id="@+id/DiaryFragment"
+        android:name="com.alex.materialdiary.DiaryFragment"
+        android:label="@string/diary_label"
+        tools:layout="@layout/fragment_diary">
+    </fragment>
+
+    <fragment
+        android:id="@+id/QRFragment"
+        android:name="com.alex.materialdiary.QRFragment"
+        android:label="@string/qr_label"
+        tools:layout="@layout/fragment_qr">
+        <argument
+            android:name="data"
+            app:argType="string" />
+        <argument
+            android:name="for_user"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/UserChangeFragment"
+        android:name="com.alex.materialdiary.ChangeUserFragment"
+        android:label="@string/users_label"
+        tools:layout="@layout/fragment_users">
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddContactFragment"
+        android:name="com.alex.materialdiary.AddContactFragment"
+        android:label="@string/add_contact_label"
+        tools:layout="@layout/fragment_add_contact">
+    </fragment>
+    <fragment
+        android:id="@+id/UserInfoFragment"
+        android:name="com.alex.materialdiary.UserInfoFragment"
+        android:label="@string/add_contact_label"
+        tools:layout="@layout/fragment_user_info">
+        <argument
+            android:name="login"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/OtherFragment"
+        android:name="com.alex.materialdiary.OthFragment"
+        android:label="@string/other_label"
+        tools:layout="@layout/content_msg">
+    </fragment>
+
+    <fragment
+        android:id="@+id/AvailableContactsFragment"
+        android:name="com.alex.materialdiary.AvailableContactsFragment"
+        android:label="@string/add_contact_label"
+        tools:layout="@layout/fragment_msg_availablecontacts">
+    </fragment>
+
+    <fragment
+        android:id="@+id/ServicesFragment"
+        android:name="com.alex.materialdiary.ServicesFragment"
+        android:label="@string/services_label"
+        tools:layout="@layout/fragment_services">
+    </fragment>
+
+    <fragment
+        android:id="@+id/EskudFragment"
+        android:name="com.alex.materialdiary.ESKUDFragment"
+        android:label="@string/eskud_label"
+        tools:layout="@layout/fragment_eskud">
+    </fragment>
+
+    <fragment
+        android:id="@+id/SheduleFragment"
+        android:name="com.alex.materialdiary.SheduleFragment"
+        android:label="@string/shedule_label"
+        tools:layout="@layout/fragment_shedule">
+    </fragment>
+
+    <fragment
+        android:id="@+id/MarksFragment"
+        android:name="com.alex.materialdiary.MarksFragment"
+        android:label="@string/marks_label"
+        tools:layout="@layout/fragment_marks">
+    </fragment>
+
+    <fragment
+        android:id="@+id/ResultsFragment"
+        android:name="com.alex.materialdiary.ResultsFragment"
+        android:label="@string/results_label"
+        tools:layout="@layout/fragment_results">
+    </fragment>
+
+    <fragment
+        android:id="@+id/ContactsFragment"
+        android:name="com.alex.materialdiary.ContactsFragment"
+        android:label="@string/contacts_label"
+        tools:layout="@layout/fragment_msg_contacts">
+    </fragment>
+
+    <fragment
+        android:id="@+id/ScanQrFragment"
+        android:name="com.alex.materialdiary.ScanQrFragment"
+        android:label="Сканировать QR-код"
+        tools:layout="@layout/fragment_scan_qr">
+    </fragment>
+
+    <fragment
+        android:id="@+id/ChatFragment"
+        android:name="com.alex.materialdiary.ChatFragment"
+        android:label="@string/chat_label"
+        tools:layout="@layout/fragment_msg_messages">
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="login"
+            app:argType="string" />
+        <argument
+            android:name="group"
+            app:argType="boolean" />
+    </fragment>
+
+    <action
+        android:id="@+id/to_diary"
+        app:destination="@id/DiaryFragment" />
+    <action
+        android:id="@+id/to_other"
+        app:destination="@id/OtherFragment" />
+    <action
+        android:id="@+id/to_services"
+        app:destination="@id/ServicesFragment" />
+    <action
+        android:id="@+id/to_eskud"
+        app:destination="@id/EskudFragment" />
+    <action
+        android:id="@+id/to_shedule"
+        app:destination="@id/SheduleFragment" />
+    <action
+        android:id="@+id/to_results"
+        app:destination="@id/ResultsFragment" />
+    <action
+        android:id="@+id/to_ch_users"
+        app:destination="@id/UserChangeFragment" />
+    <action
+        android:id="@+id/to_marks"
+        app:destination="@id/MarksFragment" />
+    <action
+        android:id="@+id/to_contacts"
+        app:destination="@id/ContactsFragment" />
+    <action
+        android:id="@+id/to_chat"
+        app:destination="@id/ChatFragment" />
+    <action
+        android:id="@+id/to_qr"
+        app:destination="@id/QRFragment" />
+    <action
+        android:id="@+id/to_add_contact"
+        app:destination="@id/AddContactFragment" />
+    <action
+        android:id="@+id/to_scan_qr"
+        app:destination="@id/ScanQrFragment" />
+    <action
+        android:id="@+id/to_user_info"
+        app:destination="@id/UserInfoFragment" />
+    <action
+        android:id="@+id/to_available_contacts"
+        app:destination="@id/AvailableContactsFragment" />
+</navigation>

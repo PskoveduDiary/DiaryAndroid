@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.26598639455782314" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout-w936dp/activity_login.xml" value="0.152734375" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/activity_messages.xml" value="0.18645833333333334" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/activity_msg.xml" value="0.2" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/content_main.xml" value="0.36102564102564105" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/content_msg.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_add_contact.xml" value="0.25" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_contacts.xml" value="0.365625" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_diary.xml" value="0.25" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_eskud.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_first.xml" value="0.1" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_marks.xml" value="0.1" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_messages_contacts.xml" value="0.365625" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_msg.xml" value="0.36666666666666664" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_msg_availablecontacts.xml" value="0.20364583333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_msg_contacts.xml" value="0.15" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_msg_messages.xml" value="0.25" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_oth.xml" value="0.1" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_qr.xml" value="0.25" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_results.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_scan_qr.xml" value="0.1" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_services.xml" value="0.15656565656565657" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_shedule.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_user_info.xml" value="0.18" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_users.xml" value="0.1859375" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/lesson_item.xml" value="0.25" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/mark_group_item.xml" value="0.33" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/mark_item.xml" value="0.67" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/me_message_item.xml" value="0.34791666666666665" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/oth_item.xml" value="0.1" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/other_message_item.xml" value="0.3489583333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/period_item.xml" value="0.26555687673404677" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/single_contact.xml" value="0.14" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/single_message.xml" value="0.20364583333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/users_item.xml" value="0.25" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/menu/bottom.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/menu/menu_chat.xml" value="0.1859375" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/menu/menu_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/SDK/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.3435897435897436" />
+        <entry key="..\:/Unity/SDK/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.1859375" />
+        <entry key="..\:/Unity/SDK/platforms/android-32/data/res/layout/test_list_item.xml" value="0.1859375" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.34791666666666665" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

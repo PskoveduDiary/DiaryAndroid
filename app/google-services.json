@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1093256768093",
+    "project_id": "diary-b2ba2",
+    "storage_bucket": "diary-b2ba2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093256768093:android:5bd73b12283ac218573bb4",
+        "android_client_info": {
+          "package_name": "com.alex.materialdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093256768093-up2sfmluc3h2ehaovqld0cpimvh4lei7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alex.materialdiary",
+            "certificate_hash": "8426d1b8101aa233cd9aa36f847888a0901a6330"
+          }
+        },
+        {
+          "client_id": "1093256768093-a1mpktc2pa7rludn054pil1co8alaqbs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMO1XrmP_cqYouF28Sh7pBh2g8ikvdnYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093256768093-a1mpktc2pa7rludn054pil1co8alaqbs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.alex.materialdiary.MainActivity">
+    <item
+        android:id="@+id/action_1"
+        android:icon="@drawable/ic_baseline_book_24"
+        android:orderInCategory="100"
+        android:title="Дневник"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_2"
+        android:orderInCategory="100"
+        android:title="Сообщения"
+        android:icon="@drawable/ic_baseline_comment_24"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_3"
+        android:orderInCategory="100"
+        android:title="Оценки"
+        android:icon="@drawable/ic_baseline_looks_5_24"
+        app:showAsAction="never"
+        />
+    <item
+    android:id="@+id/action_4"
+    android:orderInCategory="100"
+    android:title="Другое"
+        android:icon="@drawable/ic_baseline_apps_24"
+    app:showAsAction="never"
+    />
+</menu>

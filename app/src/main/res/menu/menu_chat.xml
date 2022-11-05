@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="О контакте"
+        android:id="@+id/about_contact"/>
+    <item android:title="Показать QR-код"
+        android:id="@+id/show_qr"/>
+</menu>
