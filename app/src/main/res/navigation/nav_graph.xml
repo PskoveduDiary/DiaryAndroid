@@ -52,6 +52,15 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/ErrorFragment"
+        android:name="com.alex.materialdiary.ErrorFragment"
+        android:label="@string/error_label"
+        tools:layout="@layout/fragment_error">
+        <argument
+            android:name="errorText"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/OtherFragment"
@@ -177,4 +186,7 @@
     <action
         android:id="@+id/to_available_contacts"
         app:destination="@id/AvailableContactsFragment" />
+    <action
+        android:id="@+id/to_error"
+        app:destination="@id/ErrorFragment" />
 </navigation>

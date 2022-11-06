@@ -38,6 +38,7 @@ public class CommonAPI {
     String sid = "";
     Context context = null;
     NavController navController;
+    public String message_id = "";
     String apikey = "agh8mwhvwmj9v8h09h90vhcwvn8wrnhv89whv9hwr9pv";
     public static CommonAPI ca;
     public void ChangeUuid(String uuid){
@@ -62,6 +63,9 @@ public class CommonAPI {
     }
     public CommonAPI(Context c, NavController navController){
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
+        if(p.contains("message_id")) {
+            message_id = p.getString("message_id", "");
+        }
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
         }
@@ -152,7 +156,11 @@ public class CommonAPI {
     public CommonAPI(Context c, String uuid) {
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
         if(p.contains("uuid")) {
-            uuid = p.getString("uuid", "");
+            this.uuid = p.getString("uuid", "");
+        }
+
+        if(p.contains("message_id")) {
+            message_id = p.getString("message_id", "");
         }
         else {
             this.context = c;
@@ -161,7 +169,16 @@ public class CommonAPI {
         }
     }
     public static CommonAPI getInstance() {
+        Log.d("mess", ca.message_id);
         return ca;
+    }
+    public void myMessageUuid(String uuid){
+        if (message_id == uuid) return;
+        SharedPreferences p = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = p.edit();
+        editor.putString("message_id", uuid);
+        editor.apply();
+
     }
     public void getDay(CommonCallback callb, @Nullable String date){
         ClassicBody body = new ClassicBody();

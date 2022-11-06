@@ -1,10 +1,9 @@
 package com.alex.materialdiary
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.webkit.CookieManager
 import android.widget.ListView
 import androidx.fragment.app.Fragment
@@ -12,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentMsgContactsBinding
 import com.alex.materialdiary.sys.messages.API
 import com.alex.materialdiary.sys.adapters.ProgramAdapterContacts
+import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.ui.login.LoginActivity
 
 
 /**
@@ -21,7 +22,7 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
     private var _binding: FragmentMsgContactsBinding? = null
 
 
-    var cookies: String = ""
+    var cookies: String? = ""
     lateinit var api: API
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,8 +41,13 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("cks", CookieManager.getInstance().getCookie("one.pskovedu.ru"))
-        println("")
+        //Log.d("cks", CookieManager.getInstance().getCookie("one.pskovedu.ru"))
+        //println("")
+        if (CookieManager.getInstance().getCookie("one.pskovedu.ru") == null){
+            val intent = Intent( requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
+        setHasOptionsMenu(true)
         cookies = CookieManager.getInstance().getCookie("one.pskovedu.ru")
         val api = API.getInstance(cookies)
         api.GetContacts(this)
@@ -53,6 +59,23 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    @Deprecated("Deprecated in Java", ReplaceWith("menu.clear()"))
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_messages, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.my_qr){
+            val action = if (CommonAPI.getInstance().message_id != "") QRFragmentDirections.toQr( CommonAPI.getInstance().message_id,
+                "Ваш qr-код")
+            else ErrorFragmentDirections.toError("Не найден ваш id, попробуйте отправить любое сообщение кому-либо!")
+            findNavController().navigate(action)
+        }
+        return when(item.itemId){
+            else -> true
+        }
     }
 
     override fun Contacts(
@@ -71,6 +94,11 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
                 isGroup
             )
         listView.adapter = adapter
+    }
+
+    override fun NeedRestart() {
+        val action = ErrorFragmentDirections.toError("Ошибка инициализации сообщений, перезапустите приложение!")
+        findNavController().navigate(action)
     }
 
     public fun openMsg(name: String, login: String, isGroup: Boolean){

@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.alex.materialdiary.sys.common.CommonAPI;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -22,6 +25,7 @@ import retrofit2.Response;
 
 public class API {
     String cookies = "";
+    String myuuid = "";
     public static API api = null;
     public static API getInstance(String cookies){
         if (api == null){
@@ -31,6 +35,7 @@ public class API {
     }
     public interface Callback_Contacts{
         void Contacts(List<String> logins, List<String> names, List<Integer> unreaded, List<Boolean> isGroup);
+        void NeedRestart();
     }
     public interface Callback_About{
         void About(String info);
@@ -74,6 +79,7 @@ public class API {
                             List<String> names = new ArrayList<String>();
                             List<Integer> unread = new ArrayList<Integer>();
                             List<Boolean> group = new ArrayList<Boolean>();
+                            if (message == null) { callback.NeedRestart(); }
                             String jsonString = String.valueOf(message.string());
                             JSONObject obj = new JSONObject(jsonString);
                             JSONArray arr = obj.getJSONArray("data");
@@ -201,14 +207,16 @@ public class API {
     void tryCheckMyUuid(String MessageTo, String MessageFrom, String ContactLogin, Boolean isGroup){
         if (isGroup) return;
         String uuid = "";
-        if (MessageTo == MessageFrom)
+        if (Objects.equals(MessageTo, MessageFrom))
         {
             uuid = MessageTo;
         }
-        if (MessageTo == ContactLogin) uuid = MessageFrom;
-        if (MessageFrom == ContactLogin) uuid = MessageTo;
-
-
+        if (Objects.equals(MessageTo, ContactLogin)) uuid = MessageFrom;
+        if (Objects.equals(MessageFrom, ContactLogin)) uuid = MessageTo;
+        if (myuuid != uuid) {
+            myuuid = uuid;
+            CommonAPI.getInstance().myMessageUuid(uuid);
+        }
     }
     public void GetMessages(Callback_Chat callback, String name, String id, boolean isGroup){
         String g = "";
@@ -274,6 +282,7 @@ public class API {
                                 unread.add(arr.getJSONObject(i).getBoolean("UNREAD"));
                                 udate.add(arr.getJSONObject(i).getLong("DATE"));
                                 date.add(new SimpleDateFormat("HH:mm").format(udate.get(i)));
+                                tryCheckMyUuid(tos.get(i), froms.get(i), id, isGroup);
                                 if (isGroup){
                                     names.add(ln.get(froms.get(i)));
                                 }

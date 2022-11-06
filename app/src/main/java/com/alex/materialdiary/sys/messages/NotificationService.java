@@ -82,6 +82,7 @@ public class NotificationService extends Service implements API.Callback_Contact
                         .setContentTitle("Новое сообщение")
                         .setContentText(names.get(i) + " прислал(а) вам сообщение")
                         .setSubText(String.valueOf(unreaded.get(i)) + " шт.")
+                        .setNumber(unreaded.get(i))
                         .setOnlyAlertOnce(true)
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(names.get(i) + " прислал(а) вам сообщение"))
@@ -91,5 +92,10 @@ public class NotificationService extends Service implements API.Callback_Contact
                 if (!sended.contains(logins.get(i).hashCode())) notificationManager.notify(logins.get(i).hashCode(), builder.build());
             }
         }
+    }
+
+    @Override
+    public void NeedRestart() {
+
     }
 }
