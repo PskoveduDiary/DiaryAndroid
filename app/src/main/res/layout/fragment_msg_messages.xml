@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
+
+        <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/messagehistory"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
@@ -21,14 +22,14 @@
         <LinearLayout
             android:id="@+id/lv"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:gravity="bottom"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/messageText"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:imeOptions="actionSend"
                 android:ems="10"

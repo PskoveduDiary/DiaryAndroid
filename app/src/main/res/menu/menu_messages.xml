@@ -3,4 +3,6 @@
 
     <item android:title="Мой QR-код"
         android:id="@+id/my_qr"/>
+    <item android:title="Сменить фото"
+        android:id="@+id/changeProfile"/>
 </menu>

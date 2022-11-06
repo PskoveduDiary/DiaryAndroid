@@ -9,6 +9,7 @@
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/activity_messages.xml" value="0.18645833333333334" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/activity_msg.xml" value="0.2" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/app_bar.xml" value="0.33" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/content_main.xml" value="0.36102564102564105" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/content_msg.xml" value="0.18802083333333333" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/fragment_add_contact.xml" value="0.25" />
@@ -37,25 +38,16 @@
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/oth_item.xml" value="0.1" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/other_message_item.xml" value="0.3489583333333333" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/period_item.xml" value="0.26555687673404677" />
-        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/single_contact.xml" value="0.14" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/single_contact.xml" value="0.5" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/single_message.xml" value="0.20364583333333333" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/layout/users_item.xml" value="0.25" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/menu/bottom.xml" value="0.18802083333333333" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/menu/menu_chat.xml" value="0.1859375" />
         <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/menu/menu_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Unity/MaterialDiary2/app/src/main/res/menu/menu_messages.xml" value="0.1859375" />
         <entry key="..\:/Unity/SDK/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.3435897435897436" />
         <entry key="..\:/Unity/SDK/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.1859375" />
         <entry key="..\:/Unity/SDK/platforms/android-32/data/res/layout/test_list_item.xml" value="0.1859375" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_add_contact.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_diary.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_error.xml" value="0.25" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_eskud.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_marks.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_msg_availablecontacts.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_msg_contacts.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_msg_messages.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_user_info.xml" value="0.19166666666666668" />
-        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/menu/menu_messages.xml" value="0.27890625" />
       </map>
     </option>
   </component>

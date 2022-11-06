@@ -1,5 +1,7 @@
 package com.alex.materialdiary.sys.messages;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,6 +21,7 @@ public class MessageService {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 // set your desired log level
         if (cookies == null) cookies = "";
+        Log.d("cookiesss", cookies);
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         String finalCookies = cookies;
         OkHttpClient client = new OkHttpClient.Builder()
@@ -44,6 +47,9 @@ public class MessageService {
             mInstance = new MessageService(cookies);
         }
         return mInstance;
+    }
+    public static void restartInstance() {
+        mInstance = null;
     }
     Gson gson = new GsonBuilder()
             .setLenient()

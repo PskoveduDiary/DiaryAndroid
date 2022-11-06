@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 
 import com.alex.materialdiary.ContactsFragment;
 import com.alex.materialdiary.R;
+import com.alex.materialdiary.sys.DownloadImageTask;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class ProgramAdapterContacts extends ArrayAdapter<String> {
         holder.Unread.setText(String.valueOf(Unreaded.get(position)));
         if (Unreaded.get(position) == 0) holder.Unread.setText("");
         if (isGroup.get(position)) holder.img.setImageResource(R.drawable.group);
-        else holder.img.setImageResource(R.drawable.user);
+        else new DownloadImageTask(holder.img).execute("https://pskovedu.ml/api/images/" + Logins.get(position));
         singleItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

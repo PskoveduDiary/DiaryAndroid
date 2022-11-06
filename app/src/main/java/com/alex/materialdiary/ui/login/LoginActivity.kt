@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebView
@@ -14,11 +16,13 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.ActivityLoginBinding
 import com.alex.materialdiary.sys.MyWebViewClient
+import com.alex.materialdiary.sys.messages.MessageService
 
 class LoginActivity : AppCompatActivity() {
     lateinit var cookies : String
     private lateinit var webView: WebView
     private lateinit var binding: ActivityLoginBinding
+    lateinit var updateHandler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,16 +72,23 @@ class LoginActivity : AppCompatActivity() {
                 when (url){
                     "https://one.pskovedu.ru/" -> {
                         val data = Intent()
-                        data.putExtra("streetkey", "streetname")
-                        data.putExtra("citykey", "cityname")
-                        data.putExtra("homekey", "homename")
-
+                        updateHandler.removeCallbacksAndMessages(null)
                         val gcookies: String = CookieManager.getInstance().getCookie(url)
+                        CookieManager.getInstance().setCookie(url, gcookies)
                         cookies = gcookies
                         Log.d("web", cookies)
+                        Log.d("web", "$prev : $url")
                         setResult(Activity.RESULT_OK, data)
-                        this@LoginActivity.finish()
-
+                        if(prev.equals("http://one.pskovedu.ru/")) {
+                            Log.d("web", "finish")
+                            this@LoginActivity.finish()
+                            MessageService.restartInstance()
+                        }
+                        val d = Runnable {
+                            this@LoginActivity.finish()
+                            MessageService.restartInstance()
+                        }
+                        updateHandler.postDelayed(d, 5000)
                         prev = url
                         return false
                     }
@@ -91,8 +102,14 @@ class LoginActivity : AppCompatActivity() {
         webView.getSettings().javaScriptEnabled = true;
         webView.getSettings().domStorageEnabled = true
         webView.loadUrl("https://passport.pskovedu.ru/?returnTo=https://one.pskovedu.ru")
+        updateHandler = Handler(Looper.getMainLooper())
+
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        updateHandler.removeCallbacksAndMessages(null)
+    }
     override fun onBackPressed() {
         if (webView.canGoBack()) webView.goBack()
     }

@@ -1,17 +1,22 @@
 package com.alex.materialdiary
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.webkit.CookieManager
 import android.widget.ListView
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alex.materialdiary.databinding.FragmentMsgContactsBinding
-import com.alex.materialdiary.sys.messages.API
 import com.alex.materialdiary.sys.adapters.ProgramAdapterContacts
+import com.alex.materialdiary.sys.adapters.RecycleAdapterContacts
 import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.messages.API
+import com.alex.materialdiary.sys.messages.MessageService
 import com.alex.materialdiary.ui.login.LoginActivity
 
 
@@ -49,7 +54,7 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
         }
         setHasOptionsMenu(true)
         cookies = CookieManager.getInstance().getCookie("one.pskovedu.ru")
-        val api = API.getInstance(cookies)
+        val api = API(cookies)
         api.GetContacts(this)
         binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.to_add_contact)
@@ -73,6 +78,19 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
             else ErrorFragmentDirections.toError("Не найден ваш id, попробуйте отправить любое сообщение кому-либо!")
             findNavController().navigate(action)
         }
+        if (item.itemId == R.id.changeProfile){
+             if (CommonAPI.getInstance().message_id != "")
+            {
+                val url = "https://pskovedu.ml/" + CommonAPI.getInstance().message_id
+                val builder = CustomTabsIntent.Builder()
+                val customTabsIntent = builder.build()
+                customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
+            }
+            else {
+                 val action = ErrorFragmentDirections.toError("Не найден ваш id, попробуйте отправить любое сообщение кому-либо!")
+                findNavController().navigate(action)
+            }
+        }
         return when(item.itemId){
             else -> true
         }
@@ -84,21 +102,21 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
         unreaded: MutableList<Int>?,
         isGroup: MutableList<Boolean>?
     ) {
-        val listView: ListView = binding.ContactsList
+        val rv: RecyclerView = binding.ContactsList
+        rv.layoutManager = LinearLayoutManager(requireContext())
         val adapter =
-            ProgramAdapterContacts(
+            RecycleAdapterContacts(
                 this,
                 logins,
                 names,
                 unreaded,
                 isGroup
             )
-        listView.adapter = adapter
+        rv.adapter = adapter
     }
 
     override fun NeedRestart() {
-        val action = ErrorFragmentDirections.toError("Ошибка инициализации сообщений, перезапустите приложение!")
-        findNavController().navigate(action)
+        MessageService.restartInstance()
     }
 
     public fun openMsg(name: String, login: String, isGroup: Boolean){

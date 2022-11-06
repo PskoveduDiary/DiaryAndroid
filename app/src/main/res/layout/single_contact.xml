@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="70dp"
@@ -15,14 +15,25 @@
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:layout_weight="1" />
-
-        <ImageView
-            android:id="@+id/user_icon"
-            android:layout_width="70dp"
-            android:layout_height="51dp"
-            android:layout_weight="0"
-            android:gravity="center"
-            tools:srcCompat="@drawable/user" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:elevation="1dp"
+            android:id="@+id/view2"
+            app:cardCornerRadius="40dp"
+            android:layout_marginHorizontal="5dp"
+            android:innerRadius="100dp"
+            android:shape="ring"
+            android:thicknessRatio="0.5">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/user_icon"
+                android:src="@drawable/user"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
+            </ImageView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
     <TextView

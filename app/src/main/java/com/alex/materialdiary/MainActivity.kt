@@ -18,6 +18,12 @@ import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.messages.NotificationService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import java.io.File
+import java.time.LocalDate
+import java.util.*
+import kotlin.random.Random
+import kotlin.random.Random.Default.nextInt
 
 
 open class MainActivity : AppCompatActivity() {
@@ -117,8 +123,39 @@ open class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        val cache = Random.nextInt(0, 5)
+        if (cache == 2) trimCache(baseContext)
+    }
+    open fun trimCache(context: Context) {
+        try {
+            val dir: File? = context.cacheDir
+            if (dir != null && dir.isDirectory()) {
+                deleteDir(dir)
+            }
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+        }
     }
 
+    open fun deleteDir(dir: File?): Boolean {
+        if (dir != null && dir.isDirectory()) {
+            val children: Array<String> = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        if (dir != null) {
+            return dir.delete()
+        }
+        else{
+            return false
+        }
+    }
     override fun onBackPressed() {
         super.onBackPressed()
         supportActionBar?.subtitle = ""

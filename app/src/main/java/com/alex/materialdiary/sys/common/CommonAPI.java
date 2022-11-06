@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -100,6 +101,7 @@ public class CommonAPI {
         Intent i = new Intent(context, LoginActivity.class);
         String copkies = CookieManager.getInstance().getCookie("one.pskovedu.ru");
         if (copkies == null) {
+            Log.d("redirect", "no-cookies");
             context.startActivity(i);
         } else {
 
@@ -114,6 +116,7 @@ public class CommonAPI {
             }
             if (X1 == "") {
                 CookieManager.getInstance().removeAllCookies(null);
+                Log.d("redirect", "x1-empty");
                 context.startActivity(i);
             }
         }
@@ -169,11 +172,12 @@ public class CommonAPI {
         }
     }
     public static CommonAPI getInstance() {
-        Log.d("mess", ca.message_id);
         return ca;
     }
     public void myMessageUuid(String uuid){
-        if (message_id == uuid) return;
+        if (Objects.equals(message_id, uuid)) return;
+        Log.d("messss", message_id + " " + uuid);
+        message_id = uuid;
         SharedPreferences p = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = p.edit();
         editor.putString("message_id", uuid);
