@@ -285,7 +285,13 @@ public class API {
                                 date.add(new SimpleDateFormat("HH:mm").format(udate.get(i)));
                                 tryCheckMyUuid(tos.get(i), froms.get(i), id, isGroup);
                                 if (isGroup){
-                                    names.add(ln.get(froms.get(i)));
+                                    if (!Objects.equals(CommonAPI.getInstance().message_id, "")){
+                                        if (Objects.equals(froms.get(i), CommonAPI.getInstance().message_id)){
+                                            names.add("Вы");
+                                        }
+                                        else names.add(ln.get(froms.get(i)));
+                                    }
+                                    else names.add(ln.get(froms.get(i)));
                                 }
                                 else
                                 {

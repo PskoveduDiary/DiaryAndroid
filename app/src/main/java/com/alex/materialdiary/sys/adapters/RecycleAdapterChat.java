@@ -52,7 +52,7 @@ public class RecycleAdapterChat extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (holder.getItemViewType()) {
             case 1:
                 MeViewHolder meViewHolder = (MeViewHolder)holder;
-                meViewHolder.msgReaded.setVisibility(readed.get(position) ? View.VISIBLE : View.GONE);
+                meViewHolder.msgReaded.setVisibility(readed.get(position) && !context.isGroup() ? View.VISIBLE : View.GONE);
                 meViewHolder.timeText.setText(dates.get(position));
                 meViewHolder.msgText.setText(text.get(position));
                 break;
