@@ -17,8 +17,8 @@ android {
         applicationId "com.alex.materialdiary"
         minSdk 21
         targetSdk 32
-        versionCode 3
-        versionName "1.1"
+        versionCode 8
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

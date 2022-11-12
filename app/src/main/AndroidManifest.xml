@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.alex.materialdiary">
 
-    <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.hardware.camera.any" />

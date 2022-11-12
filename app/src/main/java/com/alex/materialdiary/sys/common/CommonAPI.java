@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.webkit.CookieManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
@@ -39,14 +40,20 @@ public class CommonAPI {
     Context context = null;
     NavController navController;
     public String message_id = "";
-    String apikey = "agh8mwhvwmj9v8h09h90vhcwvn8wrnhv89whv9hwr9pv";
+    String apikey = "";
     public static CommonAPI ca;
     public void ChangeUuid(String uuid){
         this.uuid = uuid;
+
+        if(uuid.length() > 1) {
+            apikey = Crypt.encryptSYS_GUID(uuid);
+            //Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
+        }
         SharedPreferences p = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = p.edit();
         editor.putString("uuid", uuid);
         editor.apply();
+
         Log.d("uuid", uuid);
         navController.navigate(R.id.to_diary);
     }
@@ -68,6 +75,11 @@ public class CommonAPI {
         }
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
+            if(uuid.length() > 1) {
+                apikey = Crypt.encryptSYS_GUID(uuid);
+                //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
+            }
+            //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
         }
         else {
             String X1 = "";
@@ -157,6 +169,11 @@ public class CommonAPI {
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
         if(p.contains("uuid")) {
             this.uuid = p.getString("uuid", "");
+
+            if(uuid.length() > 1) {
+                apikey = Crypt.encryptSYS_GUID(uuid);
+                Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
+            }
         }
 
         if(p.contains("message_id")) {
