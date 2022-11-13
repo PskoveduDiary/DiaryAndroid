@@ -55,6 +55,8 @@
         <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_msg_contacts.xml" value="0.19166666666666668" />
         <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_msg_messages.xml" value="0.19166666666666668" />
         <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_user_info.xml" value="0.19166666666666668" />
+        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/fragment_users.xml" value="0.358695652173913" />
+        <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/layout/users_item.xml" value="0.22" />
         <entry key="..\:/Web/MaterialDiaryNew/app/src/main/res/menu/menu_messages.xml" value="0.27890625" />
       </map>
     </option>

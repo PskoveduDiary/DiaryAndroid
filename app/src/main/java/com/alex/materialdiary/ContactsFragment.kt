@@ -97,6 +97,8 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
     }
 
     override fun NeedRestart() {
+        //cookies = CookieManager.getInstance().getCookie("one.pskovedu.ru")
+        //val api = API(cookies)
         val action = ErrorFragmentDirections.toError("Ошибка инициализации сообщений, перезапустите приложение!")
         findNavController().navigate(action)
     }

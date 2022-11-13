@@ -2,6 +2,8 @@ package com.alex.materialdiary.sys.common;
 
 import android.util.Base64;
 import android.util.Log;
+
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -16,23 +18,23 @@ public class Crypt {
   
   private static String transformation = "AES/ECB/PKCS5Padding";
   
-  private static SecretKeySpec createSecretKey() {
-    byte[] arrayOfByte = new byte[16];
-    (new SecureRandom()).nextBytes(arrayOfByte);
-    try {
-      byte[] arrayOfByte1 = Arrays.copyOf(MessageDigest.getInstance("SHA-1").digest(arrayOfByte), 16);
-      SecretKeySpec secretKeySpec = new SecretKeySpec(arrayOfByte1, "AES");
-      return secretKeySpec;
-    } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-      noSuchAlgorithmException = null;
-      return null;
-    }
-  }
+  //private static SecretKeySpec createSecretKey() {
+  //  byte[] arrayOfByte = new byte[16];
+  //  (new SecureRandom()).nextBytes(arrayOfByte);
+  //  try {
+  //    byte[] arrayOfByte1 = Arrays.copyOf(MessageDigest.getInstance("SHA-1").digest(arrayOfByte), 16);
+  //    SecretKeySpec secretKeySpec = new SecretKeySpec(arrayOfByte1, "AES");
+  //    return secretKeySpec;
+  //  } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+  //    noSuchAlgorithmException = null;
+  //    return null;
+  //  }
+  //}
   
   private static byte[] decrypt(SecretKeySpec paramSecretKeySpec, byte[] paramArrayOfbyte) {
     try {
       cipher = Cipher.getInstance(transformation);
-      cipher.init(2, paramSecretKeySpec);
+      cipher.init(Cipher.DECRYPT_MODE, paramSecretKeySpec);
       return cipher.doFinal(paramArrayOfbyte);
     } catch (Exception exception) {
       return null;
@@ -47,7 +49,7 @@ public class Crypt {
   private static byte[] encrypt(SecretKeySpec paramSecretKeySpec, byte[] paramArrayOfbyte) {
     try {
       cipher = Cipher.getInstance(transformation);
-      cipher.init(1, paramSecretKeySpec);
+      cipher.init(Cipher.ENCRYPT_MODE, paramSecretKeySpec);
       return cipher.doFinal(paramArrayOfbyte);
     } catch (Exception exception) {
       return null;
@@ -55,22 +57,18 @@ public class Crypt {
   }
   
   public static String encryptSYS_GUID(String paramString) {
-    Log.d("step1", paramString);
-    Log.d("step2", paramString.getBytes().toString());
-    Log.d("step3", key.getEncoded().toString());
-    Log.d("step4", encrypt(key, paramString.getBytes()).toString());
     return Base64.encodeToString(encrypt(key, paramString.getBytes()), Base64.NO_WRAP);
   }
   
-  public static void generateKey() {
-    key = createSecretKey();
-    String str = Base64.encodeToString(key.getEncoded(), Base64.DEFAULT);
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("generated key_string:'");
-    stringBuilder.append(str);
-    stringBuilder.append("'");
-    Log.d("crypt", stringBuilder.toString());
-  }
+  //public static void generateKey() {
+  //  key = createSecretKey();
+  //  String str = Base64.encodeToString(key.getEncoded(), Base64.DEFAULT);
+  //  StringBuilder stringBuilder = new StringBuilder();
+  //  stringBuilder.append("generated key_string:'");
+  //  stringBuilder.append(str);
+  //  stringBuilder.append("'");
+  //  Log.d("crypt", stringBuilder.toString());
+  //}
   
   public static void generateKeyFromString(String paramString) {
     byte[] arrayOfByte = Base64.decode(paramString, 0);
