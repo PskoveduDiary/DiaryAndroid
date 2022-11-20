@@ -126,6 +126,19 @@
     </fragment>
 
     <fragment
+        android:id="@+id/WebLoginFragment"
+        android:name="com.alex.materialdiary.WebLoginFragment"
+        android:label="Вход в веб-версию"
+        tools:layout="@layout/fragment_scan_qr">
+        <argument
+            android:name="guid"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
         android:id="@+id/ChatFragment"
         android:name="com.alex.materialdiary.ChatFragment"
         android:label="@string/chat_label"
@@ -180,6 +193,9 @@
     <action
         android:id="@+id/to_scan_qr"
         app:destination="@id/ScanQrFragment" />
+    <action
+        android:id="@+id/to_web_login"
+        app:destination="@id/WebLoginFragment" />
     <action
         android:id="@+id/to_user_info"
         app:destination="@id/UserInfoFragment" />

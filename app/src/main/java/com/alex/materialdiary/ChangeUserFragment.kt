@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentUsersBinding
 import com.alex.materialdiary.sys.adapters.ProgramAdapterUsers
 import com.alex.materialdiary.sys.common.CommonAPI
@@ -38,7 +39,7 @@ class ChangeUserFragment : Fragment(), CommonAPI.UserCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        this.findNavController()
         CommonAPI.getInstance().getUserInfo(this)
         //
     }

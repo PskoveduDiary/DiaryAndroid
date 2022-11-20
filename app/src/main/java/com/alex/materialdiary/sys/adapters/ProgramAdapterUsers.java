@@ -9,15 +9,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
 import com.alex.materialdiary.ChangeUserFragment;
 import com.alex.materialdiary.DiaryFragment;
 import com.alex.materialdiary.R;
+import com.alex.materialdiary.WebLoginFragment;
+import com.alex.materialdiary.WebLoginFragmentDirections;
 import com.alex.materialdiary.sys.common.CommonAPI;
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay;
 import com.alex.materialdiary.sys.common.models.get_user.Schools;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ProgramAdapterUsers extends ArrayAdapter<String> {
     ChangeUserFragment context;
@@ -78,6 +86,12 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
                 holder.Name.setText(data.get(position).getUserParticipants().get(0).getName() + " " + data.get(position).getUserParticipants().get(0).getSurname());
                 holder.Grade.setText(data.get(position).getUserParticipants().get(0).getGrade().getName() + " класс");
                 holder.SchoolName.setText(data.get(position).getUserParticipants().get(0).getGrade().getSchool().getName());
+                holder.scan.setOnClickListener(v -> {
+                    NavDirections action =
+                            WebLoginFragmentDirections.toWebLogin(data.get(position).getUserParticipants().get(0).getSysGuid(),
+                            data.get(position).getUserParticipants().get(0).getName() + " " + data.get(position).getUserParticipants().get(0).getSurname());
+                    Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment_content_main).navigate(action);
+                });
             }
             else {
                 holder.Name.setText("Произошла ошибка при получении данных");
@@ -89,6 +103,16 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
             holder.Name.setText(data.get(position).getParticipant().getName() + " " + data.get(position).getParticipant().getSurname());
             holder.Grade.setText(data.get(position).getParticipant().getGrade().getName() + " класс");
             holder.SchoolName.setText(data.get(position).getSchool().getName());
+            holder.scan.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    NavDirections action =
+                            WebLoginFragmentDirections.toWebLogin(data.get(position).getParticipant().getSysGuid(),
+                                    data.get(position).getParticipant().getName() + " " + data.get(position).getParticipant().getSurname());
+                    Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment_content_main).navigate(action);
+                }
+            });
         }
         singleItem.setOnClickListener(new View.OnClickListener() {
             @Override

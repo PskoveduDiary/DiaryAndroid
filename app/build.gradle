@@ -4,8 +4,8 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     //id 'androidx.navigation.safeargs'
+    id 'androidx.navigation.safeargs'
 
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 
@@ -17,8 +17,8 @@ android {
         applicationId "com.alex.materialdiary"
         minSdk 21
         targetSdk 32
-        versionCode 3
-        versionName "1.1"
+        versionCode 8
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     implementation 'com.google.zxing:core:3.2.0'
+    implementation 'com.shamanland:xdroid-toaster:0.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     implementation platform('com.google.firebase:firebase-bom:31.0.2')

@@ -38,7 +38,6 @@ public class NotificationService extends Service implements API.Callback_Contact
     @Override
     public IBinder onBind(Intent intent) {
         mHandler.postDelayed(mRunnable, 60000);
-        // TODO: Return the communication channel to the service.
         return null;
     }
 
@@ -57,7 +56,7 @@ public class NotificationService extends Service implements API.Callback_Contact
         nM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mHandler = new Handler();
         mRunnable = this::CheckMessages;
-        if (cm != "No") mHandler.postDelayed(mRunnable, 30000);
+        if (!cm.equals("No")) mHandler.postDelayed(mRunnable, 30000);
         return Service.START_STICKY;
     }
     public void CheckMessages(){
@@ -71,8 +70,8 @@ public class NotificationService extends Service implements API.Callback_Contact
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             StatusBarNotification[] n = nM.getActiveNotifications();
 
-            for (int i = 0; i < n.length; i++) {
-                sended.add(n[i].getId());
+            for (StatusBarNotification statusBarNotification : n) {
+                sended.add(statusBarNotification.getId());
             }
         }
         for (int i = 0; i<logins.size(); i++){

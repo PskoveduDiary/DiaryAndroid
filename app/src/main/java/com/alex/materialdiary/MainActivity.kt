@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.databinding.ActivityMainBinding
+import com.alex.materialdiary.sys.common.Crypt
 import com.alex.materialdiary.sys.messages.NotificationService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -35,6 +37,7 @@ open class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
+        Crypt.generateKeyFromString("aYXfLj0MB9V5az9Ce8l+7A==");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Сообщения"
             val descriptionText = "Сообщения от других пользователей"
@@ -68,6 +71,7 @@ open class MainActivity : AppCompatActivity() {
             R.id.ContactsFragment,
             R.id.MarksFragment,
             R.id.OtherFragment))
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         val intentt = Intent(this, NotificationService::class.java)
         startService(intentt)
