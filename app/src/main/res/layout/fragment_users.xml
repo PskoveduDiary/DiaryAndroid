@@ -7,13 +7,10 @@
     tools:context=".ChangeUserFragment">
 
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/users"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -21,5 +18,5 @@
             tools:listitem="@layout/users_item">
 
 
-        </ListView>
+        </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

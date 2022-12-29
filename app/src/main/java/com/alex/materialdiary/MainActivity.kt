@@ -182,7 +182,7 @@ open class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
 
         if (item.itemId == android.R.id.home) findNavController(R.id.nav_host_fragment_content_main).navigateUp()
-        if (item.itemId == R.id.action_settings) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_ch_users)
+        if (item.itemId == R.id.action_settings) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_new_ch_users)
         if (item.itemId == R.id.action_marks) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_average)
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {

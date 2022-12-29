@@ -2,14 +2,10 @@ package com.alex.materialdiary
 
 import android.R
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
 import android.webkit.WebView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
@@ -17,12 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentDiaryBinding
-import com.alex.materialdiary.sys.DiaryInterface
 import com.alex.materialdiary.sys.adapters.ProgramAdapterDiary
 import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
-import com.alex.materialdiary.sys.common.models.get_user.UserData
-import com.alex.materialdiary.ui.login.LoginActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

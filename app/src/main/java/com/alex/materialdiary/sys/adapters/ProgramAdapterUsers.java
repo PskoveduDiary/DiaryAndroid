@@ -2,34 +2,29 @@ package com.alex.materialdiary.sys.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.alex.materialdiary.ChangeUserFragment;
-import com.alex.materialdiary.DiaryFragment;
 import com.alex.materialdiary.R;
-import com.alex.materialdiary.WebLoginFragment;
 import com.alex.materialdiary.WebLoginFragmentDirections;
 import com.alex.materialdiary.sys.common.CommonAPI;
-import com.alex.materialdiary.sys.common.models.diary_day.DatumDay;
+import com.alex.materialdiary.sys.common.models.get_user.Participant;
 import com.alex.materialdiary.sys.common.models.get_user.Schools;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class ProgramAdapterUsers extends ArrayAdapter<String> {
     ChangeUserFragment context;
     List<Schools> data;
+    List<Participant> transformed;
 
     // This is the constructor of the class. It's called when you create an object of the class.
     public ProgramAdapterUsers(ChangeUserFragment context, List<Schools> data) {
@@ -39,7 +34,17 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
         this.data = data;
     }
 
-
+    List<Participant> transform(List<Schools> data){
+        List<Participant> list = new ArrayList<Participant>();
+        if (data == null) return null;
+        for (Schools sch: data) {
+            if (sch.getRoles().contains("participant")) list.add(sch.getParticipant());
+            else {
+                list.addAll(sch.getUserParticipants());
+            }
+        }
+        return list;
+    }
     /**
      * When you're creating a new item, you'll inflate the layout and initialize the ViewHolder.
      * When you're recycling, you'll get the ViewHolder from the singleItem
@@ -80,6 +85,16 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
         else{
             // Get the stored holder object
             holder = (ProgramViewHolderUsers) singleItem.getTag();
+        }
+        Schools sch = data.get(position);
+        if (sch.getRoles().contains("participant"))
+        {
+            holder.Name.setText(sch.getParticipant().getName() + " " + sch.getParticipant().getSurname());
+            holder.Grade.setText(sch.getParticipant().getGrade().getName() + " класс");
+            holder.SchoolName.setText(sch.getSchool().getName());
+        }
+        else {
+
         }
         if (data.get(position).getParticipant() == null){
             if (data.get(position).getUserParticipants().size() > 0){

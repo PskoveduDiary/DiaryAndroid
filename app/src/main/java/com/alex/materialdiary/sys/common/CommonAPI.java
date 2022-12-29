@@ -15,6 +15,7 @@ import androidx.navigation.NavController;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils;
 import com.alex.materialdiary.sys.common.models.ClassicBody;
+import com.alex.materialdiary.sys.common.models.ShareUser;
 import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods;
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay;
 import com.alex.materialdiary.sys.common.models.diary_day.DiaryDay;
@@ -22,19 +23,15 @@ import com.alex.materialdiary.sys.common.models.get_user.UserData;
 import com.alex.materialdiary.sys.common.models.get_user.UserInfo;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarks;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
-import com.alex.materialdiary.sys.common.models.periods.Period;
 import com.alex.materialdiary.sys.common.models.periods.Periods;
 import com.alex.materialdiary.ui.login.LoginActivity;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,7 +92,7 @@ public class CommonAPI {
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
         }
         else {
-            navController.navigate(R.id.to_ch_users);
+            navController.navigate(R.id.to_new_ch_users);
         }
         this.navController = navController;
         context = c;
@@ -207,6 +204,20 @@ public class CommonAPI {
         editor.putString("message_id", uuid);
         editor.apply();
 
+    }
+    public List<ShareUser> getShared(){
+        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+        String readed = utils.readJsonFileData("shared.json");
+        if (readed == null) return new ArrayList<>();
+        Type listType = new TypeToken<ArrayList<ShareUser>>(){}.getType();
+        return new Gson().fromJson(readed, listType);
+    }
+    public void addShared(ShareUser shareUser){
+        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+        List<ShareUser> current = getShared();
+        current.add(shareUser);
+        String json = new Gson().toJson(current);
+        utils.createJsonFileData("shared.json", json);
     }
     public void getDay(CommonCallback callb, @Nullable String date){
         ClassicBody body = new ClassicBody();

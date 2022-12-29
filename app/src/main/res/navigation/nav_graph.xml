@@ -27,10 +27,28 @@
     </fragment>
 
     <fragment
+        android:id="@+id/ShareQRFragment"
+        android:name="com.alex.materialdiary.ShareQRFragment"
+        android:label="@string/qr_label"
+        tools:layout="@layout/fragment_qr">
+
+        <argument
+            android:name="user"
+            app:argType="com.alex.materialdiary.sys.common.models.ShareUser" />
+    </fragment>
+
+    <fragment
         android:id="@+id/UserChangeFragment"
         android:name="com.alex.materialdiary.ChangeUserFragment"
         android:label="@string/users_label"
         tools:layout="@layout/fragment_users">
+    </fragment>
+
+    <fragment
+        android:id="@+id/NewChangeUserFragment"
+        android:name="com.alex.materialdiary.NewChangeUserFragment"
+        android:label="@string/users_label"
+        tools:layout="@layout/fragment_ch_user_new">
     </fragment>
 
     <fragment
@@ -142,6 +160,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/ScanSharedQrFragment"
+        android:name="com.alex.materialdiary.ScanSharedQrFragment"
+        android:label="Сканировать QR-код"
+        tools:layout="@layout/fragment_scan_qr">
+    </fragment>
+
+    <fragment
         android:id="@+id/WebLoginFragment"
         android:name="com.alex.materialdiary.WebLoginFragment"
         android:label="Вход в веб-версию"
@@ -227,4 +252,13 @@
     <action
         android:id="@+id/to_lesson"
         app:destination="@id/LessonFragment" />
+    <action
+        android:id="@+id/to_share"
+        app:destination="@id/ShareQRFragment" />
+    <action
+        android:id="@+id/to_new_ch_users"
+        app:destination="@id/NewChangeUserFragment" />
+    <action
+        android:id="@+id/to_scan_shared_qr"
+        app:destination="@id/ScanSharedQrFragment" />
 </navigation>

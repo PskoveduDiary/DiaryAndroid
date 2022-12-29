@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false"
+    tools:context=".AddContactFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="top"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/standard_auth"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="Войти через PSKOVEDU" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="или" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" >
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:layout_width="match_parent"
+                                    tools:itemCount="3"
+                                    android:id="@+id/recycler_view"
+                                    tools:listitem="@layout/users_item"
+                                    android:layout_height="wrap_content" />
+                        </LinearLayout>
+                </ScrollView>
+
+                <Button
+                    android:id="@+id/scan_shared"
+                    android:layout_width="wrap_content"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_height="wrap_content"
+                    android:text="Добавить через QR-код" />
+
+
+        </LinearLayout>
+</androidx.core.widget.NestedScrollView>

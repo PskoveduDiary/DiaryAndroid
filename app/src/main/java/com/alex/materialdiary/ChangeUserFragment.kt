@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentUsersBinding
 import com.alex.materialdiary.sys.adapters.ProgramAdapterUsers
+import com.alex.materialdiary.sys.adapters.RecycleAdapterUsers
 import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.models.get_user.UserData
 import java.util.concurrent.Executors
@@ -32,6 +34,7 @@ class ChangeUserFragment : Fragment(), CommonAPI.UserCallback {
     ): View? {
 
         _binding = FragmentUsersBinding.inflate(inflater, container, false)
+        binding.users.layoutManager = LinearLayoutManager(requireContext())
         return binding.root
 
 
@@ -72,7 +75,7 @@ class ChangeUserFragment : Fragment(), CommonAPI.UserCallback {
             activity?.runOnUiThread(object : Runnable {
                 override fun run() {
                     if(_binding == null) return
-                    binding.users.adapter = ProgramAdapterUsers(this@ChangeUserFragment, user.schools)
+                    binding.users.adapter = RecycleAdapterUsers(this@ChangeUserFragment, user.schools)
                 }
             })
         }
