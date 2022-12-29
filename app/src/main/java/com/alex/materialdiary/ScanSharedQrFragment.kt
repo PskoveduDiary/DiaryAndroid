@@ -119,7 +119,7 @@ class ScanSharedQrFragment : Fragment(), ZBarScannerView.ResultHandler {
                 CommonAPI.getInstance().addShared(shareUser)
             }
             catch (e: Exception){
-                toast("Неверный QR-код")
+                toast("Неверный QR-код, попробуйте другой!")
             }
             findNavController().navigateUp()
         }
