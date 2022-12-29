@@ -1,275 +1,106 @@
-package com.alex.materialdiary.sys.common.models.diary_day;
+package com.alex.materialdiary.sys.common.models.diary_day
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
+import com.alex.materialdiary.sys.common.models.diary_day.HomeworkPrevious
+import kotlinx.parcelize.Parcelize
 
-import java.util.List;
-
-public class DatumDay {
-
+@Parcelize
+class DatumDay : Parcelable {
     @SerializedName("JOURNAL_SYS_GUID")
     @Expose
-    private String journalSysGuid;
+    var journalSysGuid: String? = null
+
     @SerializedName("SUBJECT_SYS_GUID")
     @Expose
-    private String subjectSysGuid;
+    var subjectSysGuid: String? = null
+
     @SerializedName("SUBJECT_NAME")
     @Expose
-    private String subjectName;
+    var subjectName: String? = null
+
     @SerializedName("TEACHER_SYS_GUID")
     @Expose
-    private String teacherSysGuid;
+    var teacherSysGuid: String? = null
+
     @SerializedName("TEACHER_NAME")
     @Expose
-    private String teacherName;
+    var teacherName: String? = null
+
     @SerializedName("CABINET_SYS_GUID")
     @Expose
-    private Object cabinetSysGuid;
+    var cabinetSysGuid: Any? = null
+
     @SerializedName("CABINET_NAME")
     @Expose
-    private Object cabinetName;
+    var cabinetName: Any? = null
+
     @SerializedName("LESSON_SYS_GUID")
     @Expose
-    private String lessonSysGuid;
+    var lessonSysGuid: String? = null
+
     @SerializedName("LESSON_DATE")
     @Expose
-    private String lessonDate;
+    var lessonDate: String? = null
+
     @SerializedName("LESSON_NUMBER")
     @Expose
-    private Integer lessonNumber;
+    var lessonNumber: Int? = null
+
     @SerializedName("LESSON_TIME_SYS_GUID")
     @Expose
-    private String lessonTimeSysGuid;
+    var lessonTimeSysGuid: String? = null
+
     @SerializedName("LESSON_TIME_BEGIN")
     @Expose
-    private String lessonTimeBegin;
+    var lessonTimeBegin: String? = null
+
     @SerializedName("LESSON_TIME_END")
     @Expose
-    private String lessonTimeEnd;
+    var lessonTimeEnd: String? = null
+
     @SerializedName("GRADE_TYPE_SYS_GUID")
     @Expose
-    private Object gradeTypeSysGuid;
+    var gradeTypeSysGuid: Any? = null
+
     @SerializedName("GRADE_TYPE_NAME")
     @Expose
-    private Object gradeTypeName;
+    var gradeTypeName: Any? = null
+
     @SerializedName("GRADE_TYPE_PERIOD")
     @Expose
-    private Boolean gradeTypePeriod;
+    var gradeTypePeriod: Boolean? = null
+
     @SerializedName("GRADE_TYPE_WEIGHT")
     @Expose
-    private Integer gradeTypeWeight;
+    var gradeTypeWeight: Int? = null
+
     @SerializedName("GRADE_HEAD_COMMENT")
     @Expose
-    private Boolean gradeHeadComment;
+    var gradeHeadComment: Boolean? = null
+
     @SerializedName("TOPIC")
     @Expose
-    private String topic;
+    var topic: String? = null
+
     @SerializedName("HOMEWORK")
     @Expose
-    private String homework;
+    var homework: String? = null
+
     @SerializedName("HOMEWORK_PREVIOUS")
     @Expose
-    private HomeworkPrevious homeworkPrevious;
+    var homeworkPrevious: HomeworkPrevious? = null
+
     @SerializedName("MARKS")
     @Expose
-    private List<Mark> marks = null;
+    var marks: List<Mark>? = null
+
     @SerializedName("ABSENCE")
     @Expose
-    private List<Object> absence = null;
+    var absence: List<Any>? = null
+
     @SerializedName("NOTES")
     @Expose
-    private List<Object> notes = null;
-
-    public String getJournalSysGuid() {
-        return journalSysGuid;
-    }
-
-    public void setJournalSysGuid(String journalSysGuid) {
-        this.journalSysGuid = journalSysGuid;
-    }
-
-    public String getSubjectSysGuid() {
-        return subjectSysGuid;
-    }
-
-    public void setSubjectSysGuid(String subjectSysGuid) {
-        this.subjectSysGuid = subjectSysGuid;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public String getTeacherSysGuid() {
-        return teacherSysGuid;
-    }
-
-    public void setTeacherSysGuid(String teacherSysGuid) {
-        this.teacherSysGuid = teacherSysGuid;
-    }
-
-    public String getTeacherName() {
-        return teacherName;
-    }
-
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
-    }
-
-    public Object getCabinetSysGuid() {
-        return cabinetSysGuid;
-    }
-
-    public void setCabinetSysGuid(Object cabinetSysGuid) {
-        this.cabinetSysGuid = cabinetSysGuid;
-    }
-
-    public Object getCabinetName() {
-        return cabinetName;
-    }
-
-    public void setCabinetName(Object cabinetName) {
-        this.cabinetName = cabinetName;
-    }
-
-    public String getLessonSysGuid() {
-        return lessonSysGuid;
-    }
-
-    public void setLessonSysGuid(String lessonSysGuid) {
-        this.lessonSysGuid = lessonSysGuid;
-    }
-
-    public String getLessonDate() {
-        return lessonDate;
-    }
-
-    public void setLessonDate(String lessonDate) {
-        this.lessonDate = lessonDate;
-    }
-
-    public Integer getLessonNumber() {
-        return lessonNumber;
-    }
-
-    public void setLessonNumber(Integer lessonNumber) {
-        this.lessonNumber = lessonNumber;
-    }
-
-    public String getLessonTimeSysGuid() {
-        return lessonTimeSysGuid;
-    }
-
-    public void setLessonTimeSysGuid(String lessonTimeSysGuid) {
-        this.lessonTimeSysGuid = lessonTimeSysGuid;
-    }
-
-    public String getLessonTimeBegin() {
-        return lessonTimeBegin;
-    }
-
-    public void setLessonTimeBegin(String lessonTimeBegin) {
-        this.lessonTimeBegin = lessonTimeBegin;
-    }
-
-    public String getLessonTimeEnd() {
-        return lessonTimeEnd;
-    }
-
-    public void setLessonTimeEnd(String lessonTimeEnd) {
-        this.lessonTimeEnd = lessonTimeEnd;
-    }
-
-    public Object getGradeTypeSysGuid() {
-        return gradeTypeSysGuid;
-    }
-
-    public void setGradeTypeSysGuid(Object gradeTypeSysGuid) {
-        this.gradeTypeSysGuid = gradeTypeSysGuid;
-    }
-
-    public Object getGradeTypeName() {
-        return gradeTypeName;
-    }
-
-    public void setGradeTypeName(Object gradeTypeName) {
-        this.gradeTypeName = gradeTypeName;
-    }
-
-    public Boolean getGradeTypePeriod() {
-        return gradeTypePeriod;
-    }
-
-    public void setGradeTypePeriod(Boolean gradeTypePeriod) {
-        this.gradeTypePeriod = gradeTypePeriod;
-    }
-
-    public Integer getGradeTypeWeight() {
-        return gradeTypeWeight;
-    }
-
-    public void setGradeTypeWeight(Integer gradeTypeWeight) {
-        this.gradeTypeWeight = gradeTypeWeight;
-    }
-
-    public Boolean getGradeHeadComment() {
-        return gradeHeadComment;
-    }
-
-    public void setGradeHeadComment(Boolean gradeHeadComment) {
-        this.gradeHeadComment = gradeHeadComment;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getHomework() {
-        return homework;
-    }
-
-    public void setHomework(String homework) {
-        this.homework = homework;
-    }
-
-    public HomeworkPrevious getHomeworkPrevious() {
-        return homeworkPrevious;
-    }
-
-    public void setHomeworkPrevious(HomeworkPrevious homeworkPrevious) {
-        this.homeworkPrevious = homeworkPrevious;
-    }
-
-    public List<Mark> getMarks() {
-        return marks;
-    }
-
-    public void setMarks(List<Mark> marks) {
-        this.marks = marks;
-    }
-
-    public List<Object> getAbsence() {
-        return absence;
-    }
-
-    public void setAbsence(List<Object> absence) {
-        this.absence = absence;
-    }
-
-    public List<Object> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(List<Object> notes) {
-        this.notes = notes;
-    }
-
+    var notes: List<Any>? = null
 }

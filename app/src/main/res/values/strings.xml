@@ -75,4 +75,6 @@
     <string name="qr_label">QR-код</string>
     <string name="add_contact_label">Добавить контакт</string>
     <string name="error_label">Произошла ошибка</string>
+    <string name="average_label">Средняя оценка</string>
+    <string name="lesson_label">Урок</string>
 </resources>

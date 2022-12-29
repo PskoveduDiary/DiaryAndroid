@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import androidx.navigation.NavDirections;
+
 import com.alex.materialdiary.DiaryFragment;
+import com.alex.materialdiary.LessonFragmentDirections;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay;
 
@@ -86,6 +89,8 @@ public class ProgramAdapterDiary extends ArrayAdapter<String> {
         singleItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                NavDirections act = LessonFragmentDirections.toLesson(data.get(position));
+                context.get_nav().navigate(act);
                 //Toast.makeText(getContext(), "You clicked:"+ Logins.get(position), Toast.LENGTH_SHORT).show();
                 //Intent openLinksIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls[position]));
                 //context.startActivity(openLinksIntent);

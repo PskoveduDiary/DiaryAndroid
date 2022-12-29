@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -49,6 +50,9 @@ class WebLoginFragment : Fragment(), ZBarScannerView.ResultHandler {
         zbViev = ZBarScannerView(requireContext())
         formats += BarcodeFormat.QRCODE
         zbViev.setFormats(formats);
+        val tv = TextView(requireContext())
+        tv.text = "Войдите в аккаунт на web.pskovedu.ml"
+        zbViev.addView(tv)
         return zbViev
         //return binding.root
     }
@@ -121,11 +125,10 @@ class WebLoginFragment : Fragment(), ZBarScannerView.ResultHandler {
                     .add("test", "test")
                     .build()
                 val request: Request = Request.Builder()
-                    .url("http://192.168.0.107:8000/auth/do_auth?code="+ p0.contents + "&guid=" + args.guid +
+                    .url("https://pskovedu.ml/api/auth/do_auth?code="+ p0.contents + "&guid=" + args.guid +
                             "&messages_guid=" + CommonAPI.getInstance().message_id + "&name=" + args.name)
                     .post(formBody)
                     .build()
-                val context = requireContext()
                 try {
                     client.newCall(request).enqueue(object : Callback{
                         override fun onFailure(call: Call, e: IOException) {

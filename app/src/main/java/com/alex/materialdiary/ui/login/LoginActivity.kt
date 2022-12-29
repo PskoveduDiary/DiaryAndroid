@@ -71,24 +71,18 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("web", url)
                 when (url){
                     "https://one.pskovedu.ru/" -> {
-                        val data = Intent()
-                        updateHandler.removeCallbacksAndMessages(null)
+                        //updateHandler.removeCallbacksAndMessages(null)
                         val gcookies: String = CookieManager.getInstance().getCookie(url)
                         CookieManager.getInstance().setCookie(url, gcookies)
                         cookies = gcookies
                         Log.d("web", cookies)
                         Log.d("web", "$prev : $url")
-                        setResult(Activity.RESULT_OK, data)
-                        if(prev.equals("http://one.pskovedu.ru/")) {
-                            Log.d("web", "finish")
-                            this@LoginActivity.finish()
-                            MessageService.restartInstance()
+                        val spl = cookies.split("; ")
+                        for (s in spl){
+                            if (s.startsWith("X1_SSO=")){
+                                this@LoginActivity.finish()
+                            }
                         }
-                        val d = Runnable {
-                            this@LoginActivity.finish()
-                            MessageService.restartInstance()
-                        }
-                        updateHandler.postDelayed(d, 5000)
                         prev = url
                         return false
                     }

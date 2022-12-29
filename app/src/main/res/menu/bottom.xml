@@ -10,11 +10,12 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_2"
+        android:enabled="false"
+        android:icon="@drawable/ic_baseline_comment_24"
         android:orderInCategory="100"
         android:title="Сообщения"
-        android:icon="@drawable/ic_baseline_comment_24"
-        app:showAsAction="never"
-        />
+        android:visible="false"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_3"
         android:orderInCategory="100"

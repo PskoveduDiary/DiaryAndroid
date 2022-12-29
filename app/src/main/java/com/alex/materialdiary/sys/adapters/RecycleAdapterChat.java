@@ -43,7 +43,7 @@ public class RecycleAdapterChat extends RecyclerView.Adapter<RecyclerView.ViewHo
                 view = inflater.inflate(R.layout.other_message_item, parent, false);
                 return new OtherViewHolder(view);
             default:
-                view = inflater.inflate(R.layout.single_message, parent, false);
+                view = inflater.inflate(R.layout.other_message_item, parent, false);
                 return new OtherViewHolder(view);
         }
     }

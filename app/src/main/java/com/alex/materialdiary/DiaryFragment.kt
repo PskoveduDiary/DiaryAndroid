@@ -14,6 +14,7 @@ import android.webkit.WebView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentDiaryBinding
 import com.alex.materialdiary.sys.DiaryInterface
@@ -55,6 +56,8 @@ class DiaryFragment : Fragment(), CommonAPI.CommonCallback {
                 binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                         "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
                 CommonAPI.getInstance().getDay(this@DiaryFragment, cuurent_date.toString())
+                binding.progressBar.visibility = View.VISIBLE
+                binding.lessons.adapter = null
             }
         }
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
@@ -75,18 +78,24 @@ class DiaryFragment : Fragment(), CommonAPI.CommonCallback {
             binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                     "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
             CommonAPI.getInstance().getDay(this, cuurent_date.toString())
+            binding.progressBar.visibility = View.VISIBLE
+            binding.lessons.adapter = null
         })
         binding.prevDay.setOnClickListener(View.OnClickListener {
             cuurent_date = Date(cuurent_date.getTime() - 86400000)
             binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                     "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
             CommonAPI.getInstance().getDay(this, cuurent_date.toString())
+            binding.progressBar.visibility = View.VISIBLE
+            binding.lessons.adapter = null
         })
         return binding.root
 
 
     }
-
+    fun get_nav(): NavController {
+        return findNavController()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
@@ -101,6 +110,7 @@ class DiaryFragment : Fragment(), CommonAPI.CommonCallback {
 
     override fun day(lesson: MutableList<DatumDay>?) {
         if (_binding == null) return
+        binding.progressBar.visibility = View.GONE
         if (lesson != null) {
             if (lesson.size > 0) {
                 binding.lessons.adapter =

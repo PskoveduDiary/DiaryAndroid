@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,7 @@ public class RecycleAdapterMarks extends RecyclerView.Adapter<RecycleAdapterMark
         String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
         holder.date.setText(mark.getDate().replace("." + year, ""));
         holder.mark.setText(String.valueOf(mark.getValue()));
+        //holder.itemView.setOnClickListener(v -> Toast.makeText(c, String.valueOf(mark.get), Toast.LENGTH_SHORT).show());
         if (mark.getValue() == 5) holder.mark.setTextColor(c.getResources().getColor(R.color.five));
         else if (mark.getValue() == 4) holder.mark.setTextColor(c.getResources().getColor(R.color.four));
         else if (mark.getValue() == 3) holder.mark.setTextColor(c.getResources().getColor(R.color.three));

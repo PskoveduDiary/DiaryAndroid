@@ -4,6 +4,7 @@ import com.alex.materialdiary.sys.common.models.ClassicBody;
 import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods;
 import com.alex.materialdiary.sys.common.models.diary_day.DiaryDay;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarks;
+import com.alex.materialdiary.sys.common.models.periods.Periods;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,4 +22,7 @@ public interface CommonInterface {
 
     @POST("journals/allperiods")
     Call<AllPeriods> getAllPeriods(@Body ClassicBody body);
+
+    @POST("journals/periodmarks")
+    Call<Periods> getPeriods(@Body ClassicBody body);
 }

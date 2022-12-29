@@ -41,12 +41,9 @@ public class RecycleAdapterPeriods extends RecyclerView.Adapter<RecycleAdapterPe
     public void onBindViewHolder(@NonNull RecycleAdapterPeriods.ViewHolder holder, int position) {
         AllPeriodData period = periods.get(position);
         holder.button.setText(period.getName());
-        holder.button.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                CommonAPI.getInstance().periodMarks(mf, period.getDateBegin(), period.getDateEnd());
-            }
+        holder.button.setOnClickListener(v -> {
+            CommonAPI.getInstance().periodMarks(mf, period.getDateBegin(), period.getDateEnd());
+            mf.showLoader();
         });
     }
 

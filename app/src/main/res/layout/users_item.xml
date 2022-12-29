@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="wrap_content"
+<FrameLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:padding="2dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     android:id="@+id/lesson_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     card_view:cardCornerRadius="10dp"
     android:backgroundTint="?android:attr/textColorLinkInverse"
-    card_view:cardElevation="10dp"
-    card_view:contentPadding="0dp">
+    card_view:cardElevation="10dp">
 
 
     <LinearLayout
@@ -31,6 +30,7 @@
 
             <ImageView
                 android:id="@+id/scanQr"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:gravity="end"
+                android:layout_marginEnd="3dp"
                 android:text="8Г класс"
                 android:textColor="@color/white" />
 
@@ -60,18 +61,19 @@
                 android:id="@+id/user_Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Сергеев Алексей Андреевич"
+                android:text="Ошибка"
                 android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/user_SchoolName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Муниципальное бюджетное общеобразовательное учреждение Псковский технический лицей" />
+                android:text="Произошла какая-то ошибка"
+                android:layout_marginBottom="3dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
 </FrameLayout>

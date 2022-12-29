@@ -1,5 +1,7 @@
 package com.alex.materialdiary.sys.common.models.period_marks;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,6 +12,7 @@ public class Mark {
 private String sysGuid;
 @SerializedName("DATE")
 @Expose
+@Nullable
 private String date;
 @SerializedName("LONG_NAME")
 @Expose

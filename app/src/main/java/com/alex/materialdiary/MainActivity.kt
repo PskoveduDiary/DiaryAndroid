@@ -38,18 +38,18 @@ open class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         Crypt.generateKeyFromString("aYXfLj0MB9V5az9Ce8l+7A==");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Сообщения"
-            val descriptionText = "Сообщения от других пользователей"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("msg", name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        //    val name = "Сообщения"
+        //    val descriptionText = "Сообщения от других пользователей"
+        //    val importance = NotificationManager.IMPORTANCE_DEFAULT
+        //    val channel = NotificationChannel("msg", name, importance).apply {
+        //        description = descriptionText
+        //    }
+        //    // Register the channel with the system
+        //    val notificationManager: NotificationManager =
+        //        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        //    notificationManager.createNotificationChannel(channel)
+        //}
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -61,10 +61,10 @@ open class MainActivity : AppCompatActivity() {
         if (selected == R.id.action_4) findNavController(R.id.nav_host_fragment_content_main)
             .navigate(R.id.to_other)
 
-        val p: SharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
-        if (!p.contains("uuid")) {
-            navController.navigate(R.id.to_ch_users)
-        }
+        //val p: SharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
+        //if (!p.contains("uuid")) {
+        //    navController.navigate(R.id.to_ch_users)
+        //}
         appBarConfiguration = AppBarConfiguration(navController.graph)
         val appBarConfiguration = AppBarConfiguration(setOf(
             R.id.DiaryFragment,
@@ -73,8 +73,8 @@ open class MainActivity : AppCompatActivity() {
             R.id.OtherFragment))
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-        val intentt = Intent(this, NotificationService::class.java)
-        startService(intentt)
+        //val intentt = Intent(this, NotificationService::class.java)
+        //startService(intentt)
 
         /*binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -114,11 +114,16 @@ open class MainActivity : AppCompatActivity() {
         bottomNav.setOnItemReselectedListener {
             when (it.itemId) {
                 R.id.action_1 -> {
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
                 }
                 R.id.action_2 -> {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
                 }
                 R.id.action_3 -> {
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
+                }
+                R.id.action_4 -> {
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_other)
                 }
                 else -> {}
             }
@@ -178,6 +183,7 @@ open class MainActivity : AppCompatActivity() {
 
         if (item.itemId == android.R.id.home) findNavController(R.id.nav_host_fragment_content_main).navigateUp()
         if (item.itemId == R.id.action_settings) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_ch_users)
+        if (item.itemId == R.id.action_marks) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_average)
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true

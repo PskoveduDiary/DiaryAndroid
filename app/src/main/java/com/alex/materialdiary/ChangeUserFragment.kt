@@ -41,12 +41,16 @@ class ChangeUserFragment : Fragment(), CommonAPI.UserCallback {
         super.onViewCreated(view, savedInstanceState)
         this.findNavController()
         CommonAPI.getInstance().getUserInfo(this)
-        //
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        CommonAPI.getInstance().getUserInfo(this)
     }
     internal class MyTimerTask(cb: CommonAPI.UserCallback) : Runnable {
         val cb = cb
@@ -64,6 +68,7 @@ class ChangeUserFragment : Fragment(), CommonAPI.UserCallback {
     override fun user(user: UserData?) {
         Log.d("taf", user.toString())
         if (user != null) {
+            Log.d("usssser", user.login)
             activity?.runOnUiThread(object : Runnable {
                 override fun run() {
                     if(_binding == null) return
@@ -73,7 +78,7 @@ class ChangeUserFragment : Fragment(), CommonAPI.UserCallback {
         }
         else{
             val scheduler = Executors.newSingleThreadScheduledExecutor()
-            scheduler.schedule(MyTimerTask(this), 2, TimeUnit.SECONDS)
+            scheduler.schedule(MyTimerTask(this), 1, TimeUnit.SECONDS)
 
         }
     }

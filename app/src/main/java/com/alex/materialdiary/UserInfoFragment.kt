@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.alex.materialdiary.databinding.FragmentUserInfoBinding
+import com.alex.materialdiary.sys.ImageLoader
 import com.alex.materialdiary.sys.messages.API
-import java.lang.Exception
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -37,6 +37,11 @@ class UserInfoFragment : Fragment(), API.Callback_About, API.Callback_AddContact
 
         _binding = FragmentUserInfoBinding.inflate(inflater, container, false)
         api = API.getInstance(CookieManager.getInstance().getCookie("one.pskovedu.ru"))
+        val imageLoader = ImageLoader.getInstance(requireContext())
+        imageLoader.DisplayImage(
+            "https://pskovedu.ml/api/images/" + args.login,
+            binding.userIcon
+        )
         return binding.root
     }
 

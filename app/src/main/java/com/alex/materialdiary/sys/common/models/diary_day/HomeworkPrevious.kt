@@ -1,31 +1,17 @@
-package com.alex.materialdiary.sys.common.models.diary_day;
+package com.alex.materialdiary.sys.common.models.diary_day
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
+import kotlinx.parcelize.Parcelize
 
-public class HomeworkPrevious {
-
+@Parcelize
+class HomeworkPrevious : Parcelable {
     @SerializedName("DATE")
     @Expose
-    private String date;
+    var date: String? = null
+
     @SerializedName("HOMEWORK")
     @Expose
-    private String homework;
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getHomework() {
-        return homework;
-    }
-
-    public void setHomework(String homework) {
-        this.homework = homework;
-    }
-
+    var homework: String? = null
 }

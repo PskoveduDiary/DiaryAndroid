@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Алгебра" />
+            android:text="Ошибка" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/marks_recycle"
@@ -32,7 +32,7 @@
             android:id="@+id/MarksAverage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Средний балл: 3" />
+            android:text="Средний балл: 0" />
 
     </LinearLayout>
 

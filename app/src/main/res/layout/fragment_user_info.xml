@@ -41,16 +41,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/userIcon"
+    <androidx.cardview.widget.CardView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="7dp"
-        android:src="@drawable/user"
+        android:elevation="1dp"
+        android:id="@+id/view2"
+        app:cardCornerRadius="40dp"
         app:layout_constraintBottom_toTopOf="@+id/aboutUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        android:layout_marginHorizontal="5dp"
+        android:innerRadius="100dp"
+        android:shape="ring"
+        android:thicknessRatio="0.5">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/userIcon"
+            android:src="@drawable/user"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+        </ImageView>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

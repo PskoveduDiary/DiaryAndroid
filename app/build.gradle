@@ -5,6 +5,7 @@ plugins {
     id 'com.google.firebase.crashlytics'
     //id 'androidx.navigation.safeargs'
     id 'androidx.navigation.safeargs'
+    id 'kotlin-parcelize'
 
 }
 
@@ -17,8 +18,8 @@ android {
         applicationId "com.alex.materialdiary"
         minSdk 21
         targetSdk 32
-        versionCode 8
-        versionName "1.6"
+        versionCode 10
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

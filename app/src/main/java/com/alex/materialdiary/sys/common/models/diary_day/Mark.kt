@@ -1,53 +1,25 @@
-package com.alex.materialdiary.sys.common.models.diary_day;
+package com.alex.materialdiary.sys.common.models.diary_day
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
+import kotlinx.parcelize.Parcelize
 
-public class Mark {
-
+@Parcelize
+class Mark : Parcelable {
     @SerializedName("SYS_GUID")
     @Expose
-    private String sysGuid;
+    var sysGuid: String? = null
+
     @SerializedName("LONG_NAME")
     @Expose
-    private String longName;
+    var longName: String? = null
+
     @SerializedName("SHORT_NAME")
     @Expose
-    private String shortName;
+    var shortName: String? = null
+
     @SerializedName("VALUE")
     @Expose
-    private Integer value;
-
-    public String getSysGuid() {
-        return sysGuid;
-    }
-
-    public void setSysGuid(String sysGuid) {
-        this.sysGuid = sysGuid;
-    }
-
-    public String getLongName() {
-        return longName;
-    }
-
-    public void setLongName(String longName) {
-        this.longName = longName;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public Integer getValue() {
-        return value;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
-    }
-
+    var value: Int? = null
 }

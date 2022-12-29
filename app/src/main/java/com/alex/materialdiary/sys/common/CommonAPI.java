@@ -1,5 +1,7 @@
 package com.alex.materialdiary.sys.common;
 
+import static xdroid.toaster.Toaster.toast;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 
 import com.alex.materialdiary.R;
+import com.alex.materialdiary.sys.ReadWriteJsonFileUtils;
 import com.alex.materialdiary.sys.common.models.ClassicBody;
 import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods;
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay;
@@ -19,11 +22,19 @@ import com.alex.materialdiary.sys.common.models.get_user.UserData;
 import com.alex.materialdiary.sys.common.models.get_user.UserInfo;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarks;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
+import com.alex.materialdiary.sys.common.models.periods.Period;
+import com.alex.materialdiary.sys.common.models.periods.Periods;
 import com.alex.materialdiary.ui.login.LoginActivity;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,12 +79,13 @@ public class CommonAPI {
     public interface MarksCallback{
         void allperiods(AllPeriods periods);
         void marks(List<PeriodMarksData> marks);
+        void periods(Periods periods);
     }
     public CommonAPI(Context c, NavController navController){
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
-        if(p.contains("message_id")) {
-            message_id = p.getString("message_id", "");
-        }
+        //if(p.contains("message_id")) {
+        //    message_id = p.getString("message_id", "");
+        //}
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
             if(uuid.length() > 1) {
@@ -83,53 +95,44 @@ public class CommonAPI {
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
         }
         else {
-            String X1 = "";
-            Intent i = new Intent(c, LoginActivity.class);
-            String copkies = CookieManager.getInstance().getCookie("one.pskovedu.ru");
-            if (copkies == null) {
-                c.startActivity(i);
-            } else {
-
-                String[] splitted = copkies.split(";");
-                for (int ir = 0; ir < splitted.length; ir++) {
-                    if (splitted[ir].startsWith("X1_SSO=")) {
-                        X1 = splitted[ir].replace("X1_SSO=", "");
-                        sid = X1;
-                        navController.navigate(R.id.to_ch_users);
-                    }
-                }
-                if (X1 == "") {
-                    CookieManager.getInstance().removeAllCookies(null);
-                    c.startActivity(i);
-                }
-            }
+            navController.navigate(R.id.to_ch_users);
         }
         this.navController = navController;
         context = c;
         ca = this;
     }
     public void getUserInfo(UserCallback callback){
+        Gson gson = new Gson();
+        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+        String datas = utils.readJsonFileData("users.json");
+        if (datas != null){
+            UserInfo entity = gson.fromJson(String.valueOf(datas), UserInfo.class);
+            callback.user(entity.getData());
+            return;
+        }
         String X1 = "";
         Intent i = new Intent(context, LoginActivity.class);
         String copkies = CookieManager.getInstance().getCookie("one.pskovedu.ru");
         if (copkies == null) {
             Log.d("redirect", "no-cookies");
             context.startActivity(i);
+            return;
         } else {
 
-            String[] splitted = copkies.split(";");
+            String[] splitted = copkies.split("; ");
             for (int ir = 0; ir < splitted.length; ir++) {
                 Log.d("14324", splitted[ir]);
-                String ds = splitted[ir].replace(" ", "");
-                if (ds.startsWith("X1_SSO=")) {
-                    X1 = ds.replace("X1_SSO=", "");
+                if (splitted[ir].startsWith("X1_SSO=")) {
+                    X1 = splitted[ir].replace("X1_SSO=", "");
                     sid = X1;
+                    break;
                 }
             }
             if (X1 == "") {
                 CookieManager.getInstance().removeAllCookies(null);
                 Log.d("redirect", "x1-empty");
                 context.startActivity(i);
+                return;
             }
         }
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -137,7 +140,6 @@ public class CommonAPI {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build();
-        Gson gson = new Gson();
         FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
         crashlytics.setCustomKey("sid", sid /* string value */);
         RequestBody formBody = new FormBody.Builder()
@@ -151,17 +153,22 @@ public class CommonAPI {
         client.newCall(request).enqueue(new okhttp3.Callback(){
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
+
                 e.printStackTrace();
+                toast("На серверах pskovedu произошла ошибка");
+
             }
 
             @Override
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 try {
-                    UserInfo entity = gson.fromJson(String.valueOf(response.body().string()), UserInfo.class);
+                    String body = String.valueOf(response.body().string());
+                    UserInfo entity = gson.fromJson(body, UserInfo.class);
                     callback.user(entity.getData());
-                    crashlytics.setCustomKey("user_data", String.valueOf(response.body()));
+                    utils.createJsonFileData("users.json", body);
                 }
                 catch (Exception e){
+                    e.printStackTrace();
                     crashlytics.recordException(e);
                 }
             }
@@ -213,6 +220,10 @@ public class CommonAPI {
                 .enqueue(new retrofit2.Callback<DiaryDay>() {
                     @Override
                     public void onResponse(Call<DiaryDay> call, Response<DiaryDay> response) {
+                        if (response.code() == 500){
+                            toast("На серверах pskovedu произошла ошибка");
+                            return;
+                        }
                         DiaryDay body = response.body();
                         if (body == null) {
                             Log.e("NetworkError", response.toString());
@@ -224,6 +235,7 @@ public class CommonAPI {
 
                     @Override
                     public void onFailure(Call<DiaryDay> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
                         t.printStackTrace();
                     }
 
@@ -240,6 +252,10 @@ public class CommonAPI {
                 .enqueue(new retrofit2.Callback<PeriodMarks>() {
                     @Override
                     public void onResponse(Call<PeriodMarks> call, Response<PeriodMarks> response) {
+                        if (response.code() == 500){
+                            toast("На серверах pskovedu произошла ошибка");
+                            return;
+                        }
                         PeriodMarks body = response.body();
                         if (body == null) {
                             Log.e("NetworkError", response.toString());
@@ -250,6 +266,7 @@ public class CommonAPI {
 
                     @Override
                     public void onFailure(Call<PeriodMarks> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
                         t.printStackTrace();
                     }
 
@@ -269,6 +286,10 @@ public class CommonAPI {
                 .enqueue(new retrofit2.Callback<PeriodMarks>() {
                     @Override
                     public void onResponse(Call<PeriodMarks> call, Response<PeriodMarks> response) {
+                        if (response.code() == 500){
+                            toast("На серверах pskovedu произошла ошибка");
+                            return;
+                        }
                         PeriodMarks body = response.body();
                         if (body == null) {
                             Log.e("NetworkError", response.toString());
@@ -279,6 +300,38 @@ public class CommonAPI {
 
                     @Override
                     public void onFailure(Call<PeriodMarks> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
+                        t.printStackTrace();
+                    }
+
+                });
+    }
+    public void getAllPeriods(MarksCallback callb){
+        ClassicBody body = new ClassicBody();
+        body.setGuid(uuid);
+        body.setApikey(apikey);
+        CommonService
+                .getInstance()
+                .getJSONApi()
+                .getAllPeriods(body)
+                .enqueue(new retrofit2.Callback<AllPeriods>() {
+                    @Override
+                    public void onResponse(Call<AllPeriods> call, Response<AllPeriods> response) {
+                        if (response.code() == 500){
+                            toast("На серверах pskovedu произошла ошибка");
+                            return;
+                        }
+                        AllPeriods body = response.body();
+                        if (body == null) {
+                            Log.e("NetworkError", response.toString());
+                            return;
+                        }
+                        callb.allperiods(body);
+                    }
+
+                    @Override
+                    public void onFailure(Call<AllPeriods> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
                         t.printStackTrace();
                     }
 
@@ -291,23 +344,29 @@ public class CommonAPI {
         CommonService
                 .getInstance()
                 .getJSONApi()
-                .getAllPeriods(body)
-                .enqueue(new retrofit2.Callback<AllPeriods>() {
+                .getPeriods(body)
+                .enqueue(new retrofit2.Callback<Periods>() {
                     @Override
-                    public void onResponse(Call<AllPeriods> call, Response<AllPeriods> response) {
-                        AllPeriods body = response.body();
+                    public void onResponse(Call<Periods> call, Response<Periods> response) {
+                        if (response.code() == 500){
+                            toast("На серверах pskovedu произошла ошибка");
+                            return;
+                        }
+                        Periods body = response.body();
                         if (body == null) {
                             Log.e("NetworkError", response.toString());
                             return;
                         }
-                        callb.allperiods(body);
+                        callb.periods(body);
                     }
 
                     @Override
-                    public void onFailure(Call<AllPeriods> call, Throwable t) {
+                    public void onFailure(Call<Periods> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
                         t.printStackTrace();
                     }
 
                 });
     }
+
 }
