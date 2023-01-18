@@ -37,7 +37,7 @@ class DiaryFragment : Fragment(), CommonAPI.CommonCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        CommonAPI(requireContext(), findNavController())
+        CommonAPI.getInstance(requireContext(), findNavController())
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
             override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
                                    dayOfMonth: Int) {

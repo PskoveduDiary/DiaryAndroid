@@ -47,7 +47,7 @@ class LessonFragment : Fragment(){
         binding.lessTeacher.text = "${args.lesson.teacherName}"
         binding.lessDate.text = "${args.lesson.lessonDate}"
         binding.lessTime.text = "${args.lesson.lessonTimeBegin} - ${args.lesson.lessonTimeEnd}"
-        binding.lessTopic.text = "${args.lesson.topic}"
+        binding.lessTopic.text = "Тема: ${args.lesson.topic}"
         if (args.lesson.homeworkPrevious != null) binding.lessHomework.text = "${args.lesson.homeworkPrevious!!.homework?.replace(".ru:/", ".ru/")}"
         else binding.lessHomework.text = ""
         if (args.lesson.homework != null) binding.lessHomework2.text = "${args.lesson.homework}"

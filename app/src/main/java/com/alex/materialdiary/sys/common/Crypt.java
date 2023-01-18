@@ -69,9 +69,10 @@ public class Crypt {
   //  stringBuilder.append("'");
   //  Log.d("crypt", stringBuilder.toString());
   //}
-  
-  public static void generateKeyFromString(String paramString) {
-    byte[] arrayOfByte = Base64.decode(paramString, 0);
-    key = new SecretKeySpec(arrayOfByte, 0, arrayOfByte.length, "AES");
+
+  public static void generateKeyFromString(String str) {
+    byte[] decode = Base64.decode(str, 0);
+    key = new SecretKeySpec(decode, 0, decode.length, "AES");
   }
+
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentMarksBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterMarksGroup
@@ -67,6 +68,7 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        CommonAPI.getInstance(requireContext(), findNavController())
         super.onViewCreated(view, savedInstanceState)
         val llm = LinearLayoutManager(requireContext())
         val llm2 = LinearLayoutManager(requireContext())
@@ -86,6 +88,7 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
     override fun allperiods(periods: AllPeriods?) {
         binding.progressBar.visibility = View.GONE
         if(periods == null) return
+        if(periods.data == null) return
         binding.periods.adapter = RecycleAdapterPeriods(this, periods.data)
     }
 
@@ -98,6 +101,7 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
     override fun periods(periods: Periods?) {
         binding.progressBar.visibility = View.GONE
         if (periods == null) return
+        if (periods.data == null) return
         binding.marks.adapter = RecycleAdapterPeriodsGroup(this.requireContext(), periods.data)
     }
 

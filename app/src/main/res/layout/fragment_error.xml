@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Ошибка!"
         android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/userIcon"
+        app:layout_constraintBottom_toTopOf="@+id/errorIcon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +43,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/userIcon"
+        android:id="@+id/errorIcon"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginBottom="7dp"

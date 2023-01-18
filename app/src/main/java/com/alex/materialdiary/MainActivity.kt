@@ -10,12 +10,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.databinding.ActivityMainBinding
+import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.Crypt
 import com.alex.materialdiary.sys.messages.NotificationService
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -37,7 +41,7 @@ open class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        Crypt.generateKeyFromString("aYXfLj0MB9V5az9Ce8l+7A==");
+        Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         //    val name = "Сообщения"
         //    val descriptionText = "Сообщения от других пользователей"
@@ -55,11 +59,6 @@ open class MainActivity : AppCompatActivity() {
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        val selected = intent.getIntExtra("selected", R.id.action_1)
-        if (selected == R.id.action_3) findNavController(R.id.nav_host_fragment_content_main)
-            .navigate(R.id.to_marks)
-        if (selected == R.id.action_4) findNavController(R.id.nav_host_fragment_content_main)
-            .navigate(R.id.to_other)
 
         //val p: SharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
         //if (!p.contains("uuid")) {
@@ -81,8 +80,9 @@ open class MainActivity : AppCompatActivity() {
                 .setAnchorView(R.id.fab)
                 .setAction("Action", null).show()
         }*/
-
-        bottomNav.selectedItemId = selected
+        if (CommonAPI.getInstance(this, navController).uuid == "") {
+            binding.contentMain.bottomNavigation.visibility = View.GONE
+        }
         bottomNav.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
             when (it.itemId) {
             R.id.action_1 -> {
@@ -129,11 +129,14 @@ open class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+    fun checkNav(){
+        if (CommonAPI.getInstance(this, findNavController(R.id.nav_host_fragment_content_main)).uuid == "") {
+            binding.contentMain.bottomNavigation.visibility = View.GONE
+        }
+        else binding.contentMain.bottomNavigation.visibility = View.VISIBLE
+    }
     override fun onDestroy() {
         super.onDestroy()
-        val cache = Random.nextInt(0, 5)
-        if (cache == 2) trimCache(baseContext)
     }
     open fun trimCache(context: Context) {
         try {
@@ -166,6 +169,9 @@ open class MainActivity : AppCompatActivity() {
         }
     }
     override fun onBackPressed() {
+        if (CommonAPI.getInstance(this, findNavController(R.id.nav_host_fragment_content_main)).uuid == ""
+            && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment)
+            return;
         super.onBackPressed()
         supportActionBar?.subtitle = ""
     }
@@ -181,7 +187,12 @@ open class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
 
-        if (item.itemId == android.R.id.home) findNavController(R.id.nav_host_fragment_content_main).navigateUp()
+        if (item.itemId == android.R.id.home){
+            if (CommonAPI.getInstance(this, findNavController(R.id.nav_host_fragment_content_main)).uuid == ""
+                && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment)
+                return false;
+            findNavController(R.id.nav_host_fragment_content_main).navigateUp()
+        }
         if (item.itemId == R.id.action_settings) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_new_ch_users)
         if (item.itemId == R.id.action_marks) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_average)
         // as you specify a parent activity in AndroidManifest.xml.
