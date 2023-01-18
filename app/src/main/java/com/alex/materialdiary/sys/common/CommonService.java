@@ -21,6 +21,14 @@ public class CommonService {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
+                .addNetworkInterceptor( chain ->
+                chain.proceed(
+                        chain.request()
+                                .newBuilder()
+                                .header("User-Agent", "Dalvik/2.1.0 (Linux; U; Android 12;)")
+                                .build()
+                )
+                )
                 .build();
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

