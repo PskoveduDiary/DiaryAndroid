@@ -55,10 +55,10 @@ public class CommonAPI {
     public void ChangeUuid(String uuid){
         this.uuid = uuid;
         ((MainActivity) context).checkNav();
-        if(uuid.length() > 1) {
-            apikey = Crypt.encryptSYS_GUID(uuid);
-            //Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
-        }
+        //if(uuid.length() > 1) {
+        //    apikey = Crypt.encryptSYS_GUID(uuid);
+        //    //Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
+        //}
         SharedPreferences p = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = p.edit();
         editor.putString("uuid", uuid);
@@ -105,10 +105,10 @@ public class CommonAPI {
                         String res = response.body().string();
                         if(Objects.equals(res, p.getString("api_key", ""))) return;
                         p.edit().putString("api_key", res).apply();
-                        Crypt.generateKeyFromString(res);
-                        if(uuid.length() > 1) {
-                            apikey = Crypt.encryptSYS_GUID(uuid);
-                        }
+                        //Crypt.generateKeyFromString(res);
+                        //if(uuid.length() > 1) {
+                        //    apikey = Crypt.encryptSYS_GUID(uuid);
+                        //}
                     }
                 }
             }
@@ -119,13 +119,13 @@ public class CommonAPI {
         //if(p.contains("message_id")) {
         //    message_id = p.getString("message_id", "");
         //}
-        get_api_cryptor(c);
+        //get_api_cryptor(c);
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
-            if(uuid.length() > 1) {
-                apikey = Crypt.encryptSYS_GUID(uuid);
-                //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
-            }
+            //if(uuid.length() > 1) {
+            //    apikey = Crypt.encryptSYS_GUID(uuid);
+            //    //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
+            //}
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
         }
         else {
@@ -211,26 +211,6 @@ public class CommonAPI {
             }
 
         });
-    }
-    public CommonAPI(Context c, String uuid) {
-        SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
-        if(p.contains("uuid")) {
-            this.uuid = p.getString("uuid", "");
-
-            if(uuid.length() > 1) {
-                apikey = Crypt.encryptSYS_GUID(uuid);
-                Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
-            }
-        }
-
-        if(p.contains("message_id")) {
-            message_id = p.getString("message_id", "");
-        }
-        else {
-            this.context = c;
-            this.uuid = uuid.toString();
-            ca = this;
-        }
     }
     public static CommonAPI getInstance(Context c, NavController navController) {
         if (ca == null) return new CommonAPI(c, navController);

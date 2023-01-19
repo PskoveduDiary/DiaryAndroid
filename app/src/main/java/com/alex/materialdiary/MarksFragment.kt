@@ -85,6 +85,10 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        CommonAPI.getInstance(requireContext(), findNavController())
+    }
     override fun allperiods(periods: AllPeriods?) {
         binding.progressBar.visibility = View.GONE
         if(periods == null) return

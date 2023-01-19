@@ -17,6 +17,7 @@ import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import javax.security.auth.callback.Callback;
 
@@ -41,8 +42,17 @@ public class RecycleAdapterMarks extends RecyclerView.Adapter<RecycleAdapterMark
     public void onBindViewHolder(@NonNull RecycleAdapterMarks.ViewHolder holder, int position) {
         Mark mark = periods.get(position);
         Context c = inflater.getContext();
-        String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-        holder.date.setText(mark.getDate().replace("." + year, ""));
+        Object year = Calendar.getInstance().get(Calendar.YEAR);
+        String yearr = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        if(mark.getDate() != null){
+            String text = mark.getDate();
+            try {
+                String pr_year = String.valueOf(((int)year) - 1);
+                text = text.replace("." + pr_year, "");
+            } catch (Exception ignored) {
+            }
+            holder.date.setText(text.replace("." + yearr, ""));
+        }
         holder.mark.setText(String.valueOf(mark.getValue()));
         //holder.itemView.setOnClickListener(v -> Toast.makeText(c, String.valueOf(mark.get), Toast.LENGTH_SHORT).show());
         if (mark.getValue() == 5) holder.mark.setTextColor(c.getResources().getColor(R.color.five));

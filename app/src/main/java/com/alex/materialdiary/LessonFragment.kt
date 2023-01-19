@@ -30,7 +30,6 @@ class LessonFragment : Fragment(){
     // onDestroyView.
     private val binding get() = _binding!!
     private val args: LessonFragmentArgs by navArgs()
-    lateinit var api: API
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +46,8 @@ class LessonFragment : Fragment(){
         binding.lessTeacher.text = "${args.lesson.teacherName}"
         binding.lessDate.text = "${args.lesson.lessonDate}"
         binding.lessTime.text = "${args.lesson.lessonTimeBegin} - ${args.lesson.lessonTimeEnd}"
-        binding.lessTopic.text = "Тема: ${args.lesson.topic}"
+        if (args.lesson.topic != null) binding.lessTopic.text = "Тема: ${args.lesson.topic}"
+        else binding.lessTopic.text = ""
         if (args.lesson.homeworkPrevious != null) binding.lessHomework.text = "${args.lesson.homeworkPrevious!!.homework?.replace(".ru:/", ".ru/")}"
         else binding.lessHomework.text = ""
         if (args.lesson.homework != null) binding.lessHomework2.text = "${args.lesson.homework}"

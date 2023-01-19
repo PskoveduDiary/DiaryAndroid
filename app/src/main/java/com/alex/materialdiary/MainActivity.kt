@@ -20,7 +20,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.common.CommonAPI
-import com.alex.materialdiary.sys.common.Crypt
+//import com.alex.materialdiary.sys.common.Crypt
 import com.alex.materialdiary.sys.messages.NotificationService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -41,7 +41,7 @@ open class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
+        //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         //    val name = "Сообщения"
         //    val descriptionText = "Сообщения от других пользователей"
