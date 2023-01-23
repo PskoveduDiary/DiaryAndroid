@@ -55,10 +55,10 @@ public class CommonAPI {
     public void ChangeUuid(String uuid){
         this.uuid = uuid;
         ((MainActivity) context).checkNav();
-        //if(uuid.length() > 1) {
-        //    apikey = Crypt.encryptSYS_GUID(uuid);
-        //    //Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
-        //}
+        if(uuid.length() > 1) {
+            apikey = x2.X.m0do(uuid);
+            //Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
+        }
         SharedPreferences p = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = p.edit();
         editor.putString("uuid", uuid);
@@ -122,10 +122,10 @@ public class CommonAPI {
         //get_api_cryptor(c);
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
-            //if(uuid.length() > 1) {
-            //    apikey = Crypt.encryptSYS_GUID(uuid);
-            //    //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
-            //}
+            if(uuid.length() > 1) {
+                apikey = x2.X.m0do(uuid);
+                //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
+            }
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
         }
         else {

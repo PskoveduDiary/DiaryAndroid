@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommonService {
     private static CommonService mInstance;
-    private static final String BASE_URL = "https://pskovedu.ml/api/";//"http://213.145.5.42:8090/";
+    private static final String BASE_URL = "http://213.145.5.42:8090/"; //"https://pskovedu.ml/api/";//
     private Retrofit mRetrofit;
 
     private CommonService() {

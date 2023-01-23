@@ -18,15 +18,24 @@ android {
         applicationId "com.alex.materialdiary"
         minSdk 21
         targetSdk 32
-        versionCode 15
-        versionName "1.96"
+        versionCode 16
+        versionName "1.97"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
