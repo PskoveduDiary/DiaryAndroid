@@ -1,5 +1,5 @@
 package com.alex.materialdiary.sys.common
-/*
+
 import android.util.Base64
 import java.lang.Exception
 import javax.crypto.Cipher
@@ -61,4 +61,4 @@ object Crypt {
         val decode = Base64.decode(str, 0)
         key = SecretKeySpec(decode, 0, decode.size, "AES")
     }
-}*/
+}

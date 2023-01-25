@@ -56,7 +56,9 @@ public class CommonAPI {
         this.uuid = uuid;
         ((MainActivity) context).checkNav();
         if(uuid.length() > 1) {
-            apikey = x2.X.m0do(uuid);
+
+            apikey = Crypt.encryptSYS_GUID(uuid);
+            //apikey = x2.X.m0do(uuid);
             //Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
         }
         SharedPreferences p = context.getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -123,7 +125,7 @@ public class CommonAPI {
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
             if(uuid.length() > 1) {
-                apikey = x2.X.m0do(uuid);
+                apikey = Crypt.encryptSYS_GUID(uuid);
                 //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
             }
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();

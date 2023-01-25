@@ -20,10 +20,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.Crypt
 //import com.alex.materialdiary.sys.common.Crypt
 import com.alex.materialdiary.sys.messages.NotificationService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.io.File
 import java.time.LocalDate
@@ -41,7 +45,31 @@ open class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
+        Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+
+// Returns an intent object that you use to check for an update.
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+// Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                // This example applies an immediate update. To apply a flexible update
+                // instead, pass in AppUpdateType.FLEXIBLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                // Request the update.
+                appUpdateManager.startUpdateFlowForResult(
+                    // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                    appUpdateInfo,
+                    // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                    AppUpdateType.IMMEDIATE,
+                    // The current activity making the update request.
+                    this,
+                    // Include a request code to later monitor this update request.
+                    appUpdateInfo.availableVersionCode())
+            }
+        }
         //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         //    val name = "Сообщения"
         //    val descriptionText = "Сообщения от других пользователей"
@@ -65,11 +93,14 @@ open class MainActivity : AppCompatActivity() {
         //    navController.navigate(R.id.to_ch_users)
         //}
         appBarConfiguration = AppBarConfiguration(navController.graph)
-        val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.DiaryFragment,
-            R.id.ContactsFragment,
-            R.id.MarksFragment,
-            R.id.OtherFragment))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.DiaryFragment,
+                R.id.ContactsFragment,
+                R.id.MarksFragment,
+                R.id.OtherFragment
+            )
+        )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         //val intentt = Intent(this, NotificationService::class.java)
@@ -85,32 +116,35 @@ open class MainActivity : AppCompatActivity() {
         }
         bottomNav.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
             when (it.itemId) {
-            R.id.action_1 -> {
-                findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
-                return@OnItemSelectedListener true
+                R.id.action_1 -> {
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
+                    return@OnItemSelectedListener true
+                }
+                R.id.action_2 -> {
+                    //val i = Intent(this, MessageActivity::class.java)
+                    //startActivity(i,
+                    //    ActivityOptions.makeSceneTransitionAnimation(
+                    //        this,
+                    //        bottomNav,
+                    //        "bottomnav"
+                    //    ).toBundle()
+                    //)
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
+                    return@OnItemSelectedListener true
+                }
+                R.id.action_3 -> {
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
+                    return@OnItemSelectedListener true
+                }
+                R.id.action_4 -> {
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_other)
+                    return@OnItemSelectedListener true
+                }
+                else -> {
+                    return@OnItemSelectedListener false
+                }
             }
-            R.id.action_2 -> {
-                //val i = Intent(this, MessageActivity::class.java)
-                //startActivity(i,
-                //    ActivityOptions.makeSceneTransitionAnimation(
-                //        this,
-                //        bottomNav,
-                //        "bottomnav"
-                //    ).toBundle()
-                //)
-                findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
-                return@OnItemSelectedListener true
-            }
-            R.id.action_3 -> {
-                findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
-                return@OnItemSelectedListener true
-            }
-            R.id.action_4 -> {
-                findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_other)
-                return@OnItemSelectedListener true
-            }
-            else -> {return@OnItemSelectedListener false}
-        } })
+        })
         bottomNav.setOnItemReselectedListener {
             when (it.itemId) {
                 R.id.action_1 -> {
@@ -129,15 +163,21 @@ open class MainActivity : AppCompatActivity() {
             }
         }
     }
-    fun checkNav(){
-        if (CommonAPI.getInstance(this, findNavController(R.id.nav_host_fragment_content_main)).uuid == "") {
+
+    fun checkNav() {
+        if (CommonAPI.getInstance(
+                this,
+                findNavController(R.id.nav_host_fragment_content_main)
+            ).uuid == ""
+        ) {
             binding.contentMain.bottomNavigation.visibility = View.GONE
-        }
-        else binding.contentMain.bottomNavigation.visibility = View.VISIBLE
+        } else binding.contentMain.bottomNavigation.visibility = View.VISIBLE
     }
+
     override fun onDestroy() {
         super.onDestroy()
     }
+
     open fun trimCache(context: Context) {
         try {
             val dir: File? = context.cacheDir
@@ -163,14 +203,18 @@ open class MainActivity : AppCompatActivity() {
         // The directory is now empty so delete it
         if (dir != null) {
             return dir.delete()
-        }
-        else{
+        } else {
             return false
         }
     }
+
     override fun onBackPressed() {
-        if (CommonAPI.getInstance(this, findNavController(R.id.nav_host_fragment_content_main)).uuid == ""
-            && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment)
+        if (CommonAPI.getInstance(
+                this,
+                findNavController(R.id.nav_host_fragment_content_main)
+            ).uuid == ""
+            && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment
+        )
             return;
         super.onBackPressed()
         supportActionBar?.subtitle = ""
@@ -187,25 +231,34 @@ open class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
 
-        if (item.itemId == android.R.id.home){
-            if (CommonAPI.getInstance(this, findNavController(R.id.nav_host_fragment_content_main)).uuid == ""
-                && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment)
+        if (item.itemId == android.R.id.home) {
+            if (CommonAPI.getInstance(
+                    this,
+                    findNavController(R.id.nav_host_fragment_content_main)
+                ).uuid == ""
+                && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment
+            )
                 return false;
             findNavController(R.id.nav_host_fragment_content_main).navigateUp()
         }
-        if (item.itemId == R.id.action_settings) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_new_ch_users)
-        if (item.itemId == R.id.action_marks) findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_average)
+        if (item.itemId == R.id.action_settings) findNavController(R.id.nav_host_fragment_content_main).navigate(
+            R.id.to_new_ch_users
+        )
+        if (item.itemId == R.id.action_marks) findNavController(R.id.nav_host_fragment_content_main).navigate(
+            R.id.to_average
+        )
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     open fun to_login() {
 
-            /*val sharedPref = this?.getSharedPreferences("login", Context.MODE_PRIVATE)
-        val s : String = ""
-        sharedPref.getString("logged", s)
-        Log.d("login", s)*/
-        }
+        /*val sharedPref = this?.getSharedPreferences("login", Context.MODE_PRIVATE)
+    val s : String = ""
+    sharedPref.getString("logged", s)
+    Log.d("login", s)*/
+    }
 }
