@@ -27,7 +27,7 @@ class UserInfoFragment : Fragment(), API.Callback_About, API.Callback_AddContact
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val args: UserInfoFragmentArgs by navArgs()
+    /*private val args: UserInfoFragmentArgs by navArgs()*/
     lateinit var api: API
 
     override fun onCreateView(
@@ -36,18 +36,18 @@ class UserInfoFragment : Fragment(), API.Callback_About, API.Callback_AddContact
     ): View? {
 
         _binding = FragmentUserInfoBinding.inflate(inflater, container, false)
-        api = API.getInstance(CookieManager.getInstance().getCookie("one.pskovedu.ru"))
+        /*api = API.getInstance(CookieManager.getInstance().getCookie("one.pskovedu.ru"))
         val imageLoader = ImageLoader.getInstance(requireContext())
         imageLoader.DisplayImage(
             "https://pskovedu.ml/api/images/" + args.login,
             binding.userIcon
-        )
+        )*/
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        api.GetUserInfo(this, args.login, args.name?: "")
+        /*api.GetUserInfo(this, args.login, args.name?: "")
         binding.addToContacts.setOnClickListener {
             if (args.name == null){
                 var text = binding.aboutUser.text.toString()
@@ -64,7 +64,7 @@ class UserInfoFragment : Fragment(), API.Callback_About, API.Callback_AddContact
             }
 
             findNavController().navigate(R.id.to_contacts)
-        }
+        }*/
     }
 
     override fun onDestroyView() {

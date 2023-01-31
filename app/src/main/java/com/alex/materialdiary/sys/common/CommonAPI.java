@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.webkit.CookieManager;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
@@ -54,7 +53,7 @@ public class CommonAPI {
     public static CommonAPI ca;
     public void ChangeUuid(String uuid){
         this.uuid = uuid;
-        ((MainActivity) context).checkNav();
+        if (context != null) ((MainActivity) context).checkNav();
         if(uuid.length() > 1) {
 
             apikey = Crypt.encryptSYS_GUID(uuid);
@@ -136,6 +135,37 @@ public class CommonAPI {
         this.navController = navController;
         context = c;
         ca = this;
+    }
+    public CommonAPI(Context c){
+        SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
+        //if(p.contains("message_id")) {
+        //    message_id = p.getString("message_id", "");
+        //}
+        //get_api_cryptor(c);
+        if(p.contains("uuid")) {
+            uuid = p.getString("uuid", "");
+            if(uuid.length() > 1) {
+                apikey = Crypt.encryptSYS_GUID(uuid);
+                //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
+            }
+            //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
+        }
+        context = c;
+    }
+    String get_user_type(){
+        Gson gson = new Gson();
+        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+        String datas = utils.readJsonFileData("users.json");
+        if (datas != null){
+            UserInfo entity = gson.fromJson(String.valueOf(datas), UserInfo.class);
+            if (entity.getData().getSchools().size() > 0) {
+                List<String> roles = entity.getData().getSchools().get(0).getRoles();
+                if (roles.contains("participant")) return "participant";
+                else return "parents";
+            }
+            return "";
+        }
+        return "";
     }
     public void getUserInfo(UserCallback callback){
         Gson gson = new Gson();

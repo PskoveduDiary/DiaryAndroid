@@ -22,13 +22,13 @@ class QRFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    val args: QRFragmentArgs by navArgs()
+    /*val args: QRFragmentArgs by navArgs()*/
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentQrBinding.inflate(inflater, container, false)
-        binding.InfoText.text = args.forUser
+        /*binding.InfoText.text = args.forUser
         val writer = QRCodeWriter()
         try {
             val bitMatrix: BitMatrix = writer.encode(args.data, BarcodeFormat.QR_CODE, 256, 256)
@@ -43,7 +43,7 @@ class QRFragment : Fragment() {
             binding.QrCode.setImageBitmap(bmp)
         } catch (e: WriterException) {
             e.printStackTrace()
-        }
+        }*/
         return binding.root
     }
 

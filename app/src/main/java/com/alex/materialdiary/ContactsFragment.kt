@@ -56,9 +56,9 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
         cookies = CookieManager.getInstance().getCookie("one.pskovedu.ru")
         val api = API(cookies)
         api.GetContacts(this)
-        binding.floatingActionButton.setOnClickListener{
+        /*binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.to_add_contact)
-        }
+        }*/
     }
 
     override fun onDestroyView() {
@@ -73,10 +73,10 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.my_qr){
-            val action = if (CommonAPI.getInstance().message_id != "") QRFragmentDirections.toQr( CommonAPI.getInstance().message_id,
+            /*val action = if (CommonAPI.getInstance().message_id != "") QRFragmentDirections.toQr( CommonAPI.getInstance().message_id,
                 "Ваш qr-код")
             else ErrorFragmentDirections.toError("Не найден ваш id, попробуйте отправить любое сообщение кому-либо!")
-            findNavController().navigate(action)
+            findNavController().navigate(action)*/
         }
         if (item.itemId == R.id.changeProfile){
              if (CommonAPI.getInstance().message_id != "")
@@ -122,8 +122,8 @@ class ContactsFragment : Fragment(), API.Callback_Contacts {
     public fun openMsg(name: String, login: String, isGroup: Boolean){
         //api.GetMessages(this, name, login, isGroup)
         //findNavController().navigate()
-        val action = ChatFragmentDirections.toChat(name, login, isGroup)
+        /*val action = ChatFragmentDirections.toChat(name, login, isGroup)
         findNavController().navigate(action)
-
+*/
     }
 }

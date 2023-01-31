@@ -1,39 +1,41 @@
 package com.alex.materialdiary
 
+//import com.alex.materialdiary.sys.common.Crypt
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.work.*
+import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.Crypt
-//import com.alex.materialdiary.sys.common.Crypt
-import com.alex.materialdiary.sys.messages.NotificationService
+import com.alex.materialdiary.utils.Alarmer
+import com.alex.materialdiary.utils.KRWorkManager
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.iid.FirebaseInstanceIdReceiver
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 import java.io.File
-import java.time.LocalDate
 import java.util.*
-import kotlin.random.Random
-import kotlin.random.Random.Default.nextInt
 
 
 open class MainActivity : AppCompatActivity() {
@@ -70,20 +72,36 @@ open class MainActivity : AppCompatActivity() {
                     appUpdateInfo.availableVersionCode())
             }
         }
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        //    val name = "Сообщения"
-        //    val descriptionText = "Сообщения от других пользователей"
-        //    val importance = NotificationManager.IMPORTANCE_DEFAULT
-        //    val channel = NotificationChannel("msg", name, importance).apply {
-        //        description = descriptionText
-        //    }
-        //    // Register the channel with the system
-        //    val notificationManager: NotificationManager =
-        //        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        //    notificationManager.createNotificationChannel(channel)
-        //}
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Напоминания о контрольных"
+            val descriptionText = "Напомню подготовиться к контрольной"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("kr", name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }/*
+        KRWorkManager().start(this)
+        Alarmer().start_kr(applicationContext)*/
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("SDJDSJJ", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Storage.FIREBASE_TOKEN = token
+            // Log and toast
+            Log.d("SDJDSJJ", token)
+            /*Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()*/
+        })
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -96,7 +114,7 @@ open class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.DiaryFragment,
-                R.id.ContactsFragment,
+                /*R.id.ContactsFragment,*/
                 R.id.MarksFragment,
                 R.id.OtherFragment
             )
@@ -105,7 +123,6 @@ open class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         //val intentt = Intent(this, NotificationService::class.java)
         //startService(intentt)
-
         /*binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAnchorView(R.id.fab)
@@ -129,7 +146,7 @@ open class MainActivity : AppCompatActivity() {
                     //        "bottomnav"
                     //    ).toBundle()
                     //)
-                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
+                    //findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
                     return@OnItemSelectedListener true
                 }
                 R.id.action_3 -> {
@@ -151,7 +168,7 @@ open class MainActivity : AppCompatActivity() {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
                 }
                 R.id.action_2 -> {
-                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
+                //    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
                 }
                 R.id.action_3 -> {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)

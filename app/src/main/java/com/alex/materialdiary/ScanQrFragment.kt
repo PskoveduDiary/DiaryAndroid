@@ -105,8 +105,8 @@ class ScanQrFragment : Fragment(), ZBarScannerView.ResultHandler {
     override fun handleResult(p0: Result?) {
         if (p0 != null) {
             Log.d("qr", p0.contents)
-            val action = UserInfoFragmentDirections.toUserInfo(p0.contents, null)
-            findNavController().navigate(action)
+            /*val action = UserInfoFragmentDirections.toUserInfo(p0.contents, null)
+            findNavController().navigate(action)*/
         }
     }
 }

@@ -1,0 +1,29 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Уведомления">
+
+        <SwitchPreferenceCompat
+            app:key="kr"
+            app:title="О контрольных"
+            android:summary="Каждый день в 18:00"/>
+<!--
+        <ListPreference
+            app:dependency="kr"
+            app:defaultValue="seven"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:key="kr_time"
+            app:title="Время уведомления"
+            app:useSimpleSummaryProvider="true" />
+-->
+    </PreferenceCategory>
+    <Preference />
+    <PreferenceCategory app:title="Другое">
+    <Preference
+        app:title="Новости"
+        app:key="news">
+    </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -40,12 +40,12 @@ class AddContactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.scanQr.setOnClickListener {
-            findNavController().navigate(R.id.to_scan_qr)
-        }
-        binding.selectFromList.setOnClickListener {
-            findNavController().navigate(R.id.to_available_contacts)
-        }
+        //binding.scanQr.setOnClickListener {
+        //    findNavController().navigate(R.id.to_scan_qr)
+        //}
+        //binding.selectFromList.setOnClickListener {
+        //    findNavController().navigate(R.id.to_available_contacts)
+        //}
     }
 
     override fun onDestroyView() {

@@ -101,12 +101,12 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
                 holder.Name.setText(data.get(position).getUserParticipants().get(0).getName() + " " + data.get(position).getUserParticipants().get(0).getSurname());
                 holder.Grade.setText(data.get(position).getUserParticipants().get(0).getGrade().getName() + " класс");
                 holder.SchoolName.setText(data.get(position).getUserParticipants().get(0).getGrade().getSchool().getName());
-                holder.scan.setOnClickListener(v -> {
-                    NavDirections action =
+               /* holder.scan.setOnClickListener(v -> {
+                    /*NavDirections action =
                             WebLoginFragmentDirections.toWebLogin(data.get(position).getUserParticipants().get(0).getSysGuid(),
                             data.get(position).getUserParticipants().get(0).getName() + " " + data.get(position).getUserParticipants().get(0).getSurname());
                     Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment_content_main).navigate(action);
-                });
+                });*/
             }
             else {
                 holder.Name.setText("Произошла ошибка при получении данных");
@@ -118,7 +118,7 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
             holder.Name.setText(data.get(position).getParticipant().getName() + " " + data.get(position).getParticipant().getSurname());
             holder.Grade.setText(data.get(position).getParticipant().getGrade().getName() + " класс");
             holder.SchoolName.setText(data.get(position).getSchool().getName());
-            holder.scan.setOnClickListener(new View.OnClickListener(){
+            /*holder.scan.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View v) {
@@ -127,7 +127,7 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
                                     data.get(position).getParticipant().getName() + " " + data.get(position).getParticipant().getSurname());
                     Navigation.findNavController(context.requireActivity(), R.id.nav_host_fragment_content_main).navigate(action);
                 }
-            });
+            });*/
         }
         singleItem.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -81,10 +81,10 @@ class AvailableContactsFragment : Fragment(), API.Callback_Available {
                 NameSelected = treeNode.value.toString()
             }
         }
-        binding.addButton.setOnClickListener {
-            val action = UserInfoFragmentDirections.toUserInfo(LoginSelected, NameSelected)
-            findNavController().navigate(action)
-        }
+        //binding.addButton.setOnClickListener {
+        //    val action = UserInfoFragmentDirections.toUserInfo(LoginSelected, NameSelected)
+        //    findNavController().navigate(action)
+        //}
     }
 
     override fun onDestroyView() {

@@ -36,7 +36,7 @@ class ChatFragment : Fragment(), API.Callback_Chat, API.Callback_About {
     lateinit var api: API
     // This property is only valid between onCreateView and
     // onDestroyView.
-    val args: ChatFragmentArgs by navArgs()
+    //val args: ChatFragmentArgs by navArgs()
     private val binding get() = _binding!!
     var last_size = 0
 
@@ -54,7 +54,7 @@ class ChatFragment : Fragment(), API.Callback_Chat, API.Callback_About {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cookies = android.webkit.CookieManager.getInstance().getCookie("one.pskovedu.ru")
+        /*cookies = android.webkit.CookieManager.getInstance().getCookie("one.pskovedu.ru")
         api = API.getInstance(cookies)
         openMsg(args.name, args.login, args.group)
         binding.sendButton.setOnClickListener {
@@ -83,7 +83,7 @@ class ChatFragment : Fragment(), API.Callback_Chat, API.Callback_About {
                 openMsg(args.name, args.login, args.group)
                 updateHandler.postDelayed(this, 2000)
             }
-        })
+        })*/
     }
 
     override fun onDestroyView() {
@@ -104,8 +104,8 @@ class ChatFragment : Fragment(), API.Callback_Chat, API.Callback_About {
 
     fun send(){
         val text = binding.messageText.text.toString()
-        if (text != "") api.SendMessage(this, args.login, text, args.group)
-        binding.messageText.setText("")
+        /*if (text != "") api.SendMessage(this, args.login, text, args.group)
+        binding.messageText.setText("")*/
     }
 
     @Deprecated("Deprecated in Java", ReplaceWith("menu.clear()"))
@@ -115,7 +115,7 @@ class ChatFragment : Fragment(), API.Callback_Chat, API.Callback_About {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.about_contact){
+        /*if (item.itemId == R.id.about_contact){
             api.GetUserInfo(this, args.login, args.name)
         }
         if (item.itemId == R.id.show_qr){
@@ -127,7 +127,8 @@ class ChatFragment : Fragment(), API.Callback_Chat, API.Callback_About {
             R.id.about_contact -> true
             R.id.show_qr -> true
             else -> true
-        }
+        }*/
+        return true
     }
 
 

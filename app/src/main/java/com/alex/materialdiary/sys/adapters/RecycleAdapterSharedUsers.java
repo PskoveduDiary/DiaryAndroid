@@ -49,12 +49,12 @@ public class RecycleAdapterSharedUsers extends RecyclerView.Adapter<RecycleAdapt
         holder.Name.setText(user.getName());
         holder.Grade.setText(user.getClassname() + " класс");
         holder.SchoolName.setText(user.getSchool());
-        holder.scan.setOnClickListener(v -> {
+        /*holder.scan.setOnClickListener(v -> {
             NavDirections action =
                     WebLoginFragmentDirections.toWebLogin(user.getGuid(),
                             user.getName());
             Navigation.findNavController(fragment.requireActivity(), R.id.nav_host_fragment_content_main).navigate(action);
-        });
+        });*/
         holder.share.setOnClickListener(v -> {
             NavDirections action =
                     ShareQRFragmentDirections.toShare(user);

@@ -76,6 +76,12 @@ public class PermissionUtils {
         editor.putBoolean(PREFS_FIRST_TIME_KEY, false);
         editor.commit();
     }
+    private static void setApplicationLaunchedFirstTimeTrue(Activity activity) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(PREFS_FILE_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PREFS_FIRST_TIME_KEY, true);
+        editor.commit();
+    }
 
 
     private static boolean isRuntimePermissionRequired() {
@@ -142,7 +148,7 @@ public class PermissionUtils {
 
             } else {
                 Log.d(TAG, "Permission already granted");
-
+                setApplicationLaunchedFirstTimeTrue(activity);
                 permissionAskListener.onPermissionGranted();
             }
         }

@@ -23,6 +23,14 @@
         <item quantity="many">%1$d участников</item>
         <item quantity="other">%1$d участников</item>
     </plurals>
+    <plurals name="kr">
+        <item quantity="zero">нет предметов</item>
+        <item quantity="one">одному предмету</item>
+        <item quantity="two">по двум предметам</item>
+        <item quantity="few">%1$d предметам</item>
+        <item quantity="many">%1$d предметам</item>
+        <item quantity="other">%1$d по предметов</item>
+    </plurals>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -77,4 +85,21 @@
     <string name="error_label">Произошла ошибка</string>
     <string name="average_label">Средняя оценка</string>
     <string name="lesson_label">Урок</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="settings_label">Настройки</string>
 </resources>

@@ -12,96 +12,96 @@
         android:label="@string/diary_label"
         tools:layout="@layout/fragment_diary">
     </fragment>
+    <!--
+        <fragment
+            android:id="@+id/QRFragment"
+            android:name="com.alex.materialdiary.QRFragment"
+            android:label="@string/qr_label"
+            tools:layout="@layout/fragment_qr">
+            <argument
+                android:name="data"
+                app:argType="string" />
+            <argument
+                android:name="for_user"
+                app:argType="string" />
+        </fragment>-->
 
-    <fragment
-        android:id="@+id/QRFragment"
-        android:name="com.alex.materialdiary.QRFragment"
-        android:label="@string/qr_label"
-        tools:layout="@layout/fragment_qr">
-        <argument
-            android:name="data"
-            app:argType="string" />
-        <argument
-            android:name="for_user"
-            app:argType="string" />
-    </fragment>
+        <fragment
+            android:id="@+id/ShareQRFragment"
+            android:name="com.alex.materialdiary.ShareQRFragment"
+            android:label="@string/qr_label"
+            tools:layout="@layout/fragment_qr">
 
-    <fragment
-        android:id="@+id/ShareQRFragment"
-        android:name="com.alex.materialdiary.ShareQRFragment"
-        android:label="@string/qr_label"
-        tools:layout="@layout/fragment_qr">
+            <argument
+                android:name="user"
+                app:argType="com.alex.materialdiary.sys.common.models.ShareUser" />
+        </fragment>
 
-        <argument
-            android:name="user"
-            app:argType="com.alex.materialdiary.sys.common.models.ShareUser" />
-    </fragment>
+        <fragment
+            android:id="@+id/UserChangeFragment"
+            android:name="com.alex.materialdiary.ChangeUserFragment"
+            android:label="@string/users_label"
+            tools:layout="@layout/fragment_users">
+        </fragment>
 
-    <fragment
-        android:id="@+id/UserChangeFragment"
-        android:name="com.alex.materialdiary.ChangeUserFragment"
-        android:label="@string/users_label"
-        tools:layout="@layout/fragment_users">
-    </fragment>
+        <fragment
+            android:id="@+id/NewChangeUserFragment"
+            android:name="com.alex.materialdiary.NewChangeUserFragment"
+            android:label="@string/users_label"
+            tools:layout="@layout/fragment_ch_user_new">
+        </fragment>
+        <!--
+            <fragment
+                android:id="@+id/AddContactFragment"
+                android:name="com.alex.materialdiary.AddContactFragment"
+                android:label="@string/add_contact_label"
+                tools:layout="@layout/fragment_add_contact">
+            </fragment>-->
+        <fragment
+            android:id="@+id/LessonFragment"
+            android:name="com.alex.materialdiary.LessonFragment"
+            android:label="@string/lesson_label"
+            tools:layout="@layout/fragment_lesson">
+            <argument
+                android:name="lesson"
+                app:argType="com.alex.materialdiary.sys.common.models.diary_day.DatumDay" />
+        </fragment>
+        <!-- <fragment
+             android:id="@+id/UserInfoFragment"
+             android:name="com.alex.materialdiary.UserInfoFragment"
+             android:label="@string/add_contact_label"
+             tools:layout="@layout/fragment_user_info">
+             <argument
+                 android:name="login"
+                 app:argType="string" />
+             <argument
+                 android:name="name"
+                 app:argType="string"
+                 app:nullable="true" />
+         </fragment>-->
+     <fragment
+         android:id="@+id/ErrorFragment"
+         android:name="com.alex.materialdiary.ErrorFragment"
+         android:label="@string/error_label"
+         tools:layout="@layout/fragment_error">
+         <argument
+             android:name="errorText"
+             app:argType="string" />
+     </fragment>
 
-    <fragment
-        android:id="@+id/NewChangeUserFragment"
-        android:name="com.alex.materialdiary.NewChangeUserFragment"
-        android:label="@string/users_label"
-        tools:layout="@layout/fragment_ch_user_new">
-    </fragment>
-
-    <fragment
-        android:id="@+id/AddContactFragment"
-        android:name="com.alex.materialdiary.AddContactFragment"
-        android:label="@string/add_contact_label"
-        tools:layout="@layout/fragment_add_contact">
-    </fragment>
-    <fragment
-        android:id="@+id/LessonFragment"
-        android:name="com.alex.materialdiary.LessonFragment"
-        android:label="@string/lesson_label"
-        tools:layout="@layout/fragment_lesson">
-        <argument
-            android:name="lesson"
-            app:argType="com.alex.materialdiary.sys.common.models.diary_day.DatumDay" />
-    </fragment>
-    <fragment
-        android:id="@+id/UserInfoFragment"
-        android:name="com.alex.materialdiary.UserInfoFragment"
-        android:label="@string/add_contact_label"
-        tools:layout="@layout/fragment_user_info">
-        <argument
-            android:name="login"
-            app:argType="string" />
-        <argument
-            android:name="name"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/ErrorFragment"
-        android:name="com.alex.materialdiary.ErrorFragment"
-        android:label="@string/error_label"
-        tools:layout="@layout/fragment_error">
-        <argument
-            android:name="errorText"
-            app:argType="string" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/OtherFragment"
-        android:name="com.alex.materialdiary.OthFragment"
-        android:label="@string/other_label"
-        tools:layout="@layout/content_msg">
-    </fragment>
-
-    <fragment
-        android:id="@+id/AvailableContactsFragment"
-        android:name="com.alex.materialdiary.AvailableContactsFragment"
-        android:label="@string/add_contact_label"
-        tools:layout="@layout/fragment_msg_availablecontacts">
-    </fragment>
+     <fragment
+         android:id="@+id/OtherFragment"
+         android:name="com.alex.materialdiary.OthFragment"
+         android:label="@string/other_label"
+         tools:layout="@layout/content_msg">
+     </fragment>
+ <!--
+     <fragment
+         android:id="@+id/AvailableContactsFragment"
+         android:name="com.alex.materialdiary.AvailableContactsFragment"
+         android:label="@string/add_contact_label"
+         tools:layout="@layout/fragment_msg_availablecontacts">
+     </fragment>-->
 
     <fragment
         android:id="@+id/ServicesFragment"
@@ -146,6 +146,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.alex.materialdiary.settings.SettingsFragment"
+        android:label="@string/settings_label">
+    </fragment>
+
+    <!--<fragment
         android:id="@+id/ContactsFragment"
         android:name="com.alex.materialdiary.ContactsFragment"
         android:label="@string/contacts_label"
@@ -157,7 +163,7 @@
         android:name="com.alex.materialdiary.ScanQrFragment"
         android:label="Сканировать QR-код"
         tools:layout="@layout/fragment_scan_qr">
-    </fragment>
+    </fragment>-->
 
     <fragment
         android:id="@+id/ScanSharedQrFragment"
@@ -178,7 +184,7 @@
             android:name="name"
             app:argType="string" />
     </fragment>
-
+<!--
     <fragment
         android:id="@+id/ChatFragment"
         android:name="com.alex.materialdiary.ChatFragment"
@@ -193,11 +199,14 @@
         <argument
             android:name="group"
             app:argType="boolean" />
-    </fragment>
+    </fragment> -->
 
     <action
         android:id="@+id/to_diary"
         app:destination="@id/DiaryFragment" />
+    <action
+        android:id="@+id/to_settings"
+        app:destination="@id/SettingsFragment" />
     <action
         android:id="@+id/to_other"
         app:destination="@id/OtherFragment" />
@@ -219,7 +228,7 @@
     <action
         android:id="@+id/to_marks"
         app:destination="@id/MarksFragment" />
-    <action
+    <!--<action
         android:id="@+id/to_contacts"
         app:destination="@id/ContactsFragment" />
     <action
@@ -242,7 +251,7 @@
         app:destination="@id/UserInfoFragment" />
     <action
         android:id="@+id/to_available_contacts"
-        app:destination="@id/AvailableContactsFragment" />
+        app:destination="@id/AvailableContactsFragment" />-->
     <action
         android:id="@+id/to_error"
         app:destination="@id/ErrorFragment" />

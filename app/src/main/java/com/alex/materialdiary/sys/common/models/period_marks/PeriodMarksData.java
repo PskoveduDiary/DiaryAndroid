@@ -122,7 +122,64 @@ public String getAverage() {
         }
         return "Средний бал: " + new DecimalFormat("#0.00").format((float) com / marks.size());
     }
+public String get_to_five(){
+    if (marks.size() == 0) return "3";
+    int sum = 0;
+    int added = 0;
+    for (int i = 0; i < marks.size(); i++ ){
+        sum += marks.get(i).getValue();
+    }
+    float average = (float) sum / marks.size();
+    if (average >= 4.6) return "Уже 5";
+    while (average < 4.6){
+        added += 1;
+        sum += 5;
+        average = (float) sum / (marks.size() + added);
+        if (added >= 40){
+            return "Много";
+        }
+    }
+    return String.valueOf(added);
+}
 
+public String get_four_to_four(){
+    if (marks.size() == 0) return "3";
+    int sum = 0;
+    int added = 0;
+    for (int i = 0; i < marks.size(); i++ ){
+        sum += marks.get(i).getValue();
+    }
+    float average = (float) sum / marks.size();
+    if (average >= 3.6) return "Уже 4";
+    while (average < 3.6){
+        added += 1;
+        sum += 4;
+        average = (float) sum / (marks.size() + added);
+        if (added >= 40){
+            return "Много";
+        }
+    }
+    return String.valueOf(added);
+}
+public String get_five_to_four(){
+    if (marks.size() == 0) return "3";
+    int sum = 0;
+    int added = 0;
+    for (int i = 0; i < marks.size(); i++ ){
+        sum += marks.get(i).getValue();
+    }
+    float average = (float) sum / marks.size();
+    if (average >= 3.6) return "Уже 4";
+    while (average < 3.6){
+        added += 1;
+        sum += 5;
+        average = (float) sum / (marks.size() + added);
+        if (added >= 40){
+            return "Много";
+        }
+    }
+    return String.valueOf(added);
+}
 public void setMarks(List<Mark> marks) {
 this.marks = marks;
 }
