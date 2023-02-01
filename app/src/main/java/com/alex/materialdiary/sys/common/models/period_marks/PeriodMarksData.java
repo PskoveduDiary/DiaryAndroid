@@ -130,7 +130,7 @@ public String get_to_five(){
         sum += marks.get(i).getValue();
     }
     float average = (float) sum / marks.size();
-    if (average >= 4.6) return "Уже 5";
+    if (average >= 4.59) return "Уже 5";
     while (average < 4.6){
         added += 1;
         sum += 5;
@@ -150,7 +150,8 @@ public String get_four_to_four(){
         sum += marks.get(i).getValue();
     }
     float average = (float) sum / marks.size();
-    if (average >= 3.6) return "Уже 4";
+    if (average >= 4.59) return "Уже 5";
+    if (average >= 3.59) return "Уже 4";
     while (average < 3.6){
         added += 1;
         sum += 4;
@@ -169,7 +170,8 @@ public String get_five_to_four(){
         sum += marks.get(i).getValue();
     }
     float average = (float) sum / marks.size();
-    if (average >= 3.6) return "Уже 4";
+    if (average >= 4.59) return "Уже 5";
+    if (average >= 3.59) return "Уже 4";
     while (average < 3.6){
         added += 1;
         sum += 5;

@@ -44,7 +44,8 @@ object Crypt {
 
     @JvmStatic
     fun encryptSYS_GUID(paramString: String): String {
-        return Base64.encodeToString(encrypt(key, paramString.toByteArray()), Base64.NO_WRAP)
+        if (paramString.isNotEmpty()) return Base64.encodeToString(encrypt(key, paramString.toByteArray()), Base64.NO_WRAP)
+        return ""
     }
 
     //public static void generateKey() {

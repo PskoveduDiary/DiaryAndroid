@@ -152,7 +152,7 @@ public class CommonAPI {
         }
         context = c;
     }
-    String get_user_type(){
+    public String getUser_type(){
         Gson gson = new Gson();
         ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
         String datas = utils.readJsonFileData("users.json");

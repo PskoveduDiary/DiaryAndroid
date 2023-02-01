@@ -2,16 +2,18 @@ package com.alex.materialdiary
 
 //import com.alex.materialdiary.sys.common.Crypt
 
+import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
@@ -22,8 +24,6 @@ import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.Crypt
-import com.alex.materialdiary.utils.Alarmer
-import com.alex.materialdiary.utils.KRWorkManager
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -31,9 +31,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
 import java.io.File
 import java.util.*
 
@@ -106,7 +104,13 @@ open class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        //val p: SharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
+        val navigation = intent.getStringExtra("navigate")
+        if (navigation != null){
+            when(navigation){
+                "kr" -> navController.navigate(R.id.to_kr)
+            }
+        }
+
         //if (!p.contains("uuid")) {
         //    navController.navigate(R.id.to_ch_users)
         //}

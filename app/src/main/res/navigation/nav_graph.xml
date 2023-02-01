@@ -95,6 +95,12 @@
          android:label="@string/other_label"
          tools:layout="@layout/content_msg">
      </fragment>
+     <fragment
+         android:id="@+id/KrFragment"
+         android:name="com.alex.materialdiary.KrFragment"
+         android:label="Контрольные"
+         tools:layout="@layout/fragment_kr">
+     </fragment>
  <!--
      <fragment
          android:id="@+id/AvailableContactsFragment"
@@ -204,6 +210,9 @@
     <action
         android:id="@+id/to_diary"
         app:destination="@id/DiaryFragment" />
+    <action
+        android:id="@+id/to_kr"
+        app:destination="@id/KrFragment" />
     <action
         android:id="@+id/to_settings"
         app:destination="@id/SettingsFragment" />

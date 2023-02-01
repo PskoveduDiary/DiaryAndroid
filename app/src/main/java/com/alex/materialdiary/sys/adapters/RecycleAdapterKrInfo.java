@@ -1,7 +1,5 @@
 package com.alex.materialdiary.sys.adapters;
 
-import static xdroid.toaster.Toaster.toast;
-
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -15,62 +13,65 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alex.materialdiary.R;
+import com.alex.materialdiary.sys.common.models.kr.kr_info;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
 
 import java.util.List;
 
-public class RecycleAdapterMarksGroup extends RecyclerView.Adapter<RecycleAdapterMarksGroup.ViewHolder>{
+public class RecycleAdapterKrInfo extends RecyclerView.Adapter<RecycleAdapterKrInfo.ViewHolder>{
 
     private final Context context;
     private final LayoutInflater inflater;
-    private final List<PeriodMarksData> periods;
+    private final List<kr_info> infos;
 
-    public RecycleAdapterMarksGroup(Context context, List<PeriodMarksData> periods) {
+    public RecycleAdapterKrInfo(Context context, List<kr_info> infos) {
         this.inflater = LayoutInflater.from(context);
-        this.periods = periods;
+        this.infos = infos;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public RecycleAdapterMarksGroup.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.mark_group_item, parent, false);
+    public RecycleAdapterKrInfo.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.kr_lesson_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PeriodMarksData period = periods.get(position);
-        holder.name.setText(period.getSubjectName());
-        holder.average.setText(String.valueOf(period.getAverage()));
+        kr_info info = infos.get(position);
+        holder.name.setText(info.getLessonName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            holder.info.setTooltipText("До пятерки 5: " + period.get_to_five() + "\n" +
-                    "До четверки 5: " + period.get_five_to_four() + "\n" +
-                    "До четверки 4: " + period.get_four_to_four());
+            holder.info.setTooltipText("В дз/теме обнаружены ключевые слова: \n" +
+                    info.getKeyword().toString());
         }
         else holder.info.setVisibility(View.GONE);
+        switch (info.getType()){
+            case FULL:
+                holder.text.setText("Будет сложная работа!");
+            case MINI:
+                holder.text.setText("Будет средний по сложности тест");
+            case MAYBE:
+                holder.text.setText("Возможна проверочная");
+        }
         holder.info.setOnClickListener(View::performLongClick);
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
-        holder.recyclerView.setLayoutManager(llm);
-        holder.recyclerView.setAdapter(new RecycleAdapterMarks(context, period.getMarks()));
     }
 
     @Override
     public int getItemCount() {
-        return periods.size();
+        return infos.size();
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView name;
-        final TextView average;
-        final RecyclerView recyclerView;
-        final ImageView info;
+        final TextView text;
+        final TextView info;
 
         ViewHolder(View view){
             super(view);
-            name = view.findViewById(R.id.MarksLessonName);
-            average = view.findViewById(R.id.MarksAverage);
-            recyclerView = view.findViewById(R.id.marks_recycle);
+            name = view.findViewById(R.id.LessonName);
+            text = view.findViewById(R.id.text);
             info = view.findViewById(R.id.info);
         }
     }

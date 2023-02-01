@@ -14,6 +14,7 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.keywords
 import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.Crypt
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -27,7 +28,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (remoteMessage.data.get("type") == "kr"){
+        if (remoteMessage.data.get("type") == "kr_test"){
+            Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
             val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
             val api = CommonAPI(baseContext)
             api.getDay(this, cuurent_date.toString())
@@ -51,7 +53,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
             }
         }
         val no_dubls = lessns.distinct()
-        //if (lessns.size > 0) {
+        if (lessns.size > 0) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("navigate", "kr")
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                123, intent, PendingIntent.FLAG_IMMUTABLE
+            )
             val builder: NotificationCompat.Builder = NotificationCompat.Builder(baseContext, "kr")
                 .setSmallIcon(R.drawable.ic_baseline_error_outline_24)
                 .setContentTitle("Контрольные!")
@@ -67,8 +75,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
                 .setOnlyAlertOnce(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
             notificationManager.notify(1233, builder.build())
-        //}
+        }
     }
     fun check(str: String): MutableList<String> {
         val finded = mutableListOf<String>()
@@ -91,6 +100,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
     }
     private fun sendNotification(remoteMessage: RemoteMessage) {
         val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("navigate", "kr")
         val pendingIntent = PendingIntent.getActivity(
             this,
             123, intent, PendingIntent.FLAG_IMMUTABLE
