@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -56,6 +57,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 } catch (e: Exception) {
                     toast("Telegram не установлен")
                 }
+                true
+            }
+        val about =
+            preferenceManager.findPreference<Preference>("about") as Preference
+        about.setOnPreferenceClickListener {
+                findNavController().navigate(R.id.to_about)
                 true
             }
         val kr_en =

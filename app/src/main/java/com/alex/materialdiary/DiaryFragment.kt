@@ -28,7 +28,6 @@ import kotlin.collections.ArrayList
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class DiaryFragment : Fragment(), CommonAPI.CommonCallback {
-    private lateinit var webView: WebView
     private var _binding: FragmentDiaryBinding? = null
     var cuurent_date = Calendar.getInstance().time;
     lateinit var p: SharedPreferences

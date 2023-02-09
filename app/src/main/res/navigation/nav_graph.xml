@@ -156,6 +156,11 @@
         android:name="com.alex.materialdiary.settings.SettingsFragment"
         android:label="@string/settings_label">
     </fragment>
+    <fragment
+        android:id="@+id/AboutFragment"
+        android:name="com.alex.materialdiary.settings.AboutFragment"
+        android:label="О нас">
+    </fragment>
 
     <!--<fragment
         android:id="@+id/ContactsFragment"
@@ -210,6 +215,9 @@
     <action
         android:id="@+id/to_diary"
         app:destination="@id/DiaryFragment" />
+    <action
+        android:id="@+id/to_about"
+        app:destination="@id/AboutFragment" />
     <action
         android:id="@+id/to_kr"
         app:destination="@id/KrFragment" />

@@ -24,6 +24,10 @@
         app:title="Новости"
         app:key="news">
     </Preference>
-
+    <Preference
+        app:title="О приложении"
+        app:key="about">
+    </Preference>
     </PreferenceCategory>
+
 </PreferenceScreen>

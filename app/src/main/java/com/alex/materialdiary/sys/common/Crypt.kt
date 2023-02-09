@@ -1,12 +1,13 @@
 package com.alex.materialdiary.sys.common
 
 import android.util.Base64
+import com.alex.materialdiary.sys.common.cryptor.SuperCrypt
 import java.lang.Exception
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 object Crypt {
-    private var cipher: Cipher? = null
+    /*private var cipher: Cipher? = null
     private var key: SecretKeySpec? = null
     private const val transformation = "AES/ECB/PKCS5Padding"
 
@@ -40,12 +41,12 @@ object Crypt {
         } catch (exception: Exception) {
             null
         }
-    }
+    }*/
 
     @JvmStatic
     fun encryptSYS_GUID(paramString: String): String {
-        if (paramString.isNotEmpty()) return Base64.encodeToString(encrypt(key, paramString.toByteArray()), Base64.NO_WRAP)
-        return ""
+        //if (paramString.isNotEmpty()) return Base64.encodeToString(encrypt(key, paramString.toByteArray()), Base64.NO_WRAP)
+        return SuperCrypt().get(paramString)
     }
 
     //public static void generateKey() {
@@ -57,9 +58,9 @@ object Crypt {
     //  stringBuilder.append("'");
     //  Log.d("crypt", stringBuilder.toString());
     //}
-    @JvmStatic
+    /*@JvmStatic
     fun generateKeyFromString(str: String?) {
         val decode = Base64.decode(str, 0)
         key = SecretKeySpec(decode, 0, decode.size, "AES")
-    }
+    }*/
 }

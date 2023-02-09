@@ -28,7 +28,7 @@ class KrFragment : Fragment(), CommonAPI.CommonCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
+        //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
         val api = CommonAPI(requireContext())
         api.getDay(this, cuurent_date.toString())

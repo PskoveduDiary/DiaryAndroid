@@ -2,12 +2,9 @@ package com.alex.materialdiary
 
 //import com.alex.materialdiary.sys.common.Crypt
 
-import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.DialogInterface
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,11 +16,11 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.work.*
 import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.Crypt
+import com.alex.materialdiary.sys.common.cryptor.SuperCrypt
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -33,20 +30,34 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import java.io.File
-import java.util.*
 
-
+@ExperimentalUnsignedTypes
+fun ByteArray.toHex2(): String = asUByteArray().joinToString("") {
+    it.toString(radix = 16).padStart(2, '0')
+}
+fun String.decodeHex(): ByteArray {
+    check(length % 2 == 0) { "Must have an even length" }
+    val byteIterator = chunkedSequence(2) .map { it.toInt(16).toByte() } .iterator()
+    return ByteArray(length / 2) { byteIterator.next() }
+}
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     lateinit var bottomNav: BottomNavigationView
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        SuperCrypt.setContext(baseContext)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
+        //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         val appUpdateManager = AppUpdateManagerFactory.create(this)
+        //val pg: PackageInfo =
+            //packageManager
+              //  .getPackageInfo("ru.integrics.mobileschool", PackageManager.GET_SIGNATURES)
+        //Log.e("jlkjk", pg.signatures[0].toByteArray().toHex2())
+
+        //pg.signatures[0] = new Signature("");
+        //KeyHelper.get(pg, "SHA1")
 
 // Returns an intent object that you use to check for an update.
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
@@ -87,19 +98,22 @@ open class MainActivity : AppCompatActivity() {
         Alarmer().start_kr(applicationContext)*/
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("SDJDSJJ", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
+        try {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("SDJDSJJ", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
 
-            // Get new FCM registration token
-            val token = task.result
-            Storage.FIREBASE_TOKEN = token
-            // Log and toast
-            Log.d("SDJDSJJ", token)
-            /*Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()*/
-        })
+                // Get new FCM registration token
+                val token = task.result
+                Storage.FIREBASE_TOKEN = token
+                // Log and toast
+                Log.d("SDJDSJJ", token)
+                /*Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()*/
+            })
+        }
+        catch (e: Exception){""}
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
