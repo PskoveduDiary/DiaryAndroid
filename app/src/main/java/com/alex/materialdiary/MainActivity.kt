@@ -31,15 +31,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import java.io.File
 
-@ExperimentalUnsignedTypes
-fun ByteArray.toHex2(): String = asUByteArray().joinToString("") {
-    it.toString(radix = 16).padStart(2, '0')
-}
-fun String.decodeHex(): ByteArray {
-    check(length % 2 == 0) { "Must have an even length" }
-    val byteIterator = chunkedSequence(2) .map { it.toInt(16).toByte() } .iterator()
-    return ByteArray(length / 2) { byteIterator.next() }
-}
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding

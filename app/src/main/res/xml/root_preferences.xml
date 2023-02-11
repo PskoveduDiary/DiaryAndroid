@@ -26,6 +26,8 @@
     </Preference>
     <Preference
         app:title="О приложении"
+        android:enabled="false"
+        app:isPreferenceVisible="false"
         app:key="about">
     </Preference>
     </PreferenceCategory>

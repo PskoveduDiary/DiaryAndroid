@@ -15,21 +15,20 @@
 -printseeds seeds.txt
 -printusage unused.txt
 -printmapping mapping.txt
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
 -allowaccessmodification
--keepattributes *Annotation*
--renamesourcefileattribute SourceFile
--keepattributes SourceFile,LineNumberTable
+# -keepattributes *Annotation*
+# -renamesourcefileattribute SourceFile
+# -keepattributes SourceFile,LineNumberTable
 -repackageclasses ''
--keep class ru.alexgames.mobileschool.view.activity.** { *; }
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
--keep public class * extends android.content.BroadcastReceiver
--keep public class * extends android.content.ContentProvider
--keep public class * extends android.app.backup.BackupAgentHelper
--keep public class * extends android.preference.Preference
+# -keep public class * extends android.app.Activity
+# -keep public class * extends android.app.Application
+ #-keep public class * extends android.app.Service
+# -keep public class * extends android.content.BroadcastReceiver
+# -keep public class * extends android.content.ContentProvider
+# -keep public class * extends android.app.backup.BackupAgentHelper
+# -keep public class * extends android.preference.Preference
 
 # Explicitly preserve all serialization members. The Serializable interface
 # is only a marker interface, so it wouldn't save them.
@@ -71,6 +70,7 @@
     public protected *;
 }
 
+-keep class com.alex.materialdiary.READ_ME_INTEGRICS { *; }
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
@@ -102,7 +102,7 @@
 -keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class com.alex.materialdiary.sys.common.model.** { *; }
+-keep class com.alex.materialdiary.sys.common.models.** { *; }
 
 ##---------------End: proguard configuration for Gson  ----------
 

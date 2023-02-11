@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="fastRequestCurrentProjectConfig">
+    <option name="cookieList">
+      <list>
+        <DataMapping>
+          <option name="type" value="google.com" />
+          <option name="value" value="1P_JAR=2023-02-10-19; expires, AEC=ARSKqsKrYiVlEW4R7WdgVK4lBU5J-HLfiKfE4Xk6qGtQiiagRYebcML0u8o; expires, NID=511" />
+        </DataMapping>
+      </list>
+    </option>
+    <option name="domain" value="diary" />
+    <option name="enableEnv" value="diary" />
+    <option name="enableProject" value="diary" />
+  </component>
+</project>

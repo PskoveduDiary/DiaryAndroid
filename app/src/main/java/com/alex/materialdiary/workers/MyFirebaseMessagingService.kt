@@ -28,19 +28,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (remoteMessage.data.get("type") == "kr_test"){
-            //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
-            val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-            val api = CommonAPI(baseContext)
-            api.getDay(this, cuurent_date.toString())
-        }
+        //if (remoteMessage.data.get("type") == "kr_test"){
+        //    //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
+        //    val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
+        //    val api = CommonAPI(baseContext)
+        //    api.getDay(this, cuurent_date.toString())
+        //}
+        sendNotification(remoteMessage)
         if (remoteMessage.data.get("type") == "kr"){
             //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
             val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
             val api = CommonAPI(baseContext)
             api.getDay(this, cuurent_date.toString())
         }
-        //sendNotification(remoteMessage)
     }
     override fun day(lesson: MutableList<DatumDay>?) {
         if (lesson == null) return
@@ -59,7 +59,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
             }
         }
         val no_dubls = lessns.distinct()
-        //if (lessns.size > 0) {
+        if (lessns.size > 0) {
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("navigate", "kr")
             val pendingIntent = PendingIntent.getActivity(
@@ -83,7 +83,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
             notificationManager.notify(1233, builder.build())
-        //}
+        }
     }
     fun check(str: String): MutableList<String> {
         val finded = mutableListOf<String>()

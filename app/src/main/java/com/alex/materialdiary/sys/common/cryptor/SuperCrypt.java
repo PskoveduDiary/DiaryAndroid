@@ -1,4 +1,7 @@
 package com.alex.materialdiary.sys.common.cryptor;
+//com/alex/materialdiary/sys/common/cryptor/SuperCrypt
+
+import static xdroid.toaster.Toaster.toast;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -34,6 +37,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.cert.CertificateException;
+
 
 public class SuperCrypt {
     public static Context context;
@@ -51,23 +56,24 @@ public class SuperCrypt {
         return data;
     }
 
-    public SuperCrypt(){
+    /*public SuperCrypt(){
         System.loadLibrary("dianasilna");
     }
-    public native String x01(String str);
-    public PackageManager getPackageManager(){
+    public native String cry(String str);*/
+    /*public PackageManager getPackageManager(){
         return new PackageManager() {
-
-            public PackageInfo getPackageInfoAsUser(String packageName, int flags, int userId){
-                return null;
-            }
             @Override
             public PackageInfo getPackageInfo(@NonNull String packageName, int flags) throws NameNotFoundException {
                 PackageInfo pg = context.getPackageManager().getPackageInfo("com.alex.materialdiary", flags);
 
                 //KeyHelper.get(context, "SHA1");
                 String hex = "3082058830820370a0030201020214597e3f8c38c4e24b14029528c500886d370a5c26300d06092a864886f70d01010b05003074310b3009060355040613025553311330110603550408130a43616c69666f726e6961311630140603550407130d4d6f756e7461696e205669657731143012060355040a130b476f6f676c6520496e632e3110300e060355040b1307416e64726f69643110300e06035504031307416e64726f69643020170d3232303530383136303332375a180f32303532303530383136303332375a3074310b3009060355040613025553311330110603550408130a43616c69666f726e6961311630140603550407130d4d6f756e7461696e205669657731143012060355040a130b476f6f676c6520496e632e3110300e060355040b1307416e64726f69643110300e06035504031307416e64726f696430820222300d06092a864886f70d01010105000382020f003082020a0282020100ccd6e256629cfdedc55af643717155b9f7f44fb50a85749500021c71a92ff5c9ad5f58793e756aea8dfc1918de18e35302ebcc10e77d374f47ff90e4a49e415b940cb2a1e1707c2825d6edd546d5d209b976bf77cce963ad602708b00798e80c456bb5e4eff4a843fb63cdcb8aef8b82d4114a10176c4f87507e99c6a0bca967974186ee6d20478d89ee4be93460c773e0ce3c6e2c81eabca95d8dda97de5dc82c2a9d5aace3a540a02608b192e897300205815b4ecb33b1df11267a90c5b2767325a4c8c7328e343907d07fd93c11ce134bf1efffa20f533e9577ccba06113674475d04cfc1ac318ac0fb1838aa0c8933a413a952c21b1343feba014670cfc3318b2264cebc9bf923fa26667190f79f2daade078e61cded6417433b4d1e87921d1644b4c52561e013e6ef87d55f12ffca6630b1bb54477a71ab53bb73c6e6be54121718a3e51275dfde79a21e24114df73b5ce8c6349a1fa0e217c6811987b501eff84ad062c774b899bf5bca5957eaf44ee92288e66f400959fa3296f98a13d275e091b615c29cc7a30e029720a54deb8d11d159e5cf490c64b361b4f4dd1135cc6f36827302b508f6c304481c74a5a2b11d7c5dd6185145ef668b7008348ef78d432b1fd61247ef2d52dff4546373752f399debbabe6107ef13880a367090f404023cc9c3c0288f93f3db216d2837578f4c70281146d94464d61e0dfa57090203010001a310300e300c0603551d13040530030101ff300d06092a864886f70d01010b0500038202010032bdfe5a282bdedea7c12e36ea4c3755625000d6ae6634e7841eab2556453ea503830d15110b8018d597a375ae389ae95ea2952622d9acb0596c4f6d1d28e1c20de21a5ff8cfaaab9855fe878affcc2ec4328565efa600e43dd32d24dda3dc1632c10ce66086a075381af8a1682f8d6476f90b3b4cc3c17c1bd814358c39ec86da165ed2cb96b661f1e59b51f3bd34d014d4540cee2fd3a3b9993784797bed081fc14f1467b3ef06ee6869d37ecec4ab57e8d908bcd09a4c8c1417cac4e63f2b28b95d46dc419817691093c939bc5b060ed789b169ac8db7e484362bf2ab1863fc4272a7f30c0d83572a42d5e3e031601a53da6f4c5b2a44cab7cdc346d74d59990d2ce75b6a2825744d1cff5fe092d4f565928ce718e400a347a95bc11e878dd34a2802db52341e88a76e8caa941ced8c46e23602214b48dee7285ddd79ef73e611f137d93c2cfda9647399753554d8d18a09d9153603ee4f95c4a23e247db09649f5e950ca745817ffc52b3202d815a83a751ef903cdb31836681c81c2f5a57fafca4350b54312eedb2bc018e45350a1ef1670d1f799fb275d32ed8dd4ebb0af25cedba804b78f13e475b3418b40ecad51db58a1987b7b53014525af3d7943522749d5d1f83f75563404a684421cb09e2f0123445798edbf0b1067c39e3e243794d719219a93df5628c509dcb7f371b0b82437ece55c31f4b89d488658d6dd";
-                pg.signatures[0] = new Signature(hexStringToByteArray(hex));
+                //pg.signatures[0] = new Signature(hexStringToByteArray(hex));
+                //try {
+                //    Log.e("cert", String.valueOf(javax.security.cert.X509Certificate.getInstance(hexStringToByteArray(hex)).getIssuerDN().toString()));
+                //} catch (CertificateException e) {
+                //    e.printStackTrace();
+                //}
                 return pg;
             }
 
@@ -592,17 +598,20 @@ public class SuperCrypt {
                 return false;
             }
         };
-    }
-    /*public PackageManager getPackageManager(){
-        return context.getPackageManager();
     }*/
-    public String getPackageName(){
-        return "com.alex.materialdiary";
+    public PackageManager getPackageManager(){
+        return context.getPackageManager();
     }
-
+    /*public String getPackageName(){
+        return "ru.integrics.mobileschool";
+    }*/
+/*
     public String get(String str){
-        String key = Base64.encodeToString(x01(str.substring(0, str.length() / 2)).getBytes(), Base64.NO_WRAP);
+        Log.e("my vk/tg", "@dianasilna");
+        toast(cry(str.substring(0, str.length() / 2)));
+        toast(cry(str));
+        String key = Base64.encodeToString(cry(str.substring(0, str.length() / 2)).getBytes(), Base64.NO_WRAP);
         return key;
-    }
+    }*/
 
 }
