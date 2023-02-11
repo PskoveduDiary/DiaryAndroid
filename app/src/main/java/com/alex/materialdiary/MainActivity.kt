@@ -19,7 +19,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.common.CommonAPI
-import com.alex.materialdiary.sys.common.Crypt
 import com.alex.materialdiary.sys.common.cryptor.SuperCrypt
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -37,6 +36,7 @@ open class MainActivity : AppCompatActivity() {
     lateinit var bottomNav: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         SuperCrypt.setContext(baseContext)
+         SuperCrypt()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
