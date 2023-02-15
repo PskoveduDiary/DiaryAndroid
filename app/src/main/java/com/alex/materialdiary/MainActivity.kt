@@ -36,7 +36,7 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var bottomNav: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
-        SuperCrypt.setContext(baseContext)
+        //SuperCrypt.setContext(baseContext)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 

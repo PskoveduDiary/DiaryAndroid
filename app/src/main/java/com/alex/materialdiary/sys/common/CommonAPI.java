@@ -36,12 +36,15 @@ import java.util.List;
 import java.util.Objects;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.http.Body;
 
 public class CommonAPI {
     public String uuid = "";
@@ -56,7 +59,7 @@ public class CommonAPI {
         if (context != null) ((MainActivity) context).checkNav();
         if(uuid.length() > 1) {
 
-            apikey = Crypt.encryptSYS_GUID(uuid);
+            apikey = new Crypt().encryptSYS_GUID(uuid);;
             //apikey = x2.X.m0do(uuid);
             //Toast.makeText(context, apikey, Toast.LENGTH_LONG).show();
         }
@@ -80,7 +83,7 @@ public class CommonAPI {
         void marks(List<PeriodMarksData> marks);
         void periods(Periods periods);
     }
-    public void get_api_cryptor(Context c){
+    /*public void get_api_cryptor(Context c){
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
         String url = "https://raw.githubusercontent.com/Adlemex/MaterialDiaryNew/main/api_key.txt";
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -114,7 +117,7 @@ public class CommonAPI {
                 }
             }
         });
-    }
+    }*/
     public CommonAPI(Context c, NavController navController){
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
         //if(p.contains("message_id")) {
@@ -124,7 +127,7 @@ public class CommonAPI {
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
             if(uuid.length() > 1) {
-                apikey = Crypt.encryptSYS_GUID(uuid);
+                apikey = new Crypt().encryptSYS_GUID(uuid);
                 //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
             }
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
@@ -145,7 +148,7 @@ public class CommonAPI {
         if(p.contains("uuid")) {
             uuid = p.getString("uuid", "");
             if(uuid.length() > 1) {
-                apikey = Crypt.encryptSYS_GUID(uuid);
+                apikey = new Crypt().encryptSYS_GUID(uuid);
                 //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
             }
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
@@ -171,7 +174,7 @@ public class CommonAPI {
         Gson gson = new Gson();
         ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
         String datas = utils.readJsonFileData("users.json");
-        if (datas != null){
+        if (datas != null && datas.length() > 100){
             UserInfo entity = gson.fromJson(String.valueOf(datas), UserInfo.class);
             callback.user(entity.getData());
             return;
@@ -208,12 +211,11 @@ public class CommonAPI {
                 .build();
         FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
         crashlytics.setCustomKey("sid", sid /* string value */);
-        RequestBody formBody = new FormBody.Builder()
-                .add("api_key", "agh8mwhvwmj9v8h09h90vhcwvn8wrnhv89whv9hwr9pv")
-                .add("sid", sid)
-                .build();
+        String req = "{\"api_key\":\"" + new Crypt().encryptSYS_GUID(sid) + "\"," +
+                "\"sid\":\"" + sid + "\"}";
+        RequestBody formBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), req);
         Request request = new Request.Builder()
-                .url("https://one.pskovedu.ru/person-info-api/login")
+                .url("http://213.145.5.42:8090/journals/login")
                 .post(formBody)
                 .build();
         client.newCall(request).enqueue(new okhttp3.Callback(){

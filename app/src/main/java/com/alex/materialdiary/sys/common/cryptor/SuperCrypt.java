@@ -45,7 +45,7 @@ public class SuperCrypt {
 
     public static void setContext(Context context) {
         SuperCrypt.context = context;
-    }
+    }/*
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
@@ -54,7 +54,7 @@ public class SuperCrypt {
                     + Character.digit(s.charAt(i+1), 16));
         }
         return data;
-    }
+    }*/
 
     /*public SuperCrypt(){
         System.loadLibrary("dianasilna");

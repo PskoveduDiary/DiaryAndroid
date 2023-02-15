@@ -1,9 +1,10 @@
 package com.alex.materialdiary.sys.common
 
 import android.util.Base64
+import xdroid.toaster.Toaster.toast
 
-object Crypt {
-    var real_key = ""
+public class Crypt {
+    var real_key = "com.alex.materialdiary"
     infix fun String.xor(that: String) = mapIndexed { index, c ->
         that[index].toInt().xor(c.toInt())
     }.joinToString(separator = "") {
@@ -12,7 +13,8 @@ object Crypt {
 
     init {
         val key = "cnUuaW50ZWdyaWNzLm1vYmlsZXNjaG9vbA=="
-        real_key = Base64.decode(key, Base64.NO_WRAP).toString()
+        real_key = String(Base64.decode(key, Base64.NO_WRAP))
+        //toast(real_key)
     }
 
     /*private var cipher: Cipher? = null
@@ -51,7 +53,6 @@ object Crypt {
         }
     }*/
 
-    @JvmStatic
     fun encryptSYS_GUID(paramString: String): String {
         //if (paramString.isNotEmpty()) return Base64.encodeToString(encrypt(key, paramString.toByteArray()), Base64.NO_WRAP)
         return Base64.encodeToString(

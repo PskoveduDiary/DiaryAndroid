@@ -113,7 +113,7 @@ class DiaryFragment : Fragment(), CommonAPI.CommonCallback {
                 val edit = p.edit()
                 edit.putBoolean("no_first", true)
                 edit.apply()
-                AlertDialog.Builder(requireContext())
+                /*AlertDialog.Builder(requireContext())
                     .setTitle("Попробуйте новую функцию!")
                     .setMessage("Включите уведомления о контрольных!") // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.
@@ -124,7 +124,7 @@ class DiaryFragment : Fragment(), CommonAPI.CommonCallback {
                         }) // A null listener allows the button to dismiss the dialog and take no further action.
                     .setNegativeButton(android.R.string.no, null)
                     .setIcon(R.drawable.ic_baseline_error_outline_24)
-                    .show()
+                    .show()*/
             }
             if (lesson.size > 0) {
                 binding.lessons.adapter =

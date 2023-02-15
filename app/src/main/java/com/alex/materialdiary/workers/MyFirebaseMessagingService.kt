@@ -34,7 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
         //    val api = CommonAPI(baseContext)
         //    api.getDay(this, cuurent_date.toString())
         //}
-        sendNotification(remoteMessage)
+        //sendNotification(remoteMessage)
         if (remoteMessage.data.get("type") == "kr"){
             //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
             val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
