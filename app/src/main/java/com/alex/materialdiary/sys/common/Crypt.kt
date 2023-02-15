@@ -5,11 +5,11 @@ import xdroid.toaster.Toaster.toast
 
 public class Crypt {
     var real_key = "com.alex.materialdiary"
-    infix fun String.xor(that: String) = mapIndexed { index, c ->
+    /*infix fun String.xor(that: String) = mapIndexed { index, c ->
         that[index].toInt().xor(c.toInt())
     }.joinToString(separator = "") {
         it.toChar().toString()
-    }
+    }*/
 
     init {
         val key = "cnUuaW50ZWdyaWNzLm1vYmlsZXNjaG9vbA=="
