@@ -134,11 +134,15 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
             public void onClick(View view) {
                 if (data.get(position).getParticipant() == null) {
                     if (data.get(position).getUserParticipants().size() > 0) {
-                        CommonAPI.getInstance().ChangeUuid(data.get(position).getUserParticipants().get(0).getSysGuid());
+                        Participant participant = data.get(position).getUserParticipants().get(0);
+                        String name = participant.getSurname() + " " + participant.getName() + " " + participant.getSecondname();
+                        CommonAPI.getInstance().ChangeUuid(participant.getSysGuid(), name);
                     }
                 }
                 else{
-                    CommonAPI.getInstance().ChangeUuid(data.get(position).getParticipant().getSysGuid());
+                    Participant participant = data.get(position).getParticipant();
+                    String name = participant.getSurname() + " " + participant.getName() + " " + participant.getSecondname();
+                    CommonAPI.getInstance().ChangeUuid(participant.getSysGuid(), name);
                 }
                 //Intent openLinksIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls[position]));
                 //context.startActivity(openLinksIntent);

@@ -195,6 +195,19 @@
             android:name="name"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/FeatureFragment"
+        android:name="com.alex.materialdiary.FeatureFragment"
+        android:label="Получение ресурсов..."
+        tools:layout="@layout/fragment_request_feature" >
+        <argument
+            android:name="feature_name"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+    </fragment>
 <!--
     <fragment
         android:id="@+id/ChatFragment"
@@ -287,4 +300,7 @@
     <action
         android:id="@+id/to_scan_shared_qr"
         app:destination="@id/ScanSharedQrFragment" />
+    <action
+        android:id="@+id/to_feature_install"
+        app:destination="@id/FeatureFragment" />
 </navigation>

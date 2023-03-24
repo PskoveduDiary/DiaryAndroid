@@ -4,23 +4,30 @@ package com.alex.materialdiary
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ComponentName
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.CommonService
 import com.alex.materialdiary.sys.common.Crypt
-import com.alex.materialdiary.sys.common.cryptor.SuperCrypt
+import com.alex.materialdiary.sys.common.models.ClassicBody
+import com.alex.materialdiary.utils.MarksTranslator
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -29,17 +36,21 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.*
+import retrofit2.HttpException
+import xdroid.toaster.Toaster.toast
 import java.io.File
+
 
 open class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     lateinit var bottomNav: BottomNavigationView
+    private var marksJob: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         //SuperCrypt.setContext(baseContext)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
-
         //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         //val pg: PackageInfo =
@@ -73,11 +84,24 @@ open class MainActivity : AppCompatActivity() {
             }
         }
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Напоминания о контрольных"
             val descriptionText = "Напомню подготовиться к контрольной"
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel("kr", name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Уведомления о новых оценках"
+            val descriptionText = "Каждый день буду присылать уведомления если появились новые оценки"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("marks", name, importance).apply {
                 description = descriptionText
             }
             // Register the channel with the system
@@ -113,12 +137,15 @@ open class MainActivity : AppCompatActivity() {
         if (navigation != null){
             when(navigation){
                 "kr" -> navController.navigate(R.id.to_kr)
+                "marks" -> navController.navigate(R.id.to_marks)
             }
         }
+
 
         //if (!p.contains("uuid")) {
         //    navController.navigate(R.id.to_ch_users)
         //}
+
         appBarConfiguration = AppBarConfiguration(navController.graph)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -128,7 +155,7 @@ open class MainActivity : AppCompatActivity() {
                 R.id.OtherFragment
             )
         )
-
+        checkBadge()
         setupActionBarWithNavController(navController, appBarConfiguration)
         //val intentt = Intent(this, NotificationService::class.java)
         //startService(intentt)
@@ -159,6 +186,7 @@ open class MainActivity : AppCompatActivity() {
                     return@OnItemSelectedListener true
                 }
                 R.id.action_3 -> {
+                    bottomNav.getOrCreateBadge(R.id.action_3).isVisible = false
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
                     return@OnItemSelectedListener true
                 }
@@ -201,6 +229,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        marksJob?.cancel()
         super.onDestroy()
     }
 
@@ -245,7 +274,37 @@ open class MainActivity : AppCompatActivity() {
         super.onBackPressed()
         supportActionBar?.subtitle = ""
     }
-
+    fun checkBadge(){
+        marksJob = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val api = CommonAPI.getInstance(baseContext, findNavController(R.id.nav_host_fragment_content_main))
+                val body = ClassicBody()
+                body.apikey = Crypt().encryptSYS_GUID(api.uuid)
+                body.guid = api.uuid
+                body.pdakey = api.pdaKey
+                val cur_per = MarksTranslator.get_cur_period(api.cached.data)
+                body.from = cur_per[0].toString()
+                body.to = cur_per[1].toString()
+                val marks = CommonService.getInstance().jsonApi.getPeriodMarksCoroutine(body)
+                withContext(Dispatchers.Main) {
+                    var diffs = 0
+                    marks?.data?.let { MarksTranslator(it).items }?.let { items ->
+                        items.forEach {
+                            diffs += MarksTranslator.getSubjectMarksDifferences(baseContext, it.name,
+                                items
+                            )?.size!!
+                        }
+                    }
+                    if (diffs > 0) {
+                        val badge = bottomNav.getOrCreateBadge(R.id.action_3)
+                        badge.isVisible = true
+                        badge.number = diffs
+                    }
+                }
+            }  catch (e: Exception) {
+            }
+        }
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         /*val id = findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id

@@ -15,8 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alex.materialdiary.R;
+import com.alex.materialdiary.sys.common.models.marks.Mark;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
+import com.alex.materialdiary.utils.MarksTranslator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecycleAdapterMarksGroup extends RecyclerView.Adapter<RecycleAdapterMarksGroup.ViewHolder>{
@@ -24,11 +27,13 @@ public class RecycleAdapterMarksGroup extends RecyclerView.Adapter<RecycleAdapte
     private final Context context;
     private final LayoutInflater inflater;
     private final List<PeriodMarksData> periods;
+    private final Boolean needShowDifs;
 
-    public RecycleAdapterMarksGroup(Context context, List<PeriodMarksData> periods) {
+    public RecycleAdapterMarksGroup(Context context, List<PeriodMarksData> periods, Boolean needShowDifs) {
         this.inflater = LayoutInflater.from(context);
         this.periods = periods;
         this.context = context;
+        this.needShowDifs = needShowDifs;
     }
 
     @NonNull
@@ -52,8 +57,10 @@ public class RecycleAdapterMarksGroup extends RecyclerView.Adapter<RecycleAdapte
         holder.info.setOnClickListener(View::performLongClick);
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        List<Mark> differences = MarksTranslator.Companion.getSubjectMarksDifferences(context, period.getSubjectName(), new MarksTranslator(periods).getItems());
         holder.recyclerView.setLayoutManager(llm);
-        holder.recyclerView.setAdapter(new RecycleAdapterMarks(context, period.getMarks()));
+        holder.recyclerView.setAdapter(new RecycleAdapterMarks(context, period.getMarks(), this.needShowDifs ? differences : new ArrayList<Mark>()));
+        holder.recyclerView.scrollToPosition(period.getMarks().size() - 1);
     }
 
     @Override

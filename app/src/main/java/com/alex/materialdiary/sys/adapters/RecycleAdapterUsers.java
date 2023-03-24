@@ -87,7 +87,8 @@ public class RecycleAdapterUsers extends RecyclerView.Adapter<RecycleAdapterUser
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonAPI.getInstance().ChangeUuid(participant.getSysGuid());
+                String name = participant.getSurname() + " " + participant.getName() + " " + participant.getSecondname();
+                CommonAPI.getInstance().ChangeUuid(participant.getSysGuid(), name);
             }
         });
     }

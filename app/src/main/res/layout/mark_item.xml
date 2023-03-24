@@ -2,7 +2,9 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
+    android:padding="5dp"
     android:orientation="vertical">
 
 
@@ -21,12 +23,12 @@
 
         <TextView
             android:id="@+id/mark"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/three"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:gravity="center"
+            android:text="3"
+            android:textColor="@color/three"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

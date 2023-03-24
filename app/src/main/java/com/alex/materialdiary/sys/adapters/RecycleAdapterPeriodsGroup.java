@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class RecycleAdapterPeriodsGroup extends RecyclerView.Adapter<RecycleAdap
     public void onBindViewHolder(@NonNull RecycleAdapterPeriodsGroup.ViewHolder holder, int position) {
         Datum period = periods.get(position);
         holder.name.setText(period.getName());
+        holder.info.setVisibility(View.GONE);
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         holder.recyclerView.setLayoutManager(llm);
@@ -57,12 +59,14 @@ public class RecycleAdapterPeriodsGroup extends RecyclerView.Adapter<RecycleAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView name;
         final RecyclerView recyclerView;
+        final ImageView info;
 
         ViewHolder(View view){
             super(view);
             name = view.findViewById(R.id.MarksLessonName);
             view.findViewById(R.id.MarksAverage).setVisibility(View.GONE);
             recyclerView = view.findViewById(R.id.marks_recycle);
+            info = view.findViewById(R.id.info);
         }
     }
 }

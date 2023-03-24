@@ -11,9 +11,14 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+
+        // e.g this is how you would add jitpack
+        maven { url "https://jitpack.io" }
+        // Add any repositories you would be adding to all projects here
     }
 }
 rootProject.name = "MaterialDiary"
 include ':app'
+include ':teacher_features'

@@ -16,7 +16,8 @@ import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData
 import com.alex.materialdiary.sys.common.models.periods.Periods
-import java.util.*
+import com.alex.materialdiary.utils.MarksTranslator
+import org.joda.time.format.DateTimeFormat
 
 
 /**
@@ -37,6 +38,7 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
         binding.periodsButton.setBackgroundColor(resources.getColor(android.R.color.holo_purple))
         binding.itogButton.setBackgroundColor(Color.parseColor("#d1bdff"))
         binding.AllButton.setBackgroundColor(Color.parseColor("#d1bdff"))
+        val api = CommonAPI.getInstance(requireContext(), findNavController())
         binding.periodsButton.setOnClickListener {
             binding.periods.visibility = View.VISIBLE
             binding.marks.adapter = null
@@ -49,16 +51,20 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
             it.setBackgroundColor(resources.getColor(android.R.color.holo_purple))
             binding.periodsButton.setBackgroundColor(Color.parseColor("#d1bdff"))
             binding.AllButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-            CommonAPI.getInstance().getPeriods(this)
+            api.getPeriods(this)
             binding.marks.adapter = null
             binding.progressBar.visibility = View.VISIBLE
         }
+//        binding.itogButton.setOnLongClickListener {
+            //CommonAPI.getInstance().updateMarksCache()
+//            false
+//        }
         binding.AllButton.setOnClickListener {
             binding.periods.visibility = View.GONE
             it.setBackgroundColor(resources.getColor(android.R.color.holo_purple))
             binding.periodsButton.setBackgroundColor(Color.parseColor("#d1bdff"))
             binding.itogButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-            CommonAPI.getInstance().allMarks(this)
+            api.allMarks(this)
             binding.marks.adapter = null
             binding.progressBar.visibility = View.VISIBLE
         }
@@ -68,19 +74,24 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        CommonAPI.getInstance(requireContext(), findNavController())
+        val api = CommonAPI.getInstance(requireContext(), findNavController())
         super.onViewCreated(view, savedInstanceState)
         val llm = LinearLayoutManager(requireContext())
         val llm2 = LinearLayoutManager(requireContext())
         llm.orientation = LinearLayoutManager.HORIZONTAL
         binding.periods.layoutManager = llm
         binding.marks.layoutManager = llm2
-        CommonAPI.getInstance().getAllPeriods(this)
+        api.getAllPeriods(this)
+        val cur_per = MarksTranslator.get_cur_period(api.cached.data)
+        val formatter = DateTimeFormat.forPattern("dd.MM.yyyy")
+        binding.progressBar.visibility = View.VISIBLE
+        CommonAPI.getInstance().periodMarks(this, cur_per[0].toString(formatter), cur_per[1].toString(formatter))
     }
     fun showLoader(){
         binding.progressBar.visibility = View.VISIBLE
     }
     override fun onDestroyView() {
+        CommonAPI.getInstance(requireContext(), findNavController()).updateMarksCache()
         super.onDestroyView()
         _binding = null
     }
@@ -89,6 +100,11 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
         super.onResume()
         CommonAPI.getInstance(requireContext(), findNavController())
     }
+
+    override fun onStop() {
+        super.onStop()
+        CommonAPI.getInstance(requireContext(), findNavController()).updateMarksCache()
+    }
     override fun allperiods(periods: AllPeriods?) {
         binding.progressBar.visibility = View.GONE
         if(periods == null) return
@@ -96,10 +112,12 @@ class MarksFragment : Fragment(), CommonAPI.MarksCallback {
         binding.periods.adapter = RecycleAdapterPeriods(this, periods.data)
     }
 
-    override fun marks(marks: MutableList<PeriodMarksData>?) {
+    override fun marks(marks: MutableList<PeriodMarksData>?, needShowsDifs: Boolean?) {
         binding.progressBar.visibility = View.GONE
         if (marks == null) return
-        binding.marks.adapter = RecycleAdapterMarksGroup(this.requireContext(), marks)
+
+       //toast(CommonAPI.getInstance().getMarksDifferencesCount(MarksTranslator(marks).items).toString())
+        binding.marks.adapter = RecycleAdapterMarksGroup(this.requireContext(), marks, needShowsDifs)
     }
 
     override fun periods(periods: Periods?) {

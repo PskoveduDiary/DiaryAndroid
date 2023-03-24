@@ -31,6 +31,14 @@
         <item quantity="many">%1$d предметам</item>
         <item quantity="other">%1$d по предметов</item>
     </plurals>
+    <plurals name="marks">
+        <item quantity="zero">Нет новых оценок</item>
+        <item quantity="one">Появилась новая оценка</item>
+        <item quantity="two">Появилось две новых оценки</item>
+        <item quantity="few">Появилось %1$d новых оценок</item>
+        <item quantity="many">Появилось %1$d новых оценок</item>
+        <item quantity="other">Появились %1$d новых оценок</item>
+    </plurals>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -102,4 +110,7 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="settings_label">Настройки</string>
+    <string name="title_journals">Журналы</string>
+    <string name="title_activity_journals">Журналы</string>
+    <string name="title_teacher_features">Функции учителя</string>
 </resources>

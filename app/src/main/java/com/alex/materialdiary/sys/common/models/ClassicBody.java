@@ -20,6 +20,9 @@ public class ClassicBody {
     @SerializedName("to")
     @Expose
     private String to;
+    @SerializedName("pdakey")
+    @Expose
+    private String pdakey;
 
     public String getApikey() {
         return apikey;
@@ -59,6 +62,14 @@ public class ClassicBody {
 
     public String getTo() {
         return to;
+    }
+
+    public void setPdakey(String pdakey) {
+        this.pdakey = pdakey;
+    }
+
+    public String getPdakey() {
+        return pdakey;
     }
 
 }

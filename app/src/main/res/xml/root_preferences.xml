@@ -7,6 +7,10 @@
             app:key="kr"
             app:title="О контрольных"
             android:summary="Каждый день в 18:00"/>
+        <SwitchPreferenceCompat
+            app:key="marks"
+            app:title="О новых оценках"
+            android:summary="Каждый день в 20:00"/>
 <!--
         <ListPreference
             app:dependency="kr"
@@ -18,7 +22,7 @@
             app:useSimpleSummaryProvider="true" />
 -->
     </PreferenceCategory>
-    <Preference />
+    <Preference app:key="dev" />
     <PreferenceCategory app:title="Другое">
     <Preference
         app:title="Новости"

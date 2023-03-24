@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution">
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_teacher_features">
+        <dist:delivery>
+            <dist:on-demand />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+    <application
+        android:name="com.alex.materialdiary.MyApplication">
+        <activity
+            android:name="com.alex.journals.JournalsActivity"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/title_activity_journals"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:taskAffinity="com.alex.journal"
+            android:theme="@style/Theme.MaterialDiary">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="journal" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

@@ -15,25 +15,35 @@ import com.alex.materialdiary.MainActivity;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils;
 import com.alex.materialdiary.sys.common.models.ClassicBody;
+import com.alex.materialdiary.sys.common.models.PDAnswer;
+import com.alex.materialdiary.sys.common.models.PDBody;
 import com.alex.materialdiary.sys.common.models.ShareUser;
 import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods;
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay;
 import com.alex.materialdiary.sys.common.models.diary_day.DiaryDay;
 import com.alex.materialdiary.sys.common.models.get_user.UserData;
 import com.alex.materialdiary.sys.common.models.get_user.UserInfo;
+import com.alex.materialdiary.sys.common.models.marks.Item;
+import com.alex.materialdiary.sys.common.models.marks.Mark;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarks;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
 import com.alex.materialdiary.sys.common.models.periods.Periods;
 import com.alex.materialdiary.ui.login.LoginActivity;
+import com.alex.materialdiary.utils.MarksTranslator;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -48,13 +58,14 @@ import retrofit2.http.Body;
 
 public class CommonAPI {
     public String uuid = "";
-    String sid = "";
+    public String sid = "";
     Context context = null;
     NavController navController;
+    public String pdaKey = "";
     public String message_id = "";
     String apikey = "";
     public static CommonAPI ca;
-    public void ChangeUuid(String uuid){
+    public void ChangeUuid(String uuid, String name){
         this.uuid = uuid;
         if (context != null) ((MainActivity) context).checkNav();
         if(uuid.length() > 1) {
@@ -67,7 +78,7 @@ public class CommonAPI {
         SharedPreferences.Editor editor = p.edit();
         editor.putString("uuid", uuid);
         editor.apply();
-
+        checkPdaKey(name, uuid);
         Log.d("uuid", uuid);
         navController.navigate(R.id.to_diary);
     }
@@ -80,7 +91,7 @@ public class CommonAPI {
 
     public interface MarksCallback{
         void allperiods(AllPeriods periods);
-        void marks(List<PeriodMarksData> marks);
+        void marks(List<PeriodMarksData> marks, Boolean needShowsDifs);
         void periods(Periods periods);
     }
     /*public void get_api_cryptor(Context c){
@@ -120,6 +131,7 @@ public class CommonAPI {
     }*/
     public CommonAPI(Context c, NavController navController){
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences pda = c.getSharedPreferences("pda", Context.MODE_PRIVATE);
         //if(p.contains("message_id")) {
         //    message_id = p.getString("message_id", "");
         //}
@@ -129,6 +141,37 @@ public class CommonAPI {
             if(uuid.length() > 1) {
                 apikey = new Crypt().encryptSYS_GUID(uuid);
                 //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
+            }
+            if (pda.contains("key")){
+                //toast(pda.getString("guid", ""));
+                if (pda.getString("guid", "").equals(uuid)){
+                    pdaKey = pda.getString("key", "");
+                }
+                else {
+                    Gson gson = new Gson();
+                    ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(c);
+                    String datas = utils.readJsonFileData("users.json");
+                    if (datas != null && datas.length() > 100){
+                        UserInfo entity = gson.fromJson(String.valueOf(datas), UserInfo.class);
+
+                        String name = entity.getData().getSurname() + " " + entity.getData().getName() + " " + entity.getData().getSecondname();
+                        checkPdaKey(name, uuid);
+                    }
+                }
+            }
+            else {
+                Gson gson = new Gson();
+                ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(c);
+                String datas = utils.readJsonFileData("users.json");
+                if (datas != null && datas.length() > 100){
+                    UserInfo entity = gson.fromJson(String.valueOf(datas), UserInfo.class);
+
+                    String name = entity.getData().getSurname() + " " + entity.getData().getName() + " " + entity.getData().getSecondname();
+                    checkPdaKey(name, uuid);
+                }
+                else{
+                    checkPdaKey(random_symbols(10), uuid);
+                }
             }
             //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
         }
@@ -139,21 +182,50 @@ public class CommonAPI {
         context = c;
         ca = this;
     }
-    public CommonAPI(Context c){
+    public CommonAPI(Context c) {
         SharedPreferences p = c.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences pda = c.getSharedPreferences("pda", Context.MODE_PRIVATE);
         //if(p.contains("message_id")) {
         //    message_id = p.getString("message_id", "");
         //}
         //get_api_cryptor(c);
-        if(p.contains("uuid")) {
+        if (p.contains("uuid")) {
             uuid = p.getString("uuid", "");
-            if(uuid.length() > 1) {
+            if (uuid.length() > 1) {
                 apikey = new Crypt().encryptSYS_GUID(uuid);
                 //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
             }
-            //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
+            if (pda.contains("key")) {
+                //toast(pda.getString("guid", ""));
+                if (pda.getString("guid", "").equals(uuid)) {
+                    pdaKey = pda.getString("key", "");
+                } else {
+                    Gson gson = new Gson();
+                    ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(c);
+                    String datas = utils.readJsonFileData("users.json");
+                    if (datas != null && datas.length() > 100) {
+                        UserInfo entity = gson.fromJson(String.valueOf(datas), UserInfo.class);
+
+                        String name = entity.getData().getSurname() + " " + entity.getData().getName() + " " + entity.getData().getSecondname();
+                        checkPdaKey(name, uuid);
+                    }
+                }
+            } else {
+                Gson gson = new Gson();
+                ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(c);
+                String datas = utils.readJsonFileData("users.json");
+                if (datas != null && datas.length() > 100) {
+                    UserInfo entity = gson.fromJson(String.valueOf(datas), UserInfo.class);
+
+                    String name = entity.getData().getSurname() + " " + entity.getData().getName() + " " + entity.getData().getSecondname();
+                    checkPdaKey(name, uuid);
+                } else {
+                    checkPdaKey(random_symbols(10), uuid);
+                }
+
+                context = c;
+            }
         }
-        context = c;
     }
     public String getUser_type(){
         Gson gson = new Gson();
@@ -277,10 +349,72 @@ public class CommonAPI {
         String json = new Gson().toJson(current);
         utils.createJsonFileData("shared.json", json);
     }
-    public void getDay(CommonCallback callb, @Nullable String date){
+
+    public int getMarksDifferencesCount(List<Item> neww){
+        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+        String readed = utils.readJsonFileData("marks.json");
+        if (readed == null) return 0;
+        Type listType = new TypeToken<ArrayList<Item>>(){}.getType();
+        List<Item> old = new Gson().fromJson(readed, listType);
+        if (old.size() != neww.size()) return Math.abs(neww.size() - old.size());
+        int diffs = 0;
+        for (int i = 0; i < old.size(); i++){
+
+            List<Mark> diff = new ArrayList<Mark>(neww.get(i).getMarks());
+            diff.removeAll(old.get(i).getMarks());
+            diffs += diff.size();
+        }
+        return diffs;
+    }
+    public void addMarksCache(List<Item> items){
+        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+        String json = new Gson().toJson(items);
+        utils.createJsonFileData("marks.json", json);
+    }
+    public void updateMarksCache(){
         ClassicBody body = new ClassicBody();
         body.setGuid(uuid);
         body.setApikey(apikey);
+        body.setPdakey(pdaKey);
+        AllPeriods cached = getCached();
+        if (cached == null) return;
+        List<LocalDate> period = MarksTranslator.Companion.get_cur_period(cached.getData());
+        if (period == null) return;
+        body.setFrom(period.get(0).toString());
+        body.setTo(period.get(1).toString());
+        CommonService
+                .getInstance()
+                .getJSONApi()
+                .getPeriodMarks(body)
+                .enqueue(new retrofit2.Callback<PeriodMarks>() {
+                    @Override
+                    public void onResponse(Call<PeriodMarks> call, Response<PeriodMarks> response) {
+                        if (response.code() == 500){
+                            toast("На серверах pskovedu произошла ошибка");
+                            return;
+                        }
+                        PeriodMarks body = response.body();
+                        if (body == null) {
+                            Log.e("NetworkError", response.toString());
+                            return;
+                        }
+                        addMarksCache(new MarksTranslator(body.getData()).getItems());
+                    }
+
+                    @Override
+                    public void onFailure(Call<PeriodMarks> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
+                        t.printStackTrace();
+                    }
+
+                });
+    }
+    public void getDay(CommonCallback callb, @Nullable String date){
+        ClassicBody body = new ClassicBody();
+        if (pdaKey == "" || pdaKey == null) return;
+        body.setGuid(uuid);
+        body.setApikey(apikey);
+        body.setPdakey(pdaKey);
         body.setDate(date);
         CommonService
                 .getInstance()
@@ -314,6 +448,7 @@ public class CommonAPI {
         ClassicBody body = new ClassicBody();
         body.setGuid(uuid);
         body.setApikey(apikey);
+        body.setPdakey(pdaKey);
         CommonService
                 .getInstance()
                 .getJSONApi()
@@ -330,7 +465,7 @@ public class CommonAPI {
                             Log.e("NetworkError", response.toString());
                             return;
                         }
-                        callb.marks(body.getData());
+                        callb.marks(body.getData(), false);
                     }
 
                     @Override
@@ -347,6 +482,7 @@ public class CommonAPI {
         body.setGuid(uuid);
         body.setApikey(apikey);
         body.setFrom(from);
+        body.setPdakey(pdaKey);
         body.setTo(to);
         CommonService
                 .getInstance()
@@ -364,7 +500,11 @@ public class CommonAPI {
                             Log.e("NetworkError", response.toString());
                             return;
                         }
-                        callb.marks(body.getData());
+                        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
+                        ArrayList<LocalDate> dates = new ArrayList<LocalDate>();
+                        dates.add(LocalDate.parse(from, formatter));
+                        dates.add(LocalDate.parse(to, formatter));
+                        callb.marks(body.getData(), MarksTranslator.Companion.get_cur_period(getCached().getData()).equals(dates));
                     }
 
                     @Override
@@ -375,10 +515,23 @@ public class CommonAPI {
 
                 });
     }
+    public AllPeriods getCached(){
+        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+        String readed = utils.readJsonFileData("periods.json");
+        if (readed == null || readed.length() < 75) {
+            return null;
+        }
+        Type listType = new TypeToken<AllPeriods>(){}.getType();
+        return (new Gson().fromJson(readed, listType));
+    }
     public void getAllPeriods(MarksCallback callb){
+        if (getCached() != null) {
+            callb.allperiods(getCached());
+        }
         ClassicBody body = new ClassicBody();
         body.setGuid(uuid);
         body.setApikey(apikey);
+        body.setPdakey(pdaKey);
         CommonService
                 .getInstance()
                 .getJSONApi()
@@ -395,6 +548,11 @@ public class CommonAPI {
                             Log.e("NetworkError", response.toString());
                             return;
                         }
+                        ReadWriteJsonFileUtils utils = new ReadWriteJsonFileUtils(context);
+                        if (utils.readJsonFileData("periods.json") == null) {
+                            String json = new Gson().toJson(body);
+                            utils.createJsonFileData("periods.json", json);
+                        }
                         callb.allperiods(body);
                     }
 
@@ -409,6 +567,7 @@ public class CommonAPI {
     public void getPeriods(MarksCallback callb){
         ClassicBody body = new ClassicBody();
         body.setGuid(uuid);
+        body.setPdakey(pdaKey);
         body.setApikey(apikey);
         CommonService
                 .getInstance()
@@ -431,6 +590,119 @@ public class CommonAPI {
 
                     @Override
                     public void onFailure(Call<Periods> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
+                        t.printStackTrace();
+                    }
+
+                });
+    }
+    public String gen_pda_key() {
+        String l = Long.valueOf(System.currentTimeMillis() / 1000).toString();
+        return l + "-" + random_symbols(8);
+    }
+    public static String random_symbols(int i) {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(i);
+        for (int i2 = 0; i2 < i; i2++) {
+            sb.append("0123456789qwertyuiopasdfghjklzxcvbnm".charAt(random.nextInt(36)));
+        }
+        return sb.toString();
+    }
+
+    public void checkPdaKey(String name, String guid){
+        PDBody pdBody = new PDBody();
+        //pdBody.setName(name);
+        pdBody.setSysguid(guid);
+        //pdBody.setPdakey(gen_pda_key());
+        CommonService
+                .getInstance()
+                .getJSONApi()
+                .getPda(pdBody)
+                .enqueue(new retrofit2.Callback<PDAnswer>() {
+                    @Override
+                    public void onResponse(Call<PDAnswer> call, Response<PDAnswer> response) {
+                        if (response.code() == 500){
+                            toast("Произошла ошибка при получении PDA");
+                            return;
+                        }
+                        PDAnswer body = response.body();
+                        if (body == null) {
+                            Log.e("NetworkError", response.toString());
+                            return;
+                        }
+                        if (Objects.equals(body.getStatus(), "not found")){
+                            setPdaKey(name, guid);
+                        }
+                        else{
+                            if (body.getPdakey() == "") toast("Ошибка потверждения PDA");
+                            else {
+                                SharedPreferences p = context.getSharedPreferences("pda", Context.MODE_PRIVATE);
+                                pdaKey = body.getPdakey();
+                                SharedPreferences.Editor editor = p.edit();
+                                editor.putString("key", pdaKey);
+                                editor.putString("guid", guid);
+                                editor.apply();
+                                try {
+                                    if (navController != null) navController.navigate(navController.getCurrentDestination().getId());
+                                }
+                                catch (Exception e){
+                                    boolean b = true;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PDAnswer> call, Throwable t) {
+                        toast("На серверах pskovedu произошла ошибка");
+                        t.printStackTrace();
+                    }
+
+                });
+    }
+    public void setPdaKey(String name, String guid){
+        PDBody pdBody = new PDBody();
+        pdBody.setName(name);
+        pdBody.setSysguid(guid);
+        String localPda = gen_pda_key();
+        pdBody.setPdakey(localPda);
+        CommonService
+                .getInstance()
+                .getJSONApi()
+                .setPda(pdBody)
+                .enqueue(new retrofit2.Callback<PDAnswer>() {
+                    @Override
+                    public void onResponse(Call<PDAnswer> call, Response<PDAnswer> response) {
+                        if (response.code() == 500){
+                            toast("Ошибка PDA №500");
+                            return;
+                        }
+                        PDAnswer body = response.body();
+                        if (body == null) {
+                            Log.e("NetworkError", response.toString());
+                            return;
+                        }
+                        if (Objects.equals(body.getStatus(), "error")){
+                            //set
+                            toast("Ошибка PDA №2");
+                        }
+                        else if(Objects.equals(body.getStatus(), "ok")){
+                            SharedPreferences p = context.getSharedPreferences("pda", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = p.edit();
+                            editor.putString("key", localPda);
+                            editor.putString("guid", guid);
+                            editor.apply();
+                            try {
+                                if (navController != null) navController.navigate(navController.getCurrentDestination().getId());
+                            }
+                            catch (Exception e){
+                                boolean b = true;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PDAnswer> call, Throwable t) {
                         toast("На серверах pskovedu произошла ошибка");
                         t.printStackTrace();
                     }

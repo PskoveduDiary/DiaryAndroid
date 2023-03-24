@@ -63,7 +63,7 @@ public class RecycleAdapterSharedUsers extends RecyclerView.Adapter<RecycleAdapt
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonAPI.getInstance().ChangeUuid(user.getGuid());
+                CommonAPI.getInstance().ChangeUuid(user.getGuid(), user.getName());
             }
         });
     }

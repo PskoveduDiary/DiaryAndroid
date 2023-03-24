@@ -8,26 +8,36 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.keywords
+import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
 import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.CommonService
 import com.alex.materialdiary.sys.common.Crypt
+import com.alex.materialdiary.sys.common.models.ClassicBody
+import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
+import com.alex.materialdiary.utils.MarksTranslator
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.*
+import xdroid.toaster.Toaster.toast
 import java.util.*
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonCallback {
 
     private lateinit var notificationManager: NotificationManager
-
+    private var marksJob: Job? = null
+    lateinit var commonAPI: CommonAPI
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        commonAPI = CommonAPI(baseContext)
         //if (remoteMessage.data.get("type") == "kr_test"){
         //    //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         //    val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
@@ -36,11 +46,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
         //}
         //sendNotification(remoteMessage)
         if (remoteMessage.data.get("type") == "kr"){
-            //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
             val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-            val api = CommonAPI(baseContext)
-            api.getDay(this, cuurent_date.toString())
+            commonAPI.getDay(this, cuurent_date.toString())
         }
+        if (remoteMessage.data.get("type") == "marks"){
+            marks()
+        }
+    }
+
+    override fun onDestroy() {
+        marksJob?.cancel()
+        toast("canceled")
+        super.onDestroy()
     }
     override fun day(lesson: MutableList<DatumDay>?) {
         if (lesson == null) return
@@ -49,10 +66,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
             val finded = mutableListOf<String>()
             if (lsn.homeworkPrevious?.homework != null) {
                 val c = lsn.homeworkPrevious!!.homework!!
-                finded += check(c)
+                finded += check_kr(c)
             }
             if (lsn.topic != null) {
-                finded += check(lsn.topic!!)
+                finded += check_kr(lsn.topic!!)
             }
             if (finded.size > 0){
                 lsn.subjectName?.let { lessns.add(it) }
@@ -85,7 +102,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
             notificationManager.notify(1233, builder.build())
         }
     }
-    fun check(str: String): MutableList<String> {
+    fun check_kr(str: String): MutableList<String> {
         val finded = mutableListOf<String>()
         keywords.kr_mini.forEach {
             if (str.contains(it)) {
@@ -117,6 +134,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
             .setSmallIcon(R.drawable.ic_baseline_message_24)
             .setContentText(remoteMessage.data.get("kr"))
             .setAutoCancel(true)
+            .setContentText("dsdjdhjdjhdhjdhj    " + remoteMessage.data.toString())
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
         // Необходим канал уведомлений Android Oreo
@@ -131,6 +149,56 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
         }
         notificationManager.notify(123, notificationBuilder.build())
     }
+    fun marks(){
+        marksJob = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val body = ClassicBody()
+                body.apikey = Crypt().encryptSYS_GUID(commonAPI.uuid)
+                body.guid = commonAPI.uuid
+                body.pdakey = commonAPI.pdaKey
+                val utils = ReadWriteJsonFileUtils(baseContext)
+                val readed = utils.readJsonFileData("periods.json")
+                if (readed == null || readed.length < 75) {
+                    return@launch
+                }
+                val listType = object : TypeToken<AllPeriods?>() {}.type
+                val periods =  Gson().fromJson<AllPeriods>(readed, listType)
+                val cur_per = MarksTranslator.get_cur_period(periods.data)
+                body.from = cur_per[0].toString()
+                body.to = cur_per[1].toString()
+                val marks = CommonService.getInstance().jsonApi.getPeriodMarksCoroutine(body)
+                var diffs = 0
+                marks?.data?.let { MarksTranslator(it).items }?.let { items ->
+                    items.forEach {
+                        diffs += MarksTranslator.getSubjectMarksDifferences(baseContext, it.name,
+                            items
+                        )?.size!!
+                    }
+                }
+                if (diffs <= 0) return@launch
+                val intent = Intent(baseContext, MainActivity::class.java)
+                intent.putExtra("navigate", "marks")
+                val pendingIntent = PendingIntent.getActivity(
+                    baseContext,
+                    1233, intent, PendingIntent.FLAG_IMMUTABLE
+                )
+                val builder: NotificationCompat.Builder = NotificationCompat.Builder(baseContext, "marks")
+                    .setSmallIcon(R.drawable.ic_baseline_looks_5_24)
+                    .setContentTitle("Новые оценки!")
+                    .setContentText(
+                        baseContext.resources.getQuantityString(R.plurals.marks, diffs, diffs)
+                    )
+                    .setOnlyAlertOnce(true)
+                    .setNumber(diffs)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                notificationManager.notify(122, builder.build())
 
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
 }

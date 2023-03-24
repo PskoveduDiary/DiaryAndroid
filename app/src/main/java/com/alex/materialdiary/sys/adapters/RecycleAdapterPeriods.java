@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class RecycleAdapterPeriods extends RecyclerView.Adapter<RecycleAdapterPe
     public void onBindViewHolder(@NonNull RecycleAdapterPeriods.ViewHolder holder, int position) {
         AllPeriodData period = periods.get(position);
         holder.button.setText(period.getName());
+        //holder.button.setTag(holder.button.hashCode(), period.getPeriodGuid());
         holder.button.setOnClickListener(v -> {
             CommonAPI.getInstance().periodMarks(mf, period.getDateBegin(), period.getDateEnd());
             mf.showLoader();

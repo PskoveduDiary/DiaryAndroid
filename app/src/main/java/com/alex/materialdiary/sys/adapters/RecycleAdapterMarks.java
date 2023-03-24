@@ -1,6 +1,8 @@
 package com.alex.materialdiary.sys.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.sys.common.models.period_marks.Mark;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.Calendar;
 import java.util.List;
@@ -25,10 +28,12 @@ public class RecycleAdapterMarks extends RecyclerView.Adapter<RecycleAdapterMark
 
     private final LayoutInflater inflater;
     private final List<Mark> periods;
+    private final List<com.alex.materialdiary.sys.common.models.marks.Mark> diffs;
 
-    public RecycleAdapterMarks(Context context, List<Mark> periods) {
+    public RecycleAdapterMarks(Context context, List<Mark> periods, List<com.alex.materialdiary.sys.common.models.marks.Mark> diffs) {
         this.inflater = LayoutInflater.from(context);
         this.periods = periods;
+        this.diffs = diffs;
     }
 
     @NonNull
@@ -39,8 +44,15 @@ public class RecycleAdapterMarks extends RecyclerView.Adapter<RecycleAdapterMark
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecycleAdapterMarks.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Mark mark = periods.get(position);
+        MaterialCardView itemView = (MaterialCardView) holder.itemView;
+        itemView.setStrokeColor(inflater.getContext().getResources().getColor(R.color.gray));
+        if (diffs.contains(new com.alex.materialdiary.sys.common.models.marks.Mark(mark.getValue(), mark.getDate()))){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    itemView.setStrokeColor(Color.RED);
+            }
+        }
         Context c = inflater.getContext();
         Object year = Calendar.getInstance().get(Calendar.YEAR);
         String yearr = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));

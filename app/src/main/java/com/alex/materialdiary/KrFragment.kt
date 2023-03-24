@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentKrBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterKrInfo
@@ -30,7 +31,7 @@ class KrFragment : Fragment(), CommonAPI.CommonCallback {
     ): View? {
         //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-        val api = CommonAPI(requireContext())
+        val api = CommonAPI(requireContext(), findNavController())
         api.getDay(this, cuurent_date.toString())
         _binding = FragmentKrBinding.inflate(inflater, container, false)
         return binding.root
