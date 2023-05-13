@@ -8,11 +8,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.alex.materialdiary.R
 import com.alex.materialdiary.keywords
-import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.PskoveduApi
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
-class AlarmKrReceiver : BroadcastReceiver(), CommonAPI.CommonCallback {
+class AlarmKrReceiver : BroadcastReceiver() {
 
     private lateinit var nm: NotificationManagerCompat
     lateinit var context: Context
@@ -54,13 +57,13 @@ class AlarmKrReceiver : BroadcastReceiver(), CommonAPI.CommonCallback {
             this.context = context
             nm = NotificationManagerCompat.from(context)
             val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-            val api = CommonAPI(context)
-            api.getDay(this, cuurent_date.toString())
+            getDay(cuurent_date.toString())
         }
     }
 
-    override fun day(lesson: MutableList<DatumDay>?) {
-            if (lesson == null) return
+    fun getDay(date: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val lesson = PskoveduApi.getInstance().getDay(date)?.data ?: return@launch
             val lessns = mutableListOf<String>()
             for (lsn in lesson) {
                 val finded = mutableListOf<String>()
@@ -95,4 +98,5 @@ class AlarmKrReceiver : BroadcastReceiver(), CommonAPI.CommonCallback {
                 nm.notify(1233, builder.build())
             /*}*/
         }
+    }
 }

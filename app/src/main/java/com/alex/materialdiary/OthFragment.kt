@@ -39,6 +39,7 @@ class OthFragment : Fragment() {
         others.add(OtherItem("Расписание занятий", R.drawable.ic_baseline_view_quilt_24, R.id.to_shedule))
         others.add(OtherItem("Результаты тестирования", R.drawable.ic_baseline_library_add_check_24, R.id.to_results))
         others.add(OtherItem("Контрольные", R.drawable.ic_baseline_error_outline_24, R.id.to_kr))
+        others.add(OtherItem("Домашнее задание", R.drawable.ic_baseline_checklist_24, R.id.to_check_list))
         others.add(OtherItem("Настройки", R.drawable.ic_baseline_settings_24, R.id.to_settings))
         val adapter = OthListAdapter(requireContext(), others, this)
         val lv = view.findViewById<ListView>(R.id.oth_list_view)

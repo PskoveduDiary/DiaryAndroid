@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alex.materialdiary.MarksFragment;
 import com.alex.materialdiary.R;
-import com.alex.materialdiary.sys.common.CommonAPI;
 import com.alex.materialdiary.sys.common.models.all_periods.AllPeriodData;
 import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
 
@@ -44,7 +43,7 @@ public class RecycleAdapterPeriods extends RecyclerView.Adapter<RecycleAdapterPe
         holder.button.setText(period.getName());
         //holder.button.setTag(holder.button.hashCode(), period.getPeriodGuid());
         holder.button.setOnClickListener(v -> {
-            CommonAPI.getInstance().periodMarks(mf, period.getDateBegin(), period.getDateEnd());
+            mf.getMarks(period.getDateBegin(), period.getDateEnd());
             mf.showLoader();
         });
     }

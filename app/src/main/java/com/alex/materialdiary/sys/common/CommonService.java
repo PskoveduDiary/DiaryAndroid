@@ -1,8 +1,11 @@
 package com.alex.materialdiary.sys.common;
 
-import com.alex.materialdiary.sys.messages.MessageInterface;
+import android.webkit.CookieManager;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,6 +22,7 @@ public class CommonService {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .addNetworkInterceptor( chain ->

@@ -113,4 +113,11 @@
     <string name="title_journals">Журналы</string>
     <string name="title_activity_journals">Журналы</string>
     <string name="title_teacher_features">Функции учителя</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="title_activity_download">DownloadActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
 </resources>

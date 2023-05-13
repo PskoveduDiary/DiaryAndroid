@@ -16,6 +16,9 @@ interface CommonInterface {
     @POST("journals/diaryday")
     fun getDiaryDay(@Body body: ClassicBody?): Call<DiaryDay?>?
 
+    @POST("journals/diaryday")
+    suspend fun getDiaryDayCoroutine(@Body body: ClassicBody?): DiaryDay?
+
     @POST("journals/allmarks")
     fun getAllMarks(@Body body: ClassicBody?): Call<PeriodMarks?>?
 

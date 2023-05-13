@@ -22,7 +22,7 @@ import com.alex.materialdiary.FeatureFragmentDirections
 import com.alex.materialdiary.R
 import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
-import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.PskoveduApi
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.play.core.ktx.status
@@ -31,6 +31,9 @@ import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallSessionState
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Request
 import okhttp3.Response
@@ -58,7 +61,7 @@ class AboutFragment : PreferenceFragmentCompat() {
             preferenceManager.findPreference<Preference>("version") as Preference
         version.summary = BuildConfig.VERSION_NAME + "(${BuildConfig.VERSION_CODE})"
         val guid = preferenceManager.findPreference<Preference>("guid") as Preference
-        guid.summary = CommonAPI.getInstance().uuid
+        guid.summary = PskoveduApi.getInstance(requireContext()).guid
         guid.setOnPreferenceClickListener {
             val clipData = ClipData.newPlainText("text", guid.summary);
             toast("Скопировано!")
@@ -66,7 +69,7 @@ class AboutFragment : PreferenceFragmentCompat() {
             true
         }
         val sid = preferenceManager.findPreference<Preference>("sid") as Preference
-        sid.summary = CommonAPI.getInstance().sid
+        sid.summary = PskoveduApi.getInstance().sid
         sid.setOnPreferenceClickListener {
             val clipData = ClipData.newPlainText("text", sid.summary);
             clipboardManager.setPrimaryClip(clipData);
@@ -74,7 +77,7 @@ class AboutFragment : PreferenceFragmentCompat() {
             true
         }
         val pda = preferenceManager.findPreference<Preference>("pdakey") as Preference
-        pda.summary = CommonAPI.getInstance().pdaKey
+        pda.summary = PskoveduApi.getInstance().pdaKey
         pda.setOnPreferenceClickListener {
             val clipData = ClipData.newPlainText("text", pda.summary);
             toast("Скопировано!")
@@ -83,16 +86,24 @@ class AboutFragment : PreferenceFragmentCompat() {
         }
         val marks = preferenceManager.findPreference<Preference>("marks") as Preference
         marks.setOnPreferenceClickListener {
-            CommonAPI.getInstance().updateMarksCache()
+            CoroutineScope(Dispatchers.IO).launch {
+                PskoveduApi.getInstance().updateMarksCache()
+            }
+            ReadWriteJsonFileUtils.memoryCache.clearRegion("ru")
             toast("Успешно, перезапустите приложение")
             true
         }
         val marks_clear = preferenceManager.findPreference<Preference>("marks_clear") as Preference
         marks_clear.setOnPreferenceClickListener {
             var str = ReadWriteJsonFileUtils(requireContext()).readJsonFileData("marks.json")
+            if (str == null){
+                toast("Ошибка, в кэше ничего нет")
+                return@setOnPreferenceClickListener false
+            }
             str = str.replace(".2023", ".2020")
             ReadWriteJsonFileUtils(requireContext()).createJsonFileData("marks.json", str)
             toast("Успешно, перезапустите приложение")
+            ReadWriteJsonFileUtils.memoryCache.clearRegion("ru")
             true
         }
         val teacher = preferenceManager.findPreference<Preference>("teach_feature") as Preference

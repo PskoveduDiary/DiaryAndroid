@@ -1,23 +1,15 @@
 package com.alex.materialdiary
 
-import android.app.Dialog
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
 import android.webkit.WebView
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentLessonBinding
-import com.alex.materialdiary.databinding.FragmentUserInfoBinding
-import com.alex.materialdiary.sys.ImageLoader
-import com.alex.materialdiary.sys.common.models.diary_day.Mark
-import com.alex.materialdiary.sys.messages.API
+import com.alex.materialdiary.sys.adapters.RecycleAdapterFiles
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -50,12 +42,27 @@ class LessonFragment : Fragment(){
         else binding.lessTopic.text = ""
         if (args.lesson.homeworkPrevious != null) binding.lessHomework.text = "${args.lesson.homeworkPrevious!!.homework?.replace(".ru:/", ".ru/")}"
         else binding.lessHomework.text = ""
-        if (args.lesson.homework != null) binding.lessHomework2.text = "${args.lesson.homework}"
+        if (args.lesson.homework != null) binding.lessHomework2.text =
+            args.lesson.homework!!.replace(".ru:/", ".ru/")
         else binding.lessHomework2.text = ""
         binding.lessMark.text = args.lesson.marks?.joinToString(", ") {
             it.shortName.toString()
         }
         binding.lessComment.text = args.lesson.notes?.joinToString(", ")
+        if (args.lesson.homeworkPrevious?.homework != null) {
+            val homework = args.lesson.homeworkPrevious!!.homework!!
+            if (homework.contains("https://one.pskovedu.ru:/file/download/")){
+                binding.card5.visibility = View.VISIBLE
+                val links = homework.split(" ", "\n").filter {
+                    it.contains("https://one.pskovedu.ru:/file/download/")
+                }
+                val llm = LinearLayoutManager(context)
+                llm.orientation = LinearLayoutManager.HORIZONTAL
+                binding.filesRecycler.layoutManager = llm
+                binding.filesRecycler.adapter = RecycleAdapterFiles(requireContext(), links.toMutableList())
+                println(links)
+            }
+        }
     }
 
     override fun onDestroyView() {

@@ -9,16 +9,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentKrBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterKrInfo
-import com.alex.materialdiary.sys.common.CommonAPI
-import com.alex.materialdiary.sys.common.Crypt
+import com.alex.materialdiary.sys.common.PskoveduApi
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
 import com.alex.materialdiary.sys.common.models.kr.kr_info
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class KrFragment : Fragment(), CommonAPI.CommonCallback {
+class KrFragment : Fragment() {
     private var _binding: FragmentKrBinding? = null
 
     // This property is only valid between onCreateView and
@@ -31,8 +34,14 @@ class KrFragment : Fragment(), CommonAPI.CommonCallback {
     ): View? {
         //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
         val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-        val api = CommonAPI(requireContext(), findNavController())
-        api.getDay(this, cuurent_date.toString())
+        val api = PskoveduApi.getInstance(requireContext(), findNavController())
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val day = api.getDay( cuurent_date.toString())
+            withContext(Dispatchers.Main) {
+                setDay(day?.data)
+            }
+        }
         _binding = FragmentKrBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -67,7 +76,7 @@ class KrFragment : Fragment(), CommonAPI.CommonCallback {
         _binding = null
     }
 
-    override fun day(lesson: MutableList<DatumDay>?) {
+    fun setDay(lesson: MutableList<DatumDay>?) {
         binding.progressBar.visibility = View.GONE
         if (lesson == null) {
             binding.textView4.visibility = View.VISIBLE
@@ -85,6 +94,7 @@ class KrFragment : Fragment(), CommonAPI.CommonCallback {
             if (lsn.topic != null) {
                 str += lsn.topic!!
             }
+            str = str.lowercase()
             keywords.kr_maybe.forEach {
                 if (str.contains(it)) {
                     this_lesson?.keyword?.add(it)

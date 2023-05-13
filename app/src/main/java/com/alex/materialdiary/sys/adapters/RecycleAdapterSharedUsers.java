@@ -16,7 +16,7 @@ import com.alex.materialdiary.NewChangeUserFragment;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.ShareQRFragmentDirections;
 import com.alex.materialdiary.WebLoginFragmentDirections;
-import com.alex.materialdiary.sys.common.CommonAPI;
+import com.alex.materialdiary.sys.common.PskoveduApi;
 import com.alex.materialdiary.sys.common.models.ShareUser;
 import com.alex.materialdiary.sys.common.models.get_user.Participant;
 import com.alex.materialdiary.sys.common.models.get_user.SchoolInfo;
@@ -63,7 +63,7 @@ public class RecycleAdapterSharedUsers extends RecyclerView.Adapter<RecycleAdapt
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonAPI.getInstance().ChangeUuid(user.getGuid(), user.getName());
+                PskoveduApi.Companion.getInstance().changeGuid(user.getGuid(), user.getName());
             }
         });
     }

@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.alex.materialdiary.databinding.FragmentScanQrBinding
 import com.alex.materialdiary.sys.PermissionUtils
-import com.alex.materialdiary.sys.common.CommonAPI
 import me.dm7.barcodescanner.zbar.BarcodeFormat
 import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
@@ -126,7 +125,7 @@ class WebLoginFragment : Fragment(), ZBarScannerView.ResultHandler {
                     .build()
                 val request: Request = Request.Builder()
                     .url("https://pskovedu.ml/api/auth/do_auth?code="+ p0.contents + "&guid=" + args.guid +
-                            "&messages_guid=" + CommonAPI.getInstance().message_id + "&name=" + args.name)
+                             "&name=" + args.name)
                     .post(formBody)
                     .build()
                 try {

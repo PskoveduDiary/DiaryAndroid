@@ -17,8 +17,7 @@ import com.alex.materialdiary.ChangeUserFragment;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.ShareQRFragmentDirections;
 import com.alex.materialdiary.WebLoginFragmentDirections;
-import com.alex.materialdiary.sys.ImageLoader;
-import com.alex.materialdiary.sys.common.CommonAPI;
+import com.alex.materialdiary.sys.common.PskoveduApi;
 import com.alex.materialdiary.sys.common.models.ShareUser;
 import com.alex.materialdiary.sys.common.models.get_user.Participant;
 import com.alex.materialdiary.sys.common.models.get_user.SchoolInfo;
@@ -88,7 +87,7 @@ public class RecycleAdapterUsers extends RecyclerView.Adapter<RecycleAdapterUser
             @Override
             public void onClick(View v) {
                 String name = participant.getSurname() + " " + participant.getName() + " " + participant.getSecondname();
-                CommonAPI.getInstance().ChangeUuid(participant.getSysGuid(), name);
+                PskoveduApi.Companion.getInstance(inflater.getContext()).changeGuid(participant.getSysGuid(), name);
             }
         });
     }

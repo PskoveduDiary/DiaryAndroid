@@ -13,9 +13,9 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.keywords
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
-import com.alex.materialdiary.sys.common.CommonAPI
 import com.alex.materialdiary.sys.common.CommonService
 import com.alex.materialdiary.sys.common.Crypt
+import com.alex.materialdiary.sys.common.PskoveduApi
 import com.alex.materialdiary.sys.common.models.ClassicBody
 import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
@@ -25,29 +25,23 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
+import org.joda.time.format.DateTimeFormat
 import xdroid.toaster.Toaster.toast
 import java.util.*
 
 
-class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonCallback {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private lateinit var notificationManager: NotificationManager
     private var marksJob: Job? = null
-    lateinit var commonAPI: CommonAPI
+    lateinit var api: PskoveduApi
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        commonAPI = CommonAPI(baseContext)
-        //if (remoteMessage.data.get("type") == "kr_test"){
-        //    //Crypt.generateKeyFromString("aYXfLjOMB9V5az9Ce8l+7A==");
-        //    val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-        //    val api = CommonAPI(baseContext)
-        //    api.getDay(this, cuurent_date.toString())
-        //}
-        //sendNotification(remoteMessage)
+        api = PskoveduApi.getInstance(baseContext)
         if (remoteMessage.data.get("type") == "kr"){
             val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-            commonAPI.getDay(this, cuurent_date.toString())
+            getDay(cuurent_date.toString())
         }
         if (remoteMessage.data.get("type") == "marks"){
             marks()
@@ -59,47 +53,50 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
         toast("canceled")
         super.onDestroy()
     }
-    override fun day(lesson: MutableList<DatumDay>?) {
-        if (lesson == null) return
-        val lessns = mutableListOf<String>()
-        for (lsn in lesson) {
-            val finded = mutableListOf<String>()
-            if (lsn.homeworkPrevious?.homework != null) {
-                val c = lsn.homeworkPrevious!!.homework!!
-                finded += check_kr(c)
+    fun getDay(date: String) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val lesson = api.getDay(date)?.data ?: return@launch
+            val lessns = mutableListOf<String>()
+            for (lsn in lesson) {
+                val finded = mutableListOf<String>()
+                if (lsn.homeworkPrevious?.homework != null) {
+                    val c = lsn.homeworkPrevious!!.homework!!
+                    finded += check_kr(c)
+                }
+                if (lsn.topic != null) {
+                    finded += check_kr(lsn.topic!!)
+                }
+                if (finded.size > 0){
+                    lsn.subjectName?.let { lessns.add(it) }
+                }
             }
-            if (lsn.topic != null) {
-                finded += check_kr(lsn.topic!!)
-            }
-            if (finded.size > 0){
-                lsn.subjectName?.let { lessns.add(it) }
-            }
-        }
-        val no_dubls = lessns.distinct()
-        if (lessns.size > 0) {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("navigate", "kr")
-            val pendingIntent = PendingIntent.getActivity(
-                this,
-                123, intent, PendingIntent.FLAG_IMMUTABLE
-            )
-            val builder: NotificationCompat.Builder = NotificationCompat.Builder(baseContext, "kr")
-                .setSmallIcon(R.drawable.ic_baseline_error_outline_24)
-                .setContentTitle("Контрольные!")
-                .setContentText(
-                    "Подготовься, завтра могут быть контрольные по ${
-                        baseContext.resources.getQuantityString(
-                            R.plurals.kr,
-                            no_dubls.size,
-                            no_dubls.size
-                        )
-                    }"
+            val no_dubls = lessns.distinct()
+            if (lessns.size > 0) {
+                val intent = Intent(this@MyFirebaseMessagingService, MainActivity::class.java)
+                intent.putExtra("navigate", "kr")
+                val pendingIntent = PendingIntent.getActivity(
+                    this@MyFirebaseMessagingService,
+                    123, intent, PendingIntent.FLAG_IMMUTABLE
                 )
-                .setOnlyAlertOnce(true)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-            notificationManager.notify(1233, builder.build())
+                val builder: NotificationCompat.Builder = NotificationCompat.Builder(baseContext, "kr")
+                    .setSmallIcon(R.drawable.ic_baseline_error_outline_24)
+                    .setContentTitle("Контрольные!")
+                    .setContentText(
+                        "Подготовься, завтра могут быть контрольные по ${
+                            baseContext.resources.getQuantityString(
+                                R.plurals.kr,
+                                no_dubls.size,
+                                no_dubls.size
+                            )
+                        }"
+                    )
+                    .setOnlyAlertOnce(true)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                notificationManager.notify(1233, builder.build())
+            }
         }
     }
     fun check_kr(str: String): MutableList<String> {
@@ -152,10 +149,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
     fun marks(){
         marksJob = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val body = ClassicBody()
-                body.apikey = Crypt().encryptSYS_GUID(commonAPI.uuid)
-                body.guid = commonAPI.uuid
-                body.pdakey = commonAPI.pdaKey
                 val utils = ReadWriteJsonFileUtils(baseContext)
                 val readed = utils.readJsonFileData("periods.json")
                 if (readed == null || readed.length < 75) {
@@ -164,9 +157,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), CommonAPI.CommonC
                 val listType = object : TypeToken<AllPeriods?>() {}.type
                 val periods =  Gson().fromJson<AllPeriods>(readed, listType)
                 val cur_per = MarksTranslator.get_cur_period(periods.data)
-                body.from = cur_per[0].toString()
-                body.to = cur_per[1].toString()
-                val marks = CommonService.getInstance().jsonApi.getPeriodMarksCoroutine(body)
+                val formatter = DateTimeFormat.forPattern("dd.MM.yyyy")
+                val (marks, _) = api.getPeriodMarks(cur_per[0].toString(formatter), cur_per[1].toString(formatter))
                 var diffs = 0
                 marks?.data?.let { MarksTranslator(it).items }?.let { items ->
                     items.forEach {

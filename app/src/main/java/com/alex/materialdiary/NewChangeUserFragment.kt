@@ -19,7 +19,7 @@ import com.alex.materialdiary.databinding.FragmentChUserNewBinding
 import com.alex.materialdiary.databinding.FragmentEskudBinding
 import com.alex.materialdiary.sys.MyWebViewClient
 import com.alex.materialdiary.sys.adapters.RecycleAdapterSharedUsers
-import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.PskoveduApi
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -51,7 +51,7 @@ class NewChangeUserFragment : Fragment() {
             findNavController().navigate(R.id.to_scan_shared_qr)
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = RecycleAdapterSharedUsers(this, CommonAPI.getInstance().shared)
+        binding.recyclerView.adapter = RecycleAdapterSharedUsers(this, PskoveduApi.getInstance(requireContext(), findNavController()).getShared())
     }
 
     override fun onDestroyView() {

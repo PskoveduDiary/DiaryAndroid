@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentScanQrBinding
 import com.alex.materialdiary.sys.PermissionUtils
-import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.PskoveduApi
 import com.alex.materialdiary.sys.common.models.ShareUser
 import com.google.gson.Gson
 import me.dm7.barcodescanner.zbar.BarcodeFormat
@@ -116,7 +116,7 @@ class ScanSharedQrFragment : Fragment(), ZBarScannerView.ResultHandler {
                 Log.d("qr", p0.contents)
                 val gson = Gson()
                 val shareUser = gson.fromJson(p0.contents, ShareUser::class.java)
-                CommonAPI.getInstance().addShared(shareUser)
+                PskoveduApi.getInstance(requireContext()).addShared(shareUser)
             }
             catch (e: Exception){
                 toast("Неверный QR-код, попробуйте другой!")

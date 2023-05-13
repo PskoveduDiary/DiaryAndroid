@@ -303,4 +303,12 @@
     <action
         android:id="@+id/to_feature_install"
         app:destination="@id/FeatureFragment" />
+    <fragment
+        android:id="@+id/ChecklistFragment"
+        android:name="com.alex.materialdiary.ChecklistFragment"
+        android:label="Выполнение ДЗ"
+        tools:layout="@layout/fragment_checklist"/>
+    <action
+        android:id="@+id/to_check_list"
+        app:destination="@id/ChecklistFragment" />
 </navigation>

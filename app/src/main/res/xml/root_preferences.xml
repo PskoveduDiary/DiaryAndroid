@@ -7,20 +7,20 @@
             app:key="kr"
             app:title="О контрольных"
             android:summary="Каждый день в 18:00"/>
-        <SwitchPreferenceCompat
-            app:key="marks"
-            app:title="О новых оценках"
-            android:summary="Каждый день в 20:00"/>
-<!--
-        <ListPreference
-            app:dependency="kr"
-            app:defaultValue="seven"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="kr_time"
-            app:title="Время уведомления"
-            app:useSimpleSummaryProvider="true" />
--->
+                <SwitchPreferenceCompat
+                    app:key="marks"
+                    app:title="О новых оценках"
+                    android:summary="Каждый день в 20:00"/>
+        <!--
+                        <ListPreference
+                            app:dependency="kr"
+                            app:defaultValue="seven"
+                            app:entries="@array/reply_entries"
+                            app:entryValues="@array/reply_values"
+                            app:key="kr_time"
+                            app:title="Время уведомления"
+                            app:useSimpleSummaryProvider="true" />
+                -->
     </PreferenceCategory>
     <Preference app:key="dev" />
     <PreferenceCategory app:title="Другое">

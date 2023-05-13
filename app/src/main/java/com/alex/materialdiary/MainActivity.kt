@@ -23,9 +23,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
-import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.common.CommonService
 import com.alex.materialdiary.sys.common.Crypt
+import com.alex.materialdiary.sys.common.PskoveduApi
 import com.alex.materialdiary.sys.common.models.ClassicBody
 import com.alex.materialdiary.utils.MarksTranslator
 import com.google.android.gms.tasks.OnCompleteListener
@@ -37,6 +38,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
+import org.joda.time.format.DateTimeFormat
 import retrofit2.HttpException
 import xdroid.toaster.Toaster.toast
 import java.io.File
@@ -60,7 +62,7 @@ open class MainActivity : AppCompatActivity() {
 
         //pg.signatures[0] = new Signature("");
         //KeyHelper.get(pg, "SHA1")
-
+        DiaryPreferences(this)
 // Returns an intent object that you use to check for an update.
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
@@ -164,7 +166,7 @@ open class MainActivity : AppCompatActivity() {
                 .setAnchorView(R.id.fab)
                 .setAction("Action", null).show()
         }*/
-        if (CommonAPI.getInstance(this, navController).uuid == "") {
+        if (PskoveduApi.getInstance(this, navController).guid == "") {
             binding.contentMain.bottomNavigation.visibility = View.GONE
         }
         bottomNav.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
@@ -219,10 +221,10 @@ open class MainActivity : AppCompatActivity() {
     }
 
     fun checkNav() {
-        if (CommonAPI.getInstance(
+        if (PskoveduApi.getInstance(
                 this,
                 findNavController(R.id.nav_host_fragment_content_main)
-            ).uuid == ""
+            ).guid == ""
         ) {
             binding.contentMain.bottomNavigation.visibility = View.GONE
         } else binding.contentMain.bottomNavigation.visibility = View.VISIBLE
@@ -264,10 +266,10 @@ open class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (CommonAPI.getInstance(
+        if (PskoveduApi.getInstance(
                 this,
                 findNavController(R.id.nav_host_fragment_content_main)
-            ).uuid == ""
+            ).guid == ""
             && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment
         )
             return;
@@ -277,15 +279,11 @@ open class MainActivity : AppCompatActivity() {
     fun checkBadge(){
         marksJob = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val api = CommonAPI.getInstance(baseContext, findNavController(R.id.nav_host_fragment_content_main))
-                val body = ClassicBody()
-                body.apikey = Crypt().encryptSYS_GUID(api.uuid)
-                body.guid = api.uuid
-                body.pdakey = api.pdaKey
-                val cur_per = MarksTranslator.get_cur_period(api.cached.data)
-                body.from = cur_per[0].toString()
-                body.to = cur_per[1].toString()
-                val marks = CommonService.getInstance().jsonApi.getPeriodMarksCoroutine(body)
+                val api = PskoveduApi.getInstance(baseContext, findNavController(R.id.nav_host_fragment_content_main))
+                if ((api.getCachedPeriods()?.data) == null) return@launch
+                val cur_per = MarksTranslator.get_cur_period(api.getPeriods()?.data!!)
+                val pattern = DateTimeFormat.forPattern("dd.MM.yyyy")
+                val (marks, need) = api.getPeriodMarks(cur_per[0].toString(pattern), cur_per[1].toString(pattern))
                 withContext(Dispatchers.Main) {
                     var diffs = 0
                     marks?.data?.let { MarksTranslator(it).items }?.let { items ->
@@ -302,6 +300,7 @@ open class MainActivity : AppCompatActivity() {
                     }
                 }
             }  catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -317,10 +316,10 @@ open class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
 
         if (item.itemId == android.R.id.home) {
-            if (CommonAPI.getInstance(
+            if (PskoveduApi.getInstance(
                     this,
                     findNavController(R.id.nav_host_fragment_content_main)
-                ).uuid == ""
+                ).guid == ""
                 && findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id == R.id.NewChangeUserFragment
             )
                 return false;
@@ -339,11 +338,4 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    open fun to_login() {
-
-        /*val sharedPref = this?.getSharedPreferences("login", Context.MODE_PRIVATE)
-    val s : String = ""
-    sharedPref.getString("logged", s)
-    Log.d("login", s)*/
-    }
 }

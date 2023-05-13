@@ -37,7 +37,7 @@ public class ReadWriteJsonFileUtils {
 
     public void createJsonFileData(String filename, String mJsonResponse) {
         try {
-            File checkFile = new File(context.getCacheDir() + "/users/");
+                File checkFile = new File(context.getFilesDir() + "/users/");
             if (!checkFile.exists()) {
                 checkFile.mkdir();
             }
@@ -55,7 +55,7 @@ public class ReadWriteJsonFileUtils {
             return (String) cached;
         }
         try {
-            File f = new File(context.getCacheDir() + "/users/" + filename);
+            File f = new File(context.getFilesDir() + "/users/" + filename);
             if (!f.exists()) {
                 return null;
             }
@@ -73,7 +73,7 @@ public class ReadWriteJsonFileUtils {
     }
 
     public void deleteFiles() {
-        File f = new File(context.getCacheDir() + "/users/");
+        File f = new File(context.getFilesDir() + "/users/");
         File[] files = f.listFiles();
         for (File fInDir : files) {
             fInDir.delete();
@@ -81,7 +81,7 @@ public class ReadWriteJsonFileUtils {
     }
 
     public void deleteFile(String fileName) {
-        File f = new File(context.getCacheDir() + "/users/" + fileName);
+        File f = new File(context.getFilesDir() + "/users/" + fileName);
         if (f.exists()) {
             f.delete();
         }

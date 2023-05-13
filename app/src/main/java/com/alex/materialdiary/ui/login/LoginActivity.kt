@@ -16,7 +16,6 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.ActivityLoginBinding
 import com.alex.materialdiary.sys.MyWebViewClient
-import com.alex.materialdiary.sys.messages.MessageService
 
 class LoginActivity : AppCompatActivity() {
     lateinit var cookies : String

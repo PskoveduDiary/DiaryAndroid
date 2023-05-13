@@ -8,14 +8,17 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.alex.materialdiary.R
 import com.alex.materialdiary.keywords
-import com.alex.materialdiary.sys.common.CommonAPI
+import com.alex.materialdiary.sys.common.PskoveduApi
 import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
 import com.alex.materialdiary.utils.KRWorkManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import xdroid.toaster.Toaster.toast
 import java.util.*
 
 class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :
-    Worker(appContext, workerParams), CommonAPI.CommonCallback {
+    Worker(appContext, workerParams) {
     val context = appContext
     val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
 
@@ -24,8 +27,7 @@ class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :
         // Do the work here--in this case, upload the images.
 
         val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
-        val api = CommonAPI(context)
-        api.getDay(this, cuurent_date.toString())
+        getDay(cuurent_date.toString())
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "kr")
             .setSmallIcon(R.drawable.ic_baseline_message_24)
             .setContentTitle("Сработало!")
@@ -54,40 +56,42 @@ class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :
         }
         return finded
     }
-    override fun day(lesson: MutableList<DatumDay>?) {
-        if (lesson == null) return
-        val lessns = mutableListOf<String>()
-        for (lsn in lesson) {
-            val finded = mutableListOf<String>()
-            if (lsn.homeworkPrevious?.homework != null) {
-                val c = lsn.homeworkPrevious!!.homework!!
-                finded += check(c)
+    fun getDay(date: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val lesson = PskoveduApi.getInstance(context).getDay(date)?.data ?: return@launch
+            val lessns = mutableListOf<String>()
+            for (lsn in lesson) {
+                val finded = mutableListOf<String>()
+                if (lsn.homeworkPrevious?.homework != null) {
+                    val c = lsn.homeworkPrevious!!.homework!!
+                    finded += check(c)
+                }
+                if (lsn.topic != null) {
+                    finded += check(lsn.topic!!)
+                }
+                if (finded.size > 0){
+                    lsn.subjectName?.let { lessns.add(it) }
+                }
             }
-            if (lsn.topic != null) {
-                finded += check(lsn.topic!!)
+            val no_dubls = lessns.distinct()
+            if (lessns.size > 0) {
+                val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "kr")
+                    .setSmallIcon(R.drawable.ic_baseline_error_outline_24)
+                    .setContentTitle("Контрольные!")
+                    .setContentText(
+                        "Подготовься, завтра могут быть контрольные по ${
+                            context.resources.getQuantityString(
+                                R.plurals.kr,
+                                no_dubls.size,
+                                no_dubls.size
+                            )
+                        }"
+                    )
+                    .setOnlyAlertOnce(true)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .setAutoCancel(true)
+                notificationManager.notify(1233, builder.build())
             }
-            if (finded.size > 0){
-                lsn.subjectName?.let { lessns.add(it) }
-            }
-        }
-        val no_dubls = lessns.distinct()
-        if (lessns.size > 0) {
-            val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "kr")
-                .setSmallIcon(R.drawable.ic_baseline_error_outline_24)
-                .setContentTitle("Контрольные!")
-                .setContentText(
-                    "Подготовься, завтра могут быть контрольные по ${
-                        context.resources.getQuantityString(
-                            R.plurals.kr,
-                            no_dubls.size,
-                            no_dubls.size
-                        )
-                    }"
-                )
-                .setOnlyAlertOnce(true)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setAutoCancel(true)
-            notificationManager.notify(1233, builder.build())
         }
     }
 

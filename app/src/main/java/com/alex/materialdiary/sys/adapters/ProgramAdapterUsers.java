@@ -13,7 +13,7 @@ import androidx.navigation.Navigation;
 import com.alex.materialdiary.ChangeUserFragment;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.WebLoginFragmentDirections;
-import com.alex.materialdiary.sys.common.CommonAPI;
+import com.alex.materialdiary.sys.common.PskoveduApi;
 import com.alex.materialdiary.sys.common.models.get_user.Participant;
 import com.alex.materialdiary.sys.common.models.get_user.Schools;
 
@@ -136,13 +136,13 @@ public class ProgramAdapterUsers extends ArrayAdapter<String> {
                     if (data.get(position).getUserParticipants().size() > 0) {
                         Participant participant = data.get(position).getUserParticipants().get(0);
                         String name = participant.getSurname() + " " + participant.getName() + " " + participant.getSecondname();
-                        CommonAPI.getInstance().ChangeUuid(participant.getSysGuid(), name);
+                        PskoveduApi.Companion.getInstance().changeGuid(participant.getSysGuid(), name);
                     }
                 }
                 else{
                     Participant participant = data.get(position).getParticipant();
                     String name = participant.getSurname() + " " + participant.getName() + " " + participant.getSecondname();
-                    CommonAPI.getInstance().ChangeUuid(participant.getSysGuid(), name);
+                    PskoveduApi.Companion.getInstance().changeGuid(participant.getSysGuid(), name);
                 }
                 //Intent openLinksIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls[position]));
                 //context.startActivity(openLinksIntent);

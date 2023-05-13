@@ -140,7 +140,6 @@ public class CommonAPI {
             uuid = p.getString("uuid", "");
             if(uuid.length() > 1) {
                 apikey = new Crypt().encryptSYS_GUID(uuid);
-                //Toast.makeText(c, apikey, Toast.LENGTH_LONG).show();
             }
             if (pda.contains("key")){
                 //toast(pda.getString("guid", ""));
@@ -303,10 +302,17 @@ public class CommonAPI {
             public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
                 try {
                     if (response.body() == null){
+                        Log.d("redirect", "body null");
+                        context.startActivity(i);
                         return;
                     }
                     String body = String.valueOf(response.body().string());
                     UserInfo entity = gson.fromJson(body, UserInfo.class);
+                    if (entity.getSuccess() != true) {
+                        toast(entity.getMessage());
+                        Log.d("redirect", entity.getMessage());
+                        context.startActivity(i);
+                    }
                     callback.user(entity.getData());
                     utils.createJsonFileData("users.json", body);
                 }
@@ -323,6 +329,10 @@ public class CommonAPI {
         return ca;
     }
     public static CommonAPI getInstance() {
+        return ca;
+    }
+    public static CommonAPI getInstance(Context c) {
+        if (ca == null) return new CommonAPI(c);
         return ca;
     }
     public void myMessageUuid(String uuid){
@@ -379,7 +389,7 @@ public class CommonAPI {
         AllPeriods cached = getCached();
         if (cached == null) return;
         List<LocalDate> period = MarksTranslator.Companion.get_cur_period(cached.getData());
-        if (period == null) return;
+        if (period.size() < 2) return;
         body.setFrom(period.get(0).toString());
         body.setTo(period.get(1).toString());
         CommonService
