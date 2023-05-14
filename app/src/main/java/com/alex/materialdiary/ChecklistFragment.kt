@@ -5,26 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentChecklistBinding
-import com.alex.materialdiary.databinding.FragmentKrBinding
-import com.alex.materialdiary.sys.adapters.RecycleAdapterKrInfo
-import com.alex.materialdiary.sys.common.Crypt
-import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
-import com.alex.materialdiary.sys.common.models.kr.kr_info
+import com.alex.materialdiary.sys.adapters.RecycleAdapterCheckList
+import com.alex.materialdiary.sys.net.AdlemxApi
+import com.alex.materialdiary.sys.net.AdlemxClient
+import com.alex.materialdiary.sys.net.PskoveduApi
+import com.alex.materialdiary.sys.net.PskoveduEndpoints
+import com.alex.materialdiary.sys.net.models.check_list.CheckList
+import com.alex.materialdiary.sys.net.models.check_list.CheckListShow
+import com.alex.materialdiary.sys.net.models.check_list.Lesson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+
 class ChecklistFragment : Fragment(){
     private var _binding: FragmentChecklistBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,20 +39,47 @@ class ChecklistFragment : Fragment(){
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.progressBar.visibility = View.GONE
-        binding.checkBox3.setOnCheckedChangeListener { buttonView, isChecked ->
-            when(isChecked){
-                true -> {
-                    binding.checkBox3.paintFlags =  Paint.STRIKE_THRU_TEXT_FLAG
-                    binding.checkBox3.setTextColor(resources.getColor(R.color.gray))
-                }
-                false -> {
-                    binding.checkBox3.paintFlags =  Paint.CURSOR_BEFORE
-                    binding.checkBox3.setTextColor(resources.getColor(R.color.icons))
-                }
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val dateFormat: DateFormat = SimpleDateFormat("dd-MM-yyyy")
+        val tomorrow: String = dateFormat.format(calendar.time)
+        CoroutineScope(Dispatchers.IO).launch {
+            val lessons =
+                PskoveduApi.getInstance(requireContext()).getDay(tomorrow)?.data ?: return@launch
+            if (lessons.size == 0) return@launch
+            val checklist_lessons = mutableListOf<CheckListShow>()
+            val sync_data = AdlemxClient.getEndpoints()
+                .get_checklist(PskoveduApi.getInstance().guid, tomorrow).lessons
+            withContext(Dispatchers.Main) {
+                binding.progressBar.visibility = View.GONE
+                if (sync_data.size == 0) {
+                    lessons.forEach {
+                        if (it.homeworkPrevious?.homework?.length == 0) return@forEach
+                        checklist_lessons += CheckListShow(
+                            it.subjectName!!,
+                            false,
+                            it.homeworkPrevious?.homework
+                        )
+                    }
+                    AdlemxClient.getEndpoints().set_checklist(
+                        PskoveduApi.getInstance().guid,
+                        tomorrow,
+                        checklist_lessons.map { it.toLesson() })
+                } else
+                    for (i in 0 until sync_data.size) {
+                        if (lessons[i].homeworkPrevious?.homework?.length == 0) continue
+                        checklist_lessons += CheckListShow(
+                            sync_data[i].name,
+                            sync_data[i].done,
+                            lessons[i].homeworkPrevious?.homework
+                        )
+                    }
+                binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                binding.recyclerView.adapter =
+                    RecycleAdapterCheckList(requireContext(), checklist_lessons)
             }
         }
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroyView() {

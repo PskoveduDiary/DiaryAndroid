@@ -16,8 +16,8 @@ class Alarmer {
         var alarmMgr: AlarmManager? = null
         alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmKrReceiver::class.java)
-        var alarmIntent: PendingIntent = intent.let { intent ->
-            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        var alarmIntent: PendingIntent = intent.let {
+            PendingIntent.getBroadcast(context, 0, it, PendingIntent.FLAG_IMMUTABLE)
 
         }
 
@@ -26,8 +26,7 @@ class Alarmer {
             set(Calendar.HOUR_OF_DAY, 21)
             set(Calendar.MINUTE, 17)
         }
-        if(alarmMgr == null) toast("nullllll")
-// With setInexactRepeating(), you have to use one of the AlarmManager interval
+        // With setInexactRepeating(), you have to use one of the AlarmManager interval
 // constants--in this case, AlarmManager.INTERVAL_DAY.
         alarmMgr.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,

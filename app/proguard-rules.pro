@@ -102,7 +102,7 @@
 -keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class com.alex.materialdiary.sys.common.models.** { *; }
+-keep class com.alex.materialdiary.sys.net.models.** { *; }
 
 ##---------------End: proguard configuration for Gson  ----------
 

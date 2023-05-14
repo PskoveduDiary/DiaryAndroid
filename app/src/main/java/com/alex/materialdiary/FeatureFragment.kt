@@ -81,7 +81,7 @@ class FeatureFragment : Fragment() {
                     PackageManager.DONT_KILL_APP
                 )
             }
-            catch (e: Exception) {true}
+            catch (_: Exception) {}
         }
         progressButton.setOnClickListener {
             if (splitInstallManager.installedModules.contains(args.featureName)) {
@@ -153,7 +153,7 @@ class FeatureFragment : Fragment() {
             splitInstallManager
                 .startInstall(request)
                 .addOnSuccessListener { sessionId -> mySessionId = sessionId }
-                .addOnFailureListener { exception ->
+                .addOnFailureListener {
                     progressButton.normal(3, false)
                 }
         }

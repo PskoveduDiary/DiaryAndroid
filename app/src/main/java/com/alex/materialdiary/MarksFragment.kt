@@ -12,10 +12,7 @@ import com.alex.materialdiary.databinding.FragmentMarksBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterMarksGroup
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriods
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriodsGroup
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods
-import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData
-import com.alex.materialdiary.sys.common.models.periods.Periods
+import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.utils.MarksTranslator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -111,7 +108,6 @@ class MarksFragment : Fragment(){
             withContext(Dispatchers.Main) {
                 binding.progressBar.visibility = View.GONE
                 if(periods == null) return@withContext
-                if(periods?.data == null) return@withContext
                 if (_binding == null) return@withContext
 
                 try {
@@ -157,7 +153,6 @@ class MarksFragment : Fragment(){
             withContext(Dispatchers.Main) {
                 binding.progressBar.visibility = View.GONE
                 if (periods == null) return@withContext
-                if (periods?.data == null) return@withContext
                 if (_binding == null) return@withContext
                 binding.marks.adapter =
                     RecycleAdapterPeriodsGroup(requireContext(), periods.data)

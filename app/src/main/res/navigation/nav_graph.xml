@@ -34,7 +34,7 @@
 
             <argument
                 android:name="user"
-                app:argType="com.alex.materialdiary.sys.common.models.ShareUser" />
+                app:argType="com.alex.materialdiary.sys.net.models.ShareUser" />
         </fragment>
 
         <fragment
@@ -64,7 +64,7 @@
             tools:layout="@layout/fragment_lesson">
             <argument
                 android:name="lesson"
-                app:argType="com.alex.materialdiary.sys.common.models.diary_day.DatumDay" />
+                app:argType="com.alex.materialdiary.sys.net.models.diary_day.DatumDay" />
         </fragment>
         <!-- <fragment
              android:id="@+id/UserInfoFragment"

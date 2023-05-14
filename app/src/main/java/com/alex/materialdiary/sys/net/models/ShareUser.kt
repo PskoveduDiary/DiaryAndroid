@@ -1,4 +1,4 @@
-package com.alex.materialdiary.sys.common.models
+package com.alex.materialdiary.sys.net.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

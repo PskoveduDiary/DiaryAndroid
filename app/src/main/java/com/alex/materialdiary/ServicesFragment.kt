@@ -14,7 +14,6 @@ import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
 import androidx.webkit.WebViewFeature
 import com.alex.materialdiary.databinding.FragmentServicesBinding
 import com.alex.materialdiary.sys.MyWebViewClient
-import com.alex.materialdiary.sys.WEB
 import com.alex.materialdiary.ui.login.LoginActivity
 
 /**

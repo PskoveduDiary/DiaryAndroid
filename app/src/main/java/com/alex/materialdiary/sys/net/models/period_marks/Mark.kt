@@ -1,67 +1,20 @@
-package com.alex.materialdiary.sys.common.models.period_marks;
+package com.alex.materialdiary.sys.net.models.period_marks
 
-import androidx.annotation.Nullable;
+import com.google.gson.annotations.SerializedName
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+data class Mark (
+    @SerializedName("SYS_GUID")
+    var sysGuid: String? = null,
 
-public class Mark {
+    @SerializedName("DATE")
+    var date: String,
 
-@SerializedName("SYS_GUID")
-@Expose
-private String sysGuid;
-@SerializedName("DATE")
-@Expose
-@Nullable
-private String date;
-@SerializedName("LONG_NAME")
-@Expose
-private String longName;
-@SerializedName("SHORT_NAME")
-@Expose
-private String shortName;
-@SerializedName("VALUE")
-@Expose
-private Integer value;
+    @SerializedName("LONG_NAME")
+    var longName: String? = null,
 
-public String getSysGuid() {
-return sysGuid;
-}
+    @SerializedName("SHORT_NAME")
+    var shortName: String? = null,
 
-public void setSysGuid(String sysGuid) {
-this.sysGuid = sysGuid;
-}
-
-public String getDate() {
-return date;
-}
-
-public void setDate(String date) {
-this.date = date;
-}
-
-public String getLongName() {
-return longName;
-}
-
-public void setLongName(String longName) {
-this.longName = longName;
-}
-
-public String getShortName() {
-return shortName;
-}
-
-public void setShortName(String shortName) {
-this.shortName = shortName;
-}
-
-public Integer getValue() {
-return value;
-}
-
-public void setValue(Integer value) {
-this.value = value;
-}
-
-}
+    @SerializedName("VALUE")
+    var value: Int
+)

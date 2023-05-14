@@ -91,7 +91,7 @@ class WebLoginFragment : Fragment(), ZBarScannerView.ResultHandler {
                         .setTitle("Вы не выдали разрешение!")
                         .setMessage("Пожалуйста, разрешите доступ к камере в Настройки>Приложения>Дневник>Разрешения")
                         .setPositiveButton("В настройки",
-                            DialogInterface.OnClickListener { dialog, which ->
+                            DialogInterface.OnClickListener { _, _ ->
                                 startActivity(
                                     Intent(
                                         Settings.ACTION_SETTINGS
@@ -100,7 +100,7 @@ class WebLoginFragment : Fragment(), ZBarScannerView.ResultHandler {
                             })
                         .setNegativeButton(
                             "Отмена",
-                            DialogInterface.OnClickListener { dialog, which ->
+                            DialogInterface.OnClickListener { dialog, _ ->
                                 dialog.cancel()
                                 findNavController().navigateUp()
                             })

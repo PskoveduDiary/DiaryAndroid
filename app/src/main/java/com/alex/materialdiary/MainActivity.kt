@@ -4,30 +4,22 @@ package com.alex.materialdiary
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ComponentName
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.DiaryPreferences
-import com.alex.materialdiary.sys.common.CommonService
-import com.alex.materialdiary.sys.common.Crypt
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.ClassicBody
+import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.utils.MarksTranslator
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,8 +31,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import org.joda.time.format.DateTimeFormat
-import retrofit2.HttpException
-import xdroid.toaster.Toaster.toast
 import java.io.File
 
 
@@ -130,7 +120,7 @@ open class MainActivity : AppCompatActivity() {
                 /*Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()*/
             })
         }
-        catch (e: Exception){""}
+        catch (_: Exception){}
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -247,8 +237,8 @@ open class MainActivity : AppCompatActivity() {
     }
 
     open fun deleteDir(dir: File?): Boolean {
-        if (dir != null && dir.isDirectory()) {
-            val children: Array<String> = dir.list()
+        if (dir != null && dir.isDirectory) {
+            val children: Array<String> = dir.list() as Array<String>
             for (i in children.indices) {
                 val success = deleteDir(File(dir, children[i]))
                 if (!success) {
@@ -283,14 +273,15 @@ open class MainActivity : AppCompatActivity() {
                 if ((api.getCachedPeriods()?.data) == null) return@launch
                 val cur_per = MarksTranslator.get_cur_period(api.getPeriods()?.data!!)
                 val pattern = DateTimeFormat.forPattern("dd.MM.yyyy")
-                val (marks, need) = api.getPeriodMarks(cur_per[0].toString(pattern), cur_per[1].toString(pattern))
+                val (marks, _) = api.getPeriodMarks(cur_per[0].toString(pattern), cur_per[1].toString(pattern))
                 withContext(Dispatchers.Main) {
                     var diffs = 0
                     marks?.data?.let { MarksTranslator(it).items }?.let { items ->
                         items.forEach {
-                            diffs += MarksTranslator.getSubjectMarksDifferences(baseContext, it.name,
+                            diffs += MarksTranslator.getSubjectMarksDifferences(
+                                baseContext, it.name,
                                 items
-                            )?.size!!
+                            ).size
                         }
                     }
                     if (diffs > 0) {

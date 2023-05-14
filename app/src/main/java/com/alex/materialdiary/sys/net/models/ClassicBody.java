@@ -1,4 +1,4 @@
-package com.alex.materialdiary.sys.common.models;
+package com.alex.materialdiary.sys.net.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

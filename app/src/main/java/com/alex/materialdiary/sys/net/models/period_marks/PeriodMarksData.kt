@@ -1,189 +1,108 @@
-package com.alex.materialdiary.sys.common.models.period_marks;
+package com.alex.materialdiary.sys.net.models.period_marks
 
-import java.text.DecimalFormat;
-import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
+import java.text.DecimalFormat
 
-public class PeriodMarksData {
+data class PeriodMarksData(
+    @SerializedName("JOURNAL_SYS_GUID")
+    var journalSysGuid: String? = null,
 
-@SerializedName("JOURNAL_SYS_GUID")
-@Expose
-private String journalSysGuid;
-@SerializedName("JOURNAL_NAME")
-@Expose
-private String journalName;
-@SerializedName("SUBJECT_SYS_GUID")
-@Expose
-private String subjectSysGuid;
-@SerializedName("SUBJECT_NAME")
-@Expose
-private String subjectName;
-@SerializedName("TEACHER_SYS_GUID")
-@Expose
-private String teacherSysGuid;
-@SerializedName("TEACHER_NAME")
-@Expose
-private String teacherName;
-@SerializedName("TEACHER_NAME_SHORT")
-@Expose
-private String teacherNameShort;
-@SerializedName("HIDE_IN_REPORTS")
-@Expose
-private Boolean hideInReports;
-@SerializedName("HIDE_IN_SCHEDULE")
-@Expose
-private Boolean hideInSchedule;
-@SerializedName("MARKS")
-@Expose
-private List<Mark> marks = null;
+    @SerializedName("JOURNAL_NAME")
+    var journalName: String? = null,
 
-public String getJournalSysGuid() {
-return journalSysGuid;
-}
+    @SerializedName("SUBJECT_SYS_GUID")
+    var subjectSysGuid: String? = null,
 
-public void setJournalSysGuid(String journalSysGuid) {
-this.journalSysGuid = journalSysGuid;
-}
+    @SerializedName("SUBJECT_NAME")
+    var subjectName: String,
 
-public String getJournalName() {
-return journalName;
-}
+    @SerializedName("TEACHER_SYS_GUID")
+    var teacherSysGuid: String? = null,
 
-public void setJournalName(String journalName) {
-this.journalName = journalName;
-}
+    @SerializedName("TEACHER_NAME")
+    var teacherName: String? = null,
 
-public String getSubjectSysGuid() {
-return subjectSysGuid;
-}
+    @SerializedName("TEACHER_NAME_SHORT")
+    var teacherNameShort: String? = null,
 
-public void setSubjectSysGuid(String subjectSysGuid) {
-this.subjectSysGuid = subjectSysGuid;
-}
+    @SerializedName("HIDE_IN_REPORTS")
+    var hideInReports: Boolean? = null,
 
-public String getSubjectName() {
-return subjectName;
-}
+    @SerializedName("HIDE_IN_SCHEDULE")
+    var hideInSchedule: Boolean? = null,
 
-public void setSubjectName(String subjectName) {
-this.subjectName = subjectName;
-}
-
-public String getTeacherSysGuid() {
-return teacherSysGuid;
-}
-
-public void setTeacherSysGuid(String teacherSysGuid) {
-this.teacherSysGuid = teacherSysGuid;
-}
-
-public String getTeacherName() {
-return teacherName;
-}
-
-public void setTeacherName(String teacherName) {
-this.teacherName = teacherName;
-}
-
-public String getTeacherNameShort() {
-return teacherNameShort;
-}
-
-public void setTeacherNameShort(String teacherNameShort) {
-this.teacherNameShort = teacherNameShort;
-}
-
-public Boolean getHideInReports() {
-return hideInReports;
-}
-
-public void setHideInReports(Boolean hideInReports) {
-this.hideInReports = hideInReports;
-}
-
-public Boolean getHideInSchedule() {
-return hideInSchedule;
-}
-
-public void setHideInSchedule(Boolean hideInSchedule) {
-this.hideInSchedule = hideInSchedule;
-}
-
-public List<Mark> getMarks() {
-return marks;
-}
-
-public String getAverage() {
-        if (marks.size() == 0) return "Нет оценок";
-        int com = 0;
-        for (int i = 0; i < marks.size(); i++ ){
-            com += marks.get(i).getValue();
+    @SerializedName("MARKS")
+    var marks: List<Mark>
+) {
+    val average: String
+        get() {
+            if (marks.size == 0) return "Нет оценок"
+            var com = 0
+            for (i in marks.indices) {
+                com += marks[i].value
+            }
+            return "Средний бал: " + DecimalFormat("#0.00").format((com.toFloat() / marks.size).toDouble())
         }
-        return "Средний бал: " + new DecimalFormat("#0.00").format((float) com / marks.size());
-    }
-public String get_to_five(){
-    if (marks.size() == 0) return "3";
-    int sum = 0;
-    int added = 0;
-    for (int i = 0; i < marks.size(); i++ ){
-        sum += marks.get(i).getValue();
-    }
-    float average = (float) sum / marks.size();
-    if (average >= 4.59) return "Уже 5";
-    while (average < 4.6){
-        added += 1;
-        sum += 5;
-        average = (float) sum / (marks.size() + added);
-        if (added >= 40){
-            return "Много";
-        }
-    }
-    return String.valueOf(added);
-}
 
-public String get_four_to_four(){
-    if (marks.size() == 0) return "3";
-    int sum = 0;
-    int added = 0;
-    for (int i = 0; i < marks.size(); i++ ){
-        sum += marks.get(i).getValue();
-    }
-    float average = (float) sum / marks.size();
-    if (average >= 4.59) return "Уже 5";
-    if (average >= 3.59) return "Уже 4";
-    while (average < 3.6){
-        added += 1;
-        sum += 4;
-        average = (float) sum / (marks.size() + added);
-        if (added >= 40){
-            return "Много";
+    fun get_to_five(): String {
+        if (marks.size == 0) return "3"
+        var sum = 0
+        var added = 0
+        for (i in marks.indices) {
+            sum += marks[i].value
         }
-    }
-    return String.valueOf(added);
-}
-public String get_five_to_four(){
-    if (marks.size() == 0) return "3";
-    int sum = 0;
-    int added = 0;
-    for (int i = 0; i < marks.size(); i++ ){
-        sum += marks.get(i).getValue();
-    }
-    float average = (float) sum / marks.size();
-    if (average >= 4.59) return "Уже 5";
-    if (average >= 3.59) return "Уже 4";
-    while (average < 3.6){
-        added += 1;
-        sum += 5;
-        average = (float) sum / (marks.size() + added);
-        if (added >= 40){
-            return "Много";
+        var average = sum.toFloat() / marks.size
+        if (average >= 4.59) return "Уже 5"
+        while (average < 4.6) {
+            added += 1
+            sum += 5
+            average = sum.toFloat() / (marks.size + added)
+            if (added >= 40) {
+                return "Много"
+            }
         }
+        return added.toString()
     }
-    return String.valueOf(added);
-}
-public void setMarks(List<Mark> marks) {
-this.marks = marks;
-}
 
+    fun get_four_to_four(): String {
+        if (marks.size == 0) return "3"
+        var sum = 0
+        var added = 0
+        for (i in marks.indices) {
+            sum += marks[i].value
+        }
+        var average = sum.toFloat() / marks.size
+        if (average >= 4.59) return "Уже 5"
+        if (average >= 3.59) return "Уже 4"
+        while (average < 3.6) {
+            added += 1
+            sum += 4
+            average = sum.toFloat() / (marks.size + added)
+            if (added >= 40) {
+                return "Много"
+            }
+        }
+        return added.toString()
+    }
+
+    fun get_five_to_four(): String {
+        if (marks.size == 0) return "3"
+        var sum = 0
+        var added = 0
+        for (i in marks.indices) {
+            sum += marks[i].value
+        }
+        var average = sum.toFloat() / marks.size
+        if (average >= 4.59) return "Уже 5"
+        if (average >= 3.59) return "Уже 4"
+        while (average < 3.6) {
+            added += 1
+            sum += 5
+            average = sum.toFloat() / (marks.size + added)
+            if (added >= 40) {
+                return "Много"
+            }
+        }
+        return added.toString()
+    }
 }

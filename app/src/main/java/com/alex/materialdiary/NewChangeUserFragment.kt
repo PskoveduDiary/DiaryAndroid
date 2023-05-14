@@ -1,7 +1,5 @@
 package com.alex.materialdiary
 
-import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,16 +8,9 @@ import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebSettingsCompat.FORCE_DARK_OFF
-import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
-import androidx.webkit.WebViewFeature
-import com.alex.materialdiary.databinding.FragmentAddContactBinding
 import com.alex.materialdiary.databinding.FragmentChUserNewBinding
-import com.alex.materialdiary.databinding.FragmentEskudBinding
-import com.alex.materialdiary.sys.MyWebViewClient
 import com.alex.materialdiary.sys.adapters.RecycleAdapterSharedUsers
-import com.alex.materialdiary.sys.common.PskoveduApi
+import com.alex.materialdiary.sys.net.PskoveduApi
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.

@@ -13,12 +13,8 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.keywords
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
-import com.alex.materialdiary.sys.common.CommonService
-import com.alex.materialdiary.sys.common.Crypt
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.ClassicBody
-import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods
-import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.PskoveduApi
+import com.alex.materialdiary.sys.net.models.all_periods.AllPeriods
 import com.alex.materialdiary.utils.MarksTranslator
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -162,9 +158,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 var diffs = 0
                 marks?.data?.let { MarksTranslator(it).items }?.let { items ->
                     items.forEach {
-                        diffs += MarksTranslator.getSubjectMarksDifferences(baseContext, it.name,
+                        diffs += MarksTranslator.getSubjectMarksDifferences(
+                            baseContext, it.name,
                             items
-                        )?.size!!
+                        ).size
                     }
                 }
                 if (diffs <= 0) return@launch

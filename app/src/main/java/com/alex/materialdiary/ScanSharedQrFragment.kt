@@ -2,7 +2,6 @@ package com.alex.materialdiary
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -16,8 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentScanQrBinding
 import com.alex.materialdiary.sys.PermissionUtils
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.ShareUser
+import com.alex.materialdiary.sys.net.PskoveduApi
+import com.alex.materialdiary.sys.net.models.ShareUser
 import com.google.gson.Gson
 import me.dm7.barcodescanner.zbar.BarcodeFormat
 import me.dm7.barcodescanner.zbar.Result
@@ -87,7 +86,7 @@ class ScanSharedQrFragment : Fragment(), ZBarScannerView.ResultHandler {
                         .setTitle("Вы не выдали разрешение!")
                         .setMessage("Пожалуйста, разрешите доступ к камере в Настройки>Приложения>Дневник>Разрешения")
                         .setPositiveButton("В настройки",
-                            DialogInterface.OnClickListener { dialog, which ->
+                            DialogInterface.OnClickListener { _, _ ->
                                 startActivity(
                                     Intent(
                                         Settings.ACTION_SETTINGS
@@ -96,7 +95,7 @@ class ScanSharedQrFragment : Fragment(), ZBarScannerView.ResultHandler {
                             })
                         .setNegativeButton(
                             "Отмена",
-                            DialogInterface.OnClickListener { dialog, which ->
+                            DialogInterface.OnClickListener { dialog, _ ->
                                 dialog.cancel()
                                 findNavController().navigateUp()
                             })

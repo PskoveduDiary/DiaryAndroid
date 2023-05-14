@@ -28,9 +28,6 @@ open class MyWebViewClient() : WebViewClient() {
         return handleUri(view, uri.toString())
     }
     open fun handleUri(view: WebView, url: String): Boolean{
-        //if (url.equals("https://one.pskovedu.ru/edv/index/error/access_denied")) {
-
-        //}
         return true;
     }
 }

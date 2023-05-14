@@ -1,63 +1,50 @@
-package com.alex.materialdiary.sys.adapters;
+package com.alex.materialdiary.sys.adapters
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import com.alex.materialdiary.MarksFragment
+import com.alex.materialdiary.sys.net.models.all_periods.AllPeriodData
+import androidx.recyclerview.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import com.alex.materialdiary.R
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class RecycleAdapterPeriods(context: MarksFragment, periods: List<AllPeriodData>?) :
+    RecyclerView.Adapter<RecycleAdapterPeriods.ViewHolder>() {
+    private val mf: MarksFragment
+    private val inflater: LayoutInflater
+    private val periods: List<AllPeriodData>?
 
-import com.alex.materialdiary.MarksFragment;
-import com.alex.materialdiary.R;
-import com.alex.materialdiary.sys.common.models.all_periods.AllPeriodData;
-import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData;
-
-import java.util.List;
-
-public class RecycleAdapterPeriods extends RecyclerView.Adapter<RecycleAdapterPeriods.ViewHolder>{
-
-    private final MarksFragment mf;
-    private final LayoutInflater inflater;
-    private final List<AllPeriodData> periods;
-
-    public RecycleAdapterPeriods(MarksFragment context, List<AllPeriodData> periods) {
-        this.inflater = LayoutInflater.from(context.requireContext());
-        mf = context;
-        this.periods = periods;
+    init {
+        inflater = LayoutInflater.from(context.requireContext())
+        mf = context
+        this.periods = periods
     }
 
-    @NonNull
-    @Override
-    public RecycleAdapterPeriods.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.period_item, parent, false);
-        return new ViewHolder(view);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = inflater.inflate(R.layout.period_item, parent, false)
+        return ViewHolder(view)
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecycleAdapterPeriods.ViewHolder holder, int position) {
-        AllPeriodData period = periods.get(position);
-        holder.button.setText(period.getName());
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val (_, _, name, dateBegin, dateEnd) = periods!![position]
+        holder.button.text = name
         //holder.button.setTag(holder.button.hashCode(), period.getPeriodGuid());
-        holder.button.setOnClickListener(v -> {
-            mf.getMarks(period.getDateBegin(), period.getDateEnd());
-            mf.showLoader();
-        });
+        holder.button.setOnClickListener {
+            mf.getMarks(dateBegin, dateEnd)
+            mf.showLoader()
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        if (periods == null) return 0;
-        return periods.size();
+    override fun getItemCount(): Int {
+        return periods?.size ?: 0
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        final Button button;
-        ViewHolder(View view){
-            super(view);
-            button = view.findViewById(R.id.Periodbutton);
+
+    class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
+        val button: Button
+
+        init {
+            button = view.findViewById(R.id.Periodbutton)
         }
     }
 }

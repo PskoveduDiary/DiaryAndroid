@@ -2,44 +2,23 @@ package com.alex.materialdiary.settings
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.ComponentName
 import android.content.Context.CLIPBOARD_SERVICE
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.PerformanceHintManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
 import com.alex.materialdiary.BuildConfig
 import com.alex.materialdiary.FeatureFragmentDirections
 import com.alex.materialdiary.R
-import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.play.core.ktx.status
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
-import com.google.android.play.core.splitinstall.SplitInstallSessionState
-import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
-import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import com.alex.materialdiary.sys.net.PskoveduApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Call
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import xdroid.toaster.Toaster.toast
-import java.io.IOException
 
 
 class AboutFragment : PreferenceFragmentCompat() {

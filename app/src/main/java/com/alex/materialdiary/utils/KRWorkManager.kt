@@ -24,9 +24,9 @@ class KRWorkManager {
             ).getStandardMinutes()
         }
 
-        val constraints = Constraints.Builder()
+        /*val constraints = Constraints.Builder()
             //.setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
+            .build()*/
         toast(delay.toString())
         val workRequest = PeriodicWorkRequest.Builder(
             KRNotifyWorker::class.java,

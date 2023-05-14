@@ -2,10 +2,10 @@ package com.alex.materialdiary.utils
 
 import android.content.Context
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
-import com.alex.materialdiary.sys.common.models.all_periods.AllPeriodData
-import com.alex.materialdiary.sys.common.models.marks.Item
-import com.alex.materialdiary.sys.common.models.marks.Mark
-import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarksData
+import com.alex.materialdiary.sys.net.models.all_periods.AllPeriodData
+import com.alex.materialdiary.sys.net.models.marks.Item
+import com.alex.materialdiary.sys.net.models.marks.Mark
+import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarksData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.joda.time.LocalDate
@@ -26,7 +26,7 @@ class MarksTranslator(val pm: MutableList<PeriodMarksData>) {
     }
     companion object{
 
-        fun getSubjectMarksDifferences(context: Context, subj_name: String?, neww: List<Item>): List<Mark?>? {
+        fun getSubjectMarksDifferences(context: Context, subj_name: String?, neww: List<Item>): List<Mark> {
             val utils = ReadWriteJsonFileUtils(context)
             val readed = utils.readJsonFileData("marks.json")
                 ?: return ArrayList()
@@ -34,7 +34,7 @@ class MarksTranslator(val pm: MutableList<PeriodMarksData>) {
             val old = Gson().fromJson<List<Item>>(readed, listType)
             val old_item = old.find { it.name == subj_name } ?: return ArrayList()
             val new_item = neww.find { it.name == subj_name } ?: return ArrayList()
-            val diff: MutableList<Mark?> = ArrayList(
+            val diff: MutableList<Mark> = ArrayList(
                 new_item.marks
             )
             diff.removeAll(old_item.marks)

@@ -1,6 +1,5 @@
 package com.alex.materialdiary.workers
 
-import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -8,13 +7,11 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.alex.materialdiary.R
 import com.alex.materialdiary.keywords
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.utils.KRWorkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import xdroid.toaster.Toaster.toast
 import java.util.*
 
 class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :

@@ -1,4 +1,4 @@
-package com.alex.materialdiary.sys.common.models
+package com.alex.materialdiary.sys.net.models.get_user
 
 data class UserInfoRequest(
     val api_key: String,

@@ -1,109 +1,33 @@
-package com.alex.materialdiary.sys.common.models.periods;
+package com.alex.materialdiary.sys.net.models.periods
 
-import com.alex.materialdiary.sys.common.models.period_marks.Mark;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.alex.materialdiary.sys.net.models.period_marks.Mark
+import com.google.gson.annotations.SerializedName
 
-public class Period {
+data class Period (
+    @SerializedName("SYS_GUID")
+    var sysGuid: String? = null,
 
-@SerializedName("SYS_GUID")
-@Expose
-private String sysGuid;
-@SerializedName("PERIOD_GUID")
-@Expose
-private String periodGuid;
-@SerializedName("NAME")
-@Expose
-private String name;
-@SerializedName("DATE_BEGIN")
-@Expose
-private String dateBegin;
-@SerializedName("DATE_END")
-@Expose
-private String dateEnd;
-@SerializedName("GRADE_TYPE_GUID")
-@Expose
-private Integer gradeTypeGuid;
-@SerializedName("MARK")
-@Expose
-private Mark mark;
-@SerializedName("AVERAGE")
-@Expose
-private Double average;
-@SerializedName("COUNT")
-@Expose
-private Integer count;
+    @SerializedName("PERIOD_GUID")
+    var periodGuid: String? = null,
 
-public String getSysGuid() {
-return sysGuid;
-}
+    @SerializedName("NAME")
+    var name: String? = null,
 
-public void setSysGuid(String sysGuid) {
-this.sysGuid = sysGuid;
-}
+    @SerializedName("DATE_BEGIN")
+    var dateBegin: String? = null,
 
-public String getPeriodGuid() {
-return periodGuid;
-}
+    @SerializedName("DATE_END")
+    var dateEnd: String? = null,
 
-public void setPeriodGuid(String periodGuid) {
-this.periodGuid = periodGuid;
-}
+    @SerializedName("GRADE_TYPE_GUID")
+    var gradeTypeGuid: Int? = null,
 
-public String getName() {
-return name;
-}
+    @SerializedName("MARK")
+    var mark: Mark? = null,
 
-public void setName(String name) {
-this.name = name;
-}
+    @SerializedName("AVERAGE")
+    var average: Double? = null,
 
-public String getDateBegin() {
-return dateBegin;
-}
-
-public void setDateBegin(String dateBegin) {
-this.dateBegin = dateBegin;
-}
-
-public String getDateEnd() {
-return dateEnd;
-}
-
-public void setDateEnd(String dateEnd) {
-this.dateEnd = dateEnd;
-}
-
-public Integer getGradeTypeGuid() {
-return gradeTypeGuid;
-}
-
-public void setGradeTypeGuid(Integer gradeTypeGuid) {
-this.gradeTypeGuid = gradeTypeGuid;
-}
-
-public Mark getMark() {
-return mark;
-}
-
-public void setMark(Mark mark) {
-this.mark = mark;
-}
-
-public Double getAverage() {
-return average;
-}
-
-public void setAverage(Double average) {
-this.average = average;
-}
-
-public Integer getCount() {
-return count;
-}
-
-public void setCount(Integer count) {
-this.count = count;
-}
-
-}
+    @SerializedName("COUNT")
+    var count: Int? = null
+)

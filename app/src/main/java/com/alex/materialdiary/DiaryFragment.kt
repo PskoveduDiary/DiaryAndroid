@@ -1,32 +1,25 @@
 package com.alex.materialdiary
 
 import android.R
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.DialogInterface
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentDiaryBinding
 import com.alex.materialdiary.sys.adapters.ProgramAdapterDiary
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.PskoveduApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**

@@ -1,13 +1,11 @@
-package com.alex.materialdiary.sys.common
+package com.alex.materialdiary.sys.net
 
 import android.webkit.CookieManager
 import retrofit2.Retrofit
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.Interceptor
-import com.alex.materialdiary.sys.common.FilesService
 import retrofit2.converter.gson.GsonConverterFactory
-import com.alex.materialdiary.sys.common.FilesInterface
 
 class FilesService private constructor() {
     private val mRetrofit: Retrofit

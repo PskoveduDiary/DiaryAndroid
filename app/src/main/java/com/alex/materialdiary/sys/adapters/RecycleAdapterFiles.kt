@@ -60,7 +60,7 @@ class RecycleAdapterFiles(context: Context, links: MutableList<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val guid = links.get(position).replace("https://one.pskovedu.ru:/file/download/", "")
+        //val guid = links.get(position).replace("https://one.pskovedu.ru:/file/download/", "")
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val (name, file) = getFileName(links.get(position))

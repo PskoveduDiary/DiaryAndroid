@@ -9,9 +9,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentKrBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterKrInfo
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.diary_day.DatumDay
-import com.alex.materialdiary.sys.common.models.kr.kr_info
+import com.alex.materialdiary.sys.net.PskoveduApi
+import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.models.kr.kr_info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

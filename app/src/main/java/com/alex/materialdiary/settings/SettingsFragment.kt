@@ -50,7 +50,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         if (result != null) {
             val lv = result.findViewById<View>(android.R.id.list)
             if (lv is ListView) {
-                (lv as ListView).setOnItemLongClickListener {parent, view, pos, id ->
+                lv.setOnItemLongClickListener { parent, _, pos, _ ->
                     val listAdapter: ListAdapter = (parent as ListView).adapter
                     val obj: Any = listAdapter.getItem(pos)
 
@@ -115,7 +115,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             marks_en.isEnabled = false
             marks_en.summary = "Недоступно на вашем устройстве!"
         }
-        kr_en.setOnPreferenceChangeListener { preference, newValue ->
+        kr_en.setOnPreferenceChangeListener { _, newValue ->
             when (newValue) {
                 true -> {
                     toast("Отправляем запрос на уведомления...")
@@ -178,7 +178,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             true
         }
-        marks_en.setOnPreferenceChangeListener { preference, newValue ->
+        marks_en.setOnPreferenceChangeListener { _, newValue ->
             when (newValue) {
                 true -> {
                     toast("Отправляем запрос на уведомления...")

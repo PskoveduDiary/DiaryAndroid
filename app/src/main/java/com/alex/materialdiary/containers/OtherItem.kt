@@ -2,8 +2,8 @@ package com.alex.materialdiary.containers
 
 import com.alex.materialdiary.R
 
-class OtherItem(val labels: String, val images: Int, val Ids: Int) {
-    public val Label: String = labels
-    public val Image: Int = images
-    public val Id: Int = Ids
+class OtherItem(labels: String, images: Int, Ids: Int) {
+    val Label: String = labels
+    val Image: Int = images
+    val Id: Int = Ids
 }

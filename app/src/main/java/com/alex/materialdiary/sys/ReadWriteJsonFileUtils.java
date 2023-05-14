@@ -2,32 +2,20 @@ package com.alex.materialdiary.sys;
 
 import static xdroid.toaster.Toaster.toast;
 
-import android.app.Activity;
 import android.content.Context;
 
-import androidx.annotation.Nullable;
-
-import com.alex.materialdiary.sys.common.models.marks.Item;
 import com.google.gson.reflect.TypeToken;
 import com.labijie.caching.TimePolicy;
 import com.labijie.caching.memory.MemoryCacheManager;
 import com.labijie.caching.memory.MemoryCacheOptions;
 
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Objects;
-
-import kotlin.Unit;
 
 public class ReadWriteJsonFileUtils {
-    Activity activity;
     Context context;
     public static MemoryCacheManager memoryCache = new MemoryCacheManager(new MemoryCacheOptions());
 

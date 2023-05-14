@@ -13,7 +13,7 @@ import androidx.navigation.NavDirections;
 import com.alex.materialdiary.DiaryFragment;
 import com.alex.materialdiary.LessonFragmentDirections;
 import com.alex.materialdiary.R;
-import com.alex.materialdiary.sys.common.models.diary_day.DatumDay;
+import com.alex.materialdiary.sys.net.models.diary_day.DatumDay;
 
 import java.util.Arrays;
 import java.util.List;

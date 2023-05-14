@@ -1,4 +1,4 @@
-package com.alex.materialdiary.sys.common
+package com.alex.materialdiary.sys.net
 
 import android.content.Context
 import android.content.Intent
@@ -9,17 +9,17 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
-import com.alex.materialdiary.sys.common.models.ClassicBody
-import com.alex.materialdiary.sys.common.models.PDBody
-import com.alex.materialdiary.sys.common.models.ShareUser
-import com.alex.materialdiary.sys.common.models.UserInfoRequest
-import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods
-import com.alex.materialdiary.sys.common.models.diary_day.DiaryDay
-import com.alex.materialdiary.sys.common.models.get_user.UserData
-import com.alex.materialdiary.sys.common.models.get_user.UserInfo
-import com.alex.materialdiary.sys.common.models.marks.Item
-import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarks
-import com.alex.materialdiary.sys.common.models.periods.Periods
+import com.alex.materialdiary.sys.net.models.ClassicBody
+import com.alex.materialdiary.sys.net.models.pda.PDBody
+import com.alex.materialdiary.sys.net.models.ShareUser
+import com.alex.materialdiary.sys.net.models.get_user.UserInfoRequest
+import com.alex.materialdiary.sys.net.models.all_periods.AllPeriods
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
+import com.alex.materialdiary.sys.net.models.get_user.UserData
+import com.alex.materialdiary.sys.net.models.get_user.UserInfo
+import com.alex.materialdiary.sys.net.models.marks.Item
+import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarks
+import com.alex.materialdiary.sys.net.models.periods.Periods
 import com.alex.materialdiary.ui.login.LoginActivity
 import com.alex.materialdiary.utils.MarksTranslator
 import com.alex.materialdiary.utils.MarksTranslator.Companion.get_cur_period
@@ -106,7 +106,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
 
     fun changeGuid(guid: String, name: String){
         this.guid = guid
-        if (context != null) (context as MainActivity).checkNav()
+        (context as MainActivity).checkNav()
         if (guid.length > 1) apikey = Crypt().encryptSYS_GUID(guid)
         DPrefs.set(DiaryPreferences.GUID, guid)
         CoroutineScope(Dispatchers.IO).launch {
@@ -136,7 +136,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
         val cookies = CookieManager.getInstance().getCookie("one.pskovedu.ru")
         if (cookies == null) {
             Log.d("redirect", "no-cookies")
-            context!!.startActivity(i)
+            context.startActivity(i)
             return null
         } else {
             var X1: String?
@@ -145,7 +145,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
             if (X1 == null) {
                 CookieManager.getInstance().removeAllCookies(null)
                 Log.d("redirect", "x1-empty")
-                context!!.startActivity(i)
+                context.startActivity(i)
                 return null
             }
             else sid = X1
@@ -156,9 +156,9 @@ class PskoveduApi(context: Context, navController: NavController?) {
         jsonUtils.createJsonFileData("users.json", gson.toJson(user))
         return user.data
     }
-    fun getShared(): List<ShareUser?> {
+    fun getShared(): List<ShareUser> {
         val readed = jsonUtils.readJsonFileData("shared.json") ?: return ArrayList()
-        val listType = object : TypeToken<ArrayList<ShareUser?>?>() {}.type
+        val listType = object : TypeToken<ArrayList<ShareUser>>() {}.type
         return gson.fromJson(readed, listType)
     }
     fun addShared(shareUser: ShareUser?) {
@@ -219,7 +219,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
         val dates = java.util.ArrayList<LocalDate>()
         dates.add(LocalDate.parse(from, formatter))
         dates.add(LocalDate.parse(to, formatter))
-        return marks to (getCachedPeriods()?.let { MarksTranslator.get_cur_period(it.getData()) } == dates)
+        return marks to (getCachedPeriods()?.let { MarksTranslator.get_cur_period(it.data) } == dates)
     }
     suspend fun getPeriods(): AllPeriods? {
         getCachedPeriods()?.let { return it }
@@ -275,8 +275,8 @@ class PskoveduApi(context: Context, navController: NavController?) {
         val localPda: String = genPdaKey()
         pdBody.pdakey = localPda
         val pda = endpoints.setPda(pdBody) ?: return
-        if (pda.getStatus() == "error") Toaster.toast("Ошибка PDA №2")
-        else if (pda.getStatus() == "ok") {
+        if (pda.status == "error") Toaster.toast("Ошибка PDA №2")
+        else if (pda.status == "ok") {
             DPrefs.set(DiaryPreferences.PDA, pda.pdakey)
             DPrefs.set(DiaryPreferences.PDA_GUID, guid)
             try { navController?.navigate(navController.currentDestination!!.id) }

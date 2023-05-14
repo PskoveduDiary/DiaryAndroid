@@ -1,9 +1,6 @@
 package com.alex.materialdiary
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentUsersBinding
-import com.alex.materialdiary.sys.adapters.ProgramAdapterUsers
 import com.alex.materialdiary.sys.adapters.RecycleAdapterUsers
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.get_user.UserData
+import com.alex.materialdiary.sys.net.PskoveduApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

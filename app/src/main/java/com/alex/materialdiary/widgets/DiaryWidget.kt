@@ -3,16 +3,9 @@ package com.alex.materialdiary.widgets
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.content.Intent
 import android.widget.RemoteViews
-import android.widget.RemoteViewsService
 import com.alex.materialdiary.R
-import com.alex.materialdiary.sys.adapters.ProgramAdapterDiary
-import com.alex.materialdiary.sys.common.CommonService
-import com.alex.materialdiary.sys.common.Crypt
-import com.alex.materialdiary.sys.common.PskoveduApi
-import com.alex.materialdiary.sys.common.models.ClassicBody
-import com.alex.materialdiary.sys.common.models.diary_day.DiaryDay
+import com.alex.materialdiary.sys.net.PskoveduApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,14 +44,14 @@ internal fun updateAppWidget(
 ) {
     val views = RemoteViews(context.packageName,
         R.layout.diary_widget)
-    val marksJob = CoroutineScope(Dispatchers.IO).launch {
+    CoroutineScope(Dispatchers.IO).launch {
         try {
-            val api = PskoveduApi.getInstance(context)
-            val lessons = api.getDay()
+            //val api = PskoveduApi.getInstance(context)
+            //val lessons = api.getDay()
             withContext(Dispatchers.Main) {
                 //views.setRemoteAdapter(R.id.lessons, Intent(context, ProgramAdapterDiary.class, ""))
             }
-        }  catch (e: Exception) {
+        }  catch (_: Exception) {
         }
     }
     // Instruct the widget manager to update the widget

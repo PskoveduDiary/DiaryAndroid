@@ -1,15 +1,14 @@
-package com.alex.materialdiary.sys.common
+package com.alex.materialdiary.sys.net
 
-import com.alex.materialdiary.sys.common.models.ClassicBody
-import com.alex.materialdiary.sys.common.models.PDAnswer
-import com.alex.materialdiary.sys.common.models.PDBody
-import com.alex.materialdiary.sys.common.models.UserInfoRequest
-import com.alex.materialdiary.sys.common.models.all_periods.AllPeriods
-import com.alex.materialdiary.sys.common.models.diary_day.DiaryDay
-import com.alex.materialdiary.sys.common.models.get_user.UserInfo
-import com.alex.materialdiary.sys.common.models.period_marks.PeriodMarks
-import com.alex.materialdiary.sys.common.models.periods.Periods
-import retrofit2.Call
+import com.alex.materialdiary.sys.net.models.ClassicBody
+import com.alex.materialdiary.sys.net.models.pda.PDAnswer
+import com.alex.materialdiary.sys.net.models.pda.PDBody
+import com.alex.materialdiary.sys.net.models.get_user.UserInfoRequest
+import com.alex.materialdiary.sys.net.models.all_periods.AllPeriods
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
+import com.alex.materialdiary.sys.net.models.get_user.UserInfo
+import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarks
+import com.alex.materialdiary.sys.net.models.periods.Periods
 import retrofit2.http.Body
 import retrofit2.http.POST
 

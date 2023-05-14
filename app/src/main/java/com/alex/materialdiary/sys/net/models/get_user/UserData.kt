@@ -1,109 +1,32 @@
-package com.alex.materialdiary.sys.common.models.get_user;
+package com.alex.materialdiary.sys.net.models.get_user
 
-import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-public class UserData {
+data class UserData (
+    @SerializedName("LOGIN")
+    var login: String? = null,
 
-@SerializedName("LOGIN")
-@Expose
-private String login;
-@SerializedName("SURNAME")
-@Expose
-private String surname;
-@SerializedName("NAME")
-@Expose
-private String name;
-@SerializedName("SECONDNAME")
-@Expose
-private String secondname;
-@SerializedName("EMAIL")
-@Expose
-private String email;
-@SerializedName("CONFIRMATION")
-@Expose
-private String confirmation;
-@SerializedName("CONFIRM_EXPIRATION")
-@Expose
-private Object confirmExpiration;
-@SerializedName("SESSION_ID")
-@Expose
-private Object sessionId;
-@SerializedName("SCHOOLS")
-@Expose
-private List<Schools> schools = null;
+    @SerializedName("SURNAME")
+    var surname: String? = null,
 
-public String getLogin() {
-return login;
-}
+    @SerializedName("NAME")
+    var name: String? = null,
 
-public void setLogin(String login) {
-this.login = login;
-}
+    @SerializedName("SECONDNAME")
+    var secondname: String? = null,
 
-public String getSurname() {
-return surname;
-}
+    @SerializedName("EMAIL")
+    var email: String? = null,
 
-public void setSurname(String surname) {
-this.surname = surname;
-}
+    @SerializedName("CONFIRMATION")
+    var confirmation: String? = null,
 
-public String getName() {
-return name;
-}
+    @SerializedName("CONFIRM_EXPIRATION")
+    var confirmExpiration: Any? = null,
 
-public void setName(String name) {
-this.name = name;
-}
+    @SerializedName("SESSION_ID")
+    var sessionId: Any? = null,
 
-public String getSecondname() {
-return secondname;
-}
-
-public void setSecondname(String secondname) {
-this.secondname = secondname;
-}
-
-public String getEmail() {
-return email;
-}
-
-public void setEmail(String email) {
-this.email = email;
-}
-
-public String getConfirmation() {
-return confirmation;
-}
-
-public void setConfirmation(String confirmation) {
-this.confirmation = confirmation;
-}
-
-public Object getConfirmExpiration() {
-return confirmExpiration;
-}
-
-public void setConfirmExpiration(Object confirmExpiration) {
-this.confirmExpiration = confirmExpiration;
-}
-
-public Object getSessionId() {
-return sessionId;
-}
-
-public void setSessionId(Object sessionId) {
-this.sessionId = sessionId;
-}
-
-public List<Schools> getSchools() {
-return schools;
-}
-
-public void setSchools(List<Schools> schools) {
-this.schools = schools;
-}
-
-}
+    @SerializedName("SCHOOLS")
+    var schools: List<Schools>
+)

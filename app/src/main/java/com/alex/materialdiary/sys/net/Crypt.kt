@@ -1,7 +1,6 @@
-package com.alex.materialdiary.sys.common
+package com.alex.materialdiary.sys.net
 
 import android.util.Base64
-import xdroid.toaster.Toaster.toast
 
 public class Crypt {
     var real_key = "com.alex.materialdiary"

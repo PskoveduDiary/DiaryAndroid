@@ -1,4 +1,4 @@
-package com.alex.materialdiary.sys.common.models.kr
+package com.alex.materialdiary.sys.net.models.kr
 
 data class kr_info(
     val lessonName: String,
