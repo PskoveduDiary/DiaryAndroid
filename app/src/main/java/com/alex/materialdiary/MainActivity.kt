@@ -16,11 +16,14 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.work.*
 import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.net.PskoveduApi
+import com.alex.materialdiary.utils.KRWorkManager
 import com.alex.materialdiary.utils.MarksTranslator
+import com.alex.materialdiary.workers.KRNotifyWorker
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -32,6 +35,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import org.joda.time.format.DateTimeFormat
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 
 open class MainActivity : AppCompatActivity() {
@@ -132,6 +136,10 @@ open class MainActivity : AppCompatActivity() {
                 "marks" -> navController.navigate(R.id.to_marks)
             }
         }
+        val crash = intent.getBooleanExtra("crash", false)
+        if (crash){
+            navController.navigate(R.id.to_fatal_error)
+        }
 
 
         //if (!p.contains("uuid")) {
@@ -196,9 +204,6 @@ open class MainActivity : AppCompatActivity() {
                 R.id.action_1 -> {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
                 }
-                R.id.action_2 -> {
-                //    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_contacts)
-                }
                 R.id.action_3 -> {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
                 }
@@ -223,36 +228,6 @@ open class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         marksJob?.cancel()
         super.onDestroy()
-    }
-
-    open fun trimCache(context: Context) {
-        try {
-            val dir: File? = context.cacheDir
-            if (dir != null && dir.isDirectory()) {
-                deleteDir(dir)
-            }
-        } catch (e: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(e)
-        }
-    }
-
-    open fun deleteDir(dir: File?): Boolean {
-        if (dir != null && dir.isDirectory) {
-            val children: Array<String> = dir.list() as Array<String>
-            for (i in children.indices) {
-                val success = deleteDir(File(dir, children[i]))
-                if (!success) {
-                    return false
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        if (dir != null) {
-            return dir.delete()
-        } else {
-            return false
-        }
     }
 
     override fun onBackPressed() {
@@ -320,8 +295,9 @@ open class MainActivity : AppCompatActivity() {
             R.id.to_new_ch_users
         )
         if (item.itemId == R.id.action_marks) findNavController(R.id.nav_host_fragment_content_main).navigate(
-            R.id.to_average
+            NavGraphDirections.toAverage()
         )
+
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true

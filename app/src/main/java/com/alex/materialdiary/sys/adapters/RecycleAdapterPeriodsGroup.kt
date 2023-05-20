@@ -36,6 +36,7 @@ class RecycleAdapterPeriodsGroup(context: Context, periods: List<Datum>) :
         val period = periods[position]
         holder.name.text = period.name
         holder.info.visibility = View.GONE
+        holder.marks.visibility = View.GONE
         val llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.HORIZONTAL
         holder.recyclerView.layoutManager = llm
@@ -50,12 +51,14 @@ class RecycleAdapterPeriodsGroup(context: Context, periods: List<Datum>) :
         val name: TextView
         val recyclerView: RecyclerView
         val info: ImageView
+        val marks: ImageView
 
         init {
             name = view.findViewById(R.id.MarksLessonName)
             view.findViewById<View>(R.id.MarksAverage).visibility = View.GONE
             recyclerView = view.findViewById(R.id.marks_recycle)
             info = view.findViewById(R.id.info)
+            marks = view.findViewById(R.id.marks)
         }
     }
 }

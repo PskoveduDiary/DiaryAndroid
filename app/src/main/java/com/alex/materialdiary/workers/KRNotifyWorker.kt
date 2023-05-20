@@ -71,7 +71,6 @@ class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :
                 }
             }
             val no_dubls = lessns.distinct()
-            if (lessns.size > 0) {
                 val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "kr")
                     .setSmallIcon(R.drawable.ic_baseline_error_outline_24)
                     .setContentTitle("Контрольные!")
@@ -88,7 +87,6 @@ class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setAutoCancel(true)
                 notificationManager.notify(1233, builder.build())
-            }
         }
     }
 

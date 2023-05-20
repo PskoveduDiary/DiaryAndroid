@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object AdlemxClient {
     private var retrofit: Retrofit? = null
     private var endpoints: AdlemxEndpoints? = null
-    private const val baseUrl = "http://192.168.0.107:8090"//"https://pskovedu.ml/api"
+    private const val baseUrl = "https://pskovedu.ml/api/"//"http://192.168.0.107:8090/"//"https://pskovedu.ml/api/"
     fun getClient(): Retrofit {
         if (retrofit == null) {
             val interceptor = HttpLoggingInterceptor()

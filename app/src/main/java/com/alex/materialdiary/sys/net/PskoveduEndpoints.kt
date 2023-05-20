@@ -16,16 +16,16 @@ interface PskoveduEndpoints {
     @POST("journals/diaryday")
     suspend fun getDiaryDay(@Body body: ClassicBody?): DiaryDay?
 
-    @POST("journals/allmarks")
+    @POST("journals/allmarks") // get all marks, equal: marksbyperiod without from, to args
     suspend fun getAllMarks(@Body body: ClassicBody?): PeriodMarks?
 
-    @POST("journals/marksbyperiod")
+    @POST("journals/marksbyperiod") // get marks in period
     suspend fun getPeriodMarks(@Body body: ClassicBody?): PeriodMarks?
 
-    @POST("journals/allperiods")
+    @POST("journals/allperiods") // get periods
     suspend fun getPeriods(@Body body: ClassicBody?): AllPeriods?
 
-    @POST("journals/periodmarks")
+    @POST("journals/periodmarks") // itog
     suspend fun getItogMarks(@Body body: ClassicBody?): Periods?
 
     @POST("pda/setpdakey")

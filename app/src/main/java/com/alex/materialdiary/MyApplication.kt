@@ -5,7 +5,10 @@ package com.alex.materialdiary
  * This can be done in multiple ways.
  * See https://developer.android.com/guide/playcore#access_downloaded_modules for more guidance.
  */
+import android.content.Intent
 import com.google.android.play.core.splitcompat.SplitCompatApplication
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlin.system.exitProcess
 
 
 /**
@@ -14,4 +17,17 @@ import com.google.android.play.core.splitcompat.SplitCompatApplication
  * See https://developer.android.com/guide/playcore#access_downloaded_modules for more guidance.
  */
 class MyApplication : SplitCompatApplication(){
+    override fun onCreate() {
+        super.onCreate()
+        Thread.setDefaultUncaughtExceptionHandler { _, e ->
+            FirebaseCrashlytics.getInstance().recordException(e)
+            e.printStackTrace()
+            val i = Intent(applicationContext, FatalErrorActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(i)
+
+            exitProcess(1)
+        }
+    }
 }

@@ -28,9 +28,19 @@
                 android:textSize="18sp" />
 
             <ImageView
+                android:id="@+id/marks"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_gravity="end"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/ic_baseline_filter_5_24"
+                app:tint="@color/icons" />
+            <ImageView
                 android:id="@+id/info"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginHorizontal="4dp"
                 android:layout_gravity="end"
                 android:layout_weight="0"
                 app:srcCompat="@drawable/ic_baseline_info_24"

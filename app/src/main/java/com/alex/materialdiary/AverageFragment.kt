@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.alex.materialdiary.databinding.FragmentAverageBinding
 import java.text.DecimalFormat
 import java.util.*
@@ -16,11 +17,13 @@ import java.util.*
  */
 class AverageFragment : Fragment() {
     private var _binding: FragmentAverageBinding? = null
-    val marks = mutableListOf<Int>()
+    var marks = mutableListOf<Int>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    val args: AverageFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +35,10 @@ class AverageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (args.marks != null) {
+            marks = args.marks!!.toMutableList()
+            calc()
+        }
         binding.one.setOnClickListener {
             marks += 1
             calc()

@@ -39,7 +39,10 @@ class KrFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val day = api.getDay( cuurent_date.toString())
             withContext(Dispatchers.Main) {
-                setDay(day?.data)
+                try {
+                    setDay(day?.data)
+                }
+                catch (_: java.lang.NullPointerException){}
             }
         }
         _binding = FragmentKrBinding.inflate(inflater, container, false)

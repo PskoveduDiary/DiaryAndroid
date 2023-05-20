@@ -78,11 +78,18 @@ public class ProgramAdapterDiary extends ArrayAdapter<String> {
         holder.Time.setText(data.get(position).getLessonTimeBegin() + " - " + data.get(position).getLessonTimeEnd());
         holder.Name.setText(data.get(position).getSubjectName());
         String marks = "";
+        String abscence = "";
+        for (int i = 0; i < data.get(position).getAbsence().size(); i++)
+        {
+            if (!abscence.equals("")) abscence += ", ";
+            abscence += data.get(position).getAbsence().get(i).getFullName();
+        }
         for (int i = 0; i < data.get(position).getMarks().size(); i++ ) {
-            if (marks != "") marks += ", ";
+            if (!marks.equals("")) marks += ", ";
             marks += data.get(position).getMarks().get(i).getShortName();
         }
         holder.Mark.setText(marks);
+        holder.Absence.setText(abscence);
         holder.Teacher.setText(data.get(position).getTeacherName());
         String hm = data.get(position).getHomeworkPrevious() != null ? data.get(position).getHomeworkPrevious().getHomework() : "";
         holder.HomeWork.setText(hm);

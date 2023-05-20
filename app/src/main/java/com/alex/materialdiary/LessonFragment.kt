@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentLessonBinding
@@ -34,6 +35,7 @@ class LessonFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (args.lesson.subjectName == null) findNavController().navigateUp()
         binding.lessName.text = "${args.lesson.lessonNumber}. ${args.lesson.subjectName}"
         binding.lessTeacher.text = "${args.lesson.teacherName}"
         binding.lessDate.text = "${args.lesson.lessonDate}"
@@ -47,6 +49,9 @@ class LessonFragment : Fragment(){
         else binding.lessHomework2.text = ""
         binding.lessMark.text = args.lesson.marks?.joinToString(", ") {
             it.shortName.toString()
+        }
+        binding.absenceText.text = args.lesson.absence?.joinToString(", ") {
+            it.fullName.toString()
         }
         binding.lessComment.text = args.lesson.notes?.joinToString(", ")
         if (args.lesson.homeworkPrevious?.homework != null) {

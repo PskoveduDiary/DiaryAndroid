@@ -13,16 +13,18 @@ import android.widget.CheckBox
 import com.alex.materialdiary.sys.net.models.kr.kr_info.TYPES
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.TextView
+import com.alex.materialdiary.ChecklistFragment
 import com.alex.materialdiary.sys.net.models.check_list.CheckListShow
+import com.alex.materialdiary.sys.net.models.check_list.Lesson
 
-class RecycleAdapterCheckList(context: Context, infos: List<CheckListShow>) :
+class RecycleAdapterCheckList(context: ChecklistFragment, infos: MutableList<CheckListShow>) :
     RecyclerView.Adapter<RecycleAdapterCheckList.ViewHolder>() {
-    private val context: Context
+    private val context: ChecklistFragment
     private val inflater: LayoutInflater
-    private val infos: List<CheckListShow>
+    private val infos: MutableList<CheckListShow>
 
     init {
-        inflater = LayoutInflater.from(context)
+        inflater = LayoutInflater.from(context.requireContext())
         this.infos = infos
         this.context = context
     }
@@ -36,16 +38,40 @@ class RecycleAdapterCheckList(context: Context, infos: List<CheckListShow>) :
         holder.name.text = infos[position].name
         holder.check.isChecked = infos[position].done
         holder.check.text = infos[position].homework
-
-        holder.check.setOnCheckedChangeListener { buttonView, isChecked ->
+        holder.itemView.setOnClickListener {
+            holder.check.performClick()
+        }
+        when(infos[position].done){
+            true -> {
+                holder.check.paintFlags =  Paint.STRIKE_THRU_TEXT_FLAG
+                holder.check.setTextColor(context.resources.getColor(R.color.gray))
+                infos[position].done = true
+                context.check(infos.map { it.toLesson() } as MutableList<Lesson>)
+            }
+            false -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    holder.check.paintFlags =  Paint.CURSOR_BEFORE
+                }
+                infos[position].done = false
+                context.check(infos.map { it.toLesson() } as MutableList<Lesson>)
+                holder.check.setTextColor(context.resources.getColor(R.color.icons))
+            }
+        }
+        holder.check.setOnCheckedChangeListener { _, isChecked ->
             when(isChecked){
                 true -> {
                     holder.check.paintFlags =  Paint.STRIKE_THRU_TEXT_FLAG
-                    //holder.check.setTextColor(resources.getColor(R.color.gray))
+                    holder.check.setTextColor(context.resources.getColor(R.color.gray))
+                    infos[position].done = true
+                    context.check(infos.map { it.toLesson() } as MutableList<Lesson>)
                 }
                 false -> {
-                    holder.check.paintFlags =  Paint.CURSOR_BEFORE
-                    //holder.check.setTextColor(getRes.getColor(R.color.icons))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        holder.check.paintFlags =  Paint.CURSOR_BEFORE
+                    }
+                    infos[position].done = false
+                    context.check(infos.map { it.toLesson() } as MutableList<Lesson>)
+                    holder.check.setTextColor(context.resources.getColor(R.color.icons))
                 }
             }
         }

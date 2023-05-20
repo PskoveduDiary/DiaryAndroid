@@ -54,6 +54,14 @@
                         android:text="12.12.2022" />
 
                     <TextView
+                        android:id="@+id/absence_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:textColor="@color/two"
+                        android:text="Пропуск" />
+
+                    <TextView
                         android:id="@+id/less_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -104,6 +112,7 @@
 
                 <TextView
                     android:id="@+id/less_homework"
+                    android:textIsSelectable="true"
                     android:layout_width="match_parent"
                     android:autoLink="all"
                     android:linksClickable="true"
@@ -118,6 +127,7 @@
 
                 <TextView
                     android:id="@+id/less_homework2"
+                    android:textIsSelectable="true"
                     android:layout_width="match_parent"
                     android:autoLink="all"
                     android:linksClickable="true"

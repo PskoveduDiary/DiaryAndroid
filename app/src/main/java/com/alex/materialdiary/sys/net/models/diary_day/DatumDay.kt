@@ -74,7 +74,7 @@ data class DatumDay (
     var marks: List<Mark>? = null,
 
     @SerializedName("ABSENCE")
-    var absence: List<String>? = null,
+    var absence: List<Absence>? = null,
 
     @SerializedName("NOTES")
     var notes: List<String>? = null,

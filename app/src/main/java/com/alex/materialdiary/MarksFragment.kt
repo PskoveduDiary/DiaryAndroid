@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -126,8 +127,8 @@ class MarksFragment : Fragment(){
         CoroutineScope(Dispatchers.IO).launch {
             val (marks, showdiffs) = api.getPeriodMarks(from, to)
             withContext(Dispatchers.Main) {
-                binding.progressBar.visibility = View.GONE
                 if (marks?.data == null) return@withContext
+                binding.progressBar.visibility = View.GONE
                 if (_binding == null) return@withContext
                 binding.marks.adapter =
                     RecycleAdapterMarksGroup(requireContext(), marks.data, showdiffs)
@@ -138,8 +139,8 @@ class MarksFragment : Fragment(){
         CoroutineScope(Dispatchers.IO).launch {
             val marks = api.getAllMarks()
             withContext(Dispatchers.Main) {
-                binding.progressBar.visibility = View.GONE
                 if (marks?.data == null) return@withContext
+                binding.progressBar.visibility = View.GONE
                 if (_binding == null) return@withContext
                 binding.marks.adapter =
                     RecycleAdapterMarksGroup(requireContext(), marks.data, false)

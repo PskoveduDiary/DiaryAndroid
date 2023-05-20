@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentChecklistBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterCheckList
@@ -29,7 +30,8 @@ class ChecklistFragment : Fragment(){
     private var _binding: FragmentChecklistBinding? = null
 
     private val binding get() = _binding!!
-
+    lateinit var tomorrow: String
+    val args: ChecklistFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,16 +42,40 @@ class ChecklistFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val calendar: Calendar = Calendar.getInstance()
+        val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy")
+        if (args.date != "0.0"){
+            val date = dateFormat.parse(args.date!!)
+            if (date != null) calendar.time = date
+        }
+        val showDateFormat: DateFormat = SimpleDateFormat("dd.MM")
         calendar.add(Calendar.DAY_OF_YEAR, 1)
-        val dateFormat: DateFormat = SimpleDateFormat("dd-MM-yyyy")
-        val tomorrow: String = dateFormat.format(calendar.time)
+        tomorrow = dateFormat.format(calendar.time)
+        binding.date.text = "На ${showDateFormat.format(calendar.time)}"
         CoroutineScope(Dispatchers.IO).launch {
             val lessons =
                 PskoveduApi.getInstance(requireContext()).getDay(tomorrow)?.data ?: return@launch
-            if (lessons.size == 0) return@launch
+            if (lessons.size == 0) {
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    binding.errorMsg.text = "Завтра нет уроков"
+                    binding.errorMsg.visibility = View.VISIBLE
+                }
+                return@launch
+            }
             val checklist_lessons = mutableListOf<CheckListShow>()
-            val sync_data = AdlemxClient.getEndpoints()
-                .get_checklist(PskoveduApi.getInstance().guid, tomorrow).lessons
+            val sync_data: MutableList<Lesson>
+            try {
+                sync_data = AdlemxClient.getEndpoints()
+                    .get_checklist(PskoveduApi.getInstance().guid, tomorrow).lessons
+            }
+            catch (e: Exception){
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    binding.errorMsg.text = "К сожалению сейчас этот сервис не работает"
+                    binding.errorMsg.visibility = View.VISIBLE
+                }
+                return@launch
+            }
             withContext(Dispatchers.Main) {
                 binding.progressBar.visibility = View.GONE
                 if (sync_data.size == 0) {
@@ -76,7 +102,7 @@ class ChecklistFragment : Fragment(){
                     }
                 binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 binding.recyclerView.adapter =
-                    RecycleAdapterCheckList(requireContext(), checklist_lessons)
+                    RecycleAdapterCheckList(this@ChecklistFragment, checklist_lessons)
             }
         }
         super.onViewCreated(view, savedInstanceState)
@@ -86,5 +112,9 @@ class ChecklistFragment : Fragment(){
         super.onDestroyView()
         _binding = null
     }
-
+    fun check(lessons: MutableList<Lesson>){
+        CoroutineScope(Dispatchers.IO).launch {
+            AdlemxClient.getEndpoints().set_checklist(PskoveduApi.getInstance(requireContext()).guid, tomorrow, lessons)
+        }
+    }
 }

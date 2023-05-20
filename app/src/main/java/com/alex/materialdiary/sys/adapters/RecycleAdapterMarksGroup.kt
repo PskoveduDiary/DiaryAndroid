@@ -13,6 +13,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.utils.MarksTranslator
 import android.widget.TextView
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import com.alex.materialdiary.NavGraphDirections
 import java.util.ArrayList
 
 class RecycleAdapterMarksGroup(
@@ -49,6 +52,9 @@ class RecycleAdapterMarksGroup(
                 """.trimIndent()
         } else holder.info.visibility = View.GONE
         holder.info.setOnClickListener { obj: View -> obj.performLongClick() }
+        holder.marks.setOnClickListener {
+            Navigation.findNavController(holder.itemView).navigate(NavGraphDirections.toAverage().setMarks(period.marks.map { it.value }.toIntArray()))
+        }
         val llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.HORIZONTAL
         val differences =
@@ -71,12 +77,14 @@ class RecycleAdapterMarksGroup(
         val average: TextView
         val recyclerView: RecyclerView
         val info: ImageView
+        val marks: ImageView
 
         init {
             name = view.findViewById(R.id.MarksLessonName)
             average = view.findViewById(R.id.MarksAverage)
             recyclerView = view.findViewById(R.id.marks_recycle)
             info = view.findViewById(R.id.info)
+            marks = view.findViewById(R.id.marks)
         }
     }
 }

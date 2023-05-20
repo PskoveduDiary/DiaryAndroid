@@ -84,9 +84,9 @@ class RecycleAdapterFiles(context: Context, links: MutableList<String>) :
                     holder.name.text = name
                     with(name.lowercase()) {
                         when {
-                            endsWithMulti("pptx", "ppt") -> holder.icon.setImageResource(R.drawable.powerpoint)
-                            endsWithMulti("doc", "docx") -> holder.icon.setImageResource(R.drawable.word)
-                            endsWithMulti("xls", "xlsx") -> holder.icon.setImageResource(R.drawable.excel)
+                            endsWithMulti("pptx", "ppt", "odp") -> holder.icon.setImageResource(R.drawable.powerpoint)
+                            endsWithMulti("doc", "docx", "odt") -> holder.icon.setImageResource(R.drawable.word)
+                            endsWithMulti("xls", "xlsx", "ods") -> holder.icon.setImageResource(R.drawable.excel)
                             endsWithMulti("mp3", "wav") -> holder.icon.setImageResource(R.drawable.music)
                             endsWithMulti("mp4", "avi", "mpeg", "mkv") -> holder.icon.setImageResource(R.drawable.video)
                             endsWithMulti("png", "jpg", "cr2", "bmp", "jpeg") -> holder.icon.setImageResource(R.drawable.picture)

@@ -1,6 +1,5 @@
 package com.alex.materialdiary
 
-import android.R
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -81,7 +81,10 @@ class DiaryFragment : Fragment(){
             binding.progressBar.visibility = View.VISIBLE
             binding.lessons.adapter = null
         })
-
+        binding.checklist.setOnClickListener {
+            val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy")
+            findNavController().navigate(NavGraphDirections.toCheckList().setDate(dateFormat.format(cuurent_date)))
+        }
         return binding.root
 
 
@@ -118,7 +121,7 @@ class DiaryFragment : Fragment(){
                             )
                     }
                     else
-                        binding.lessons.adapter = ArrayAdapter<String>(requireContext(), R.layout.test_list_item, R.id.text1, mutableListOf("Нет уроков"))
+                        binding.lessons.adapter = ArrayAdapter<String>(requireContext(), android.R.layout.test_list_item, android.R.id.text1, mutableListOf("Нет уроков"))
                 }
             }
         }

@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.alex.materialdiary.databinding.FragmentDpaBinding
 import com.alex.materialdiary.databinding.FragmentErrorBinding
-import com.alex.materialdiary.databinding.FragmentUserInfoBinding
 import java.lang.Exception
 
 /**

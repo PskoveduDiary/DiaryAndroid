@@ -20,7 +20,7 @@ class KRWorkManager {
             else ->
             Duration(
                 DateTime.now(),
-                DateTime.now().withTimeAtStartOfDay().plusHours(time).plusMinutes(24)//.plusDays(1)
+                DateTime.now().withTimeAtStartOfDay().plusHours(time).plusDays(1)
             ).getStandardMinutes()
         }
 

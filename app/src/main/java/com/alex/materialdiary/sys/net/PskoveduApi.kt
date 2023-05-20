@@ -5,6 +5,9 @@ import android.content.Intent
 import android.util.Log
 import android.webkit.CookieManager
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.alex.materialdiary.ChecklistFragmentDirections
+import com.alex.materialdiary.NavGraphDirections
 import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.sys.DiaryPreferences
@@ -23,19 +26,22 @@ import com.alex.materialdiary.sys.net.models.periods.Periods
 import com.alex.materialdiary.ui.login.LoginActivity
 import com.alex.materialdiary.utils.MarksTranslator
 import com.alex.materialdiary.utils.MarksTranslator.Companion.get_cur_period
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import retrofit2.HttpException
+import retrofit2.Retrofit
 import xdroid.toaster.Toaster
 import java.util.*
 
 class PskoveduApi(context: Context, navController: NavController?) {
     private val endpoints: PskoveduEndpoints = PskoveduClient.getEndpoints()
-
     var guid = ""
     var sid = ""
     val gson = Gson()
@@ -151,10 +157,26 @@ class PskoveduApi(context: Context, navController: NavController?) {
             else sid = X1
         }
         val req = UserInfoRequest(Crypt().encryptSYS_GUID(sid), sid)
-        val user = endpoints.getUserInfo(req) ?: return null
-        if (!user.success) return null
-        jsonUtils.createJsonFileData("users.json", gson.toJson(user))
-        return user.data
+        try {
+            val user = endpoints.getUserInfo(req) ?: return null
+            if (!user.success) return null
+            jsonUtils.createJsonFileData("users.json", gson.toJson(user))
+            return user.data
+        }
+        catch (e: HttpException){withContext(Dispatchers.Main) {
+                if (e.code() == 500) navController?.navigate(
+                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
+            }
+        }
+        return null
     }
     fun getShared(): List<ShareUser> {
         val readed = jsonUtils.readJsonFileData("shared.json") ?: return ArrayList()
@@ -184,8 +206,23 @@ class PskoveduApi(context: Context, navController: NavController?) {
         if (period.size < 2) return
         body.from = period[0].toString()
         body.to = period[1].toString()
-        val rsp = endpoints.getPeriodMarks(body) ?: return
-        addMarksCache(MarksTranslator(rsp.data).items)
+        try {
+            val rsp = endpoints.getPeriodMarks(body) ?: return
+            addMarksCache(MarksTranslator(rsp.data).items)
+        }
+        catch (e: HttpException){withContext(Dispatchers.Main) {
+                if (e.code() == 500) navController?.navigate(
+                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
+            }
+        }
     }
     suspend fun getDay(date: String = ""): DiaryDay? {
         val body = ClassicBody()
@@ -194,8 +231,29 @@ class PskoveduApi(context: Context, navController: NavController?) {
         body.apikey = apikey
         body.pdakey = pdaKey
         body.date = date
-        val day = endpoints.getDiaryDay(body)
-        return day
+        try {
+            val day = endpoints.getDiaryDay(body)
+            Log.e("aadiary", day.toString())
+            return day
+        }
+        catch (e: HttpException){
+            e.printStackTrace()
+            withContext(Dispatchers.Main) {
+                if (e.code() == 500) navController?.navigate(
+                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+            FirebaseCrashlytics.getInstance().recordException(e)
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже")
+                )
+            }
+        }
+        return null
     }
     suspend fun getAllMarks(): PeriodMarks? {
         val body = ClassicBody()
@@ -203,8 +261,24 @@ class PskoveduApi(context: Context, navController: NavController?) {
         body.guid = guid
         body.apikey = apikey
         body.pdakey = pdaKey
-        val marks = endpoints.getPeriodMarks(body) ?: return null
-        return marks
+        try {
+            val marks = endpoints.getPeriodMarks(body) ?: return null
+            return marks
+        }
+        catch (e: HttpException){withContext(Dispatchers.Main) {
+                if (e.code() == 500) navController?.navigate(
+                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
+            }
+        }
+        return null
     }
     suspend fun getPeriodMarks(from: String, to: String): Pair<PeriodMarks?, Boolean> {
         val body = ClassicBody()
@@ -214,12 +288,19 @@ class PskoveduApi(context: Context, navController: NavController?) {
         body.from = from
         body.pdakey = pdaKey
         body.to = to
-        val marks = endpoints.getPeriodMarks(body) ?: return null to false
-        val formatter = DateTimeFormat.forPattern("dd.MM.yyyy")
-        val dates = java.util.ArrayList<LocalDate>()
-        dates.add(LocalDate.parse(from, formatter))
-        dates.add(LocalDate.parse(to, formatter))
-        return marks to (getCachedPeriods()?.let { MarksTranslator.get_cur_period(it.data) } == dates)
+        try{
+            val marks = endpoints.getPeriodMarks(body) ?: return null to false
+            val formatter = DateTimeFormat.forPattern("dd.MM.yyyy")
+            val dates = ArrayList<LocalDate>()
+            dates.add(LocalDate.parse(from, formatter))
+            dates.add(LocalDate.parse(to, formatter))
+            return marks to (getCachedPeriods()?.let { get_cur_period(it.data) } == dates)
+        }
+        catch (e: HttpException){
+        }
+        catch (e: Exception){
+        }
+        return null to false
     }
     suspend fun getPeriods(): AllPeriods? {
         getCachedPeriods()?.let { return it }
@@ -227,17 +308,40 @@ class PskoveduApi(context: Context, navController: NavController?) {
         body.guid = guid
         body.apikey = apikey
         body.pdakey = pdaKey
-        val periods = endpoints.getPeriods(body) ?: return null
-        jsonUtils.createJsonFileData("periods.json", gson.toJson(periods))
-        return periods
+        try {
+            val periods = endpoints.getPeriods(body) ?: return null
+            jsonUtils.createJsonFileData("periods.json", gson.toJson(periods))
+            return periods
+        }
+        catch (e: HttpException){
+        }
+        catch (e: Exception){
+        }
+        return null
     }
     suspend fun getItogMarks(): Periods? {
         val body = ClassicBody()
         body.guid = guid
         body.apikey = apikey
         body.pdakey = pdaKey
-        val periods = endpoints.getItogMarks(body) ?: return null
-        return periods
+        try {
+            val periods = endpoints.getItogMarks(body) ?: return null
+            return periods
+        }
+        catch (e: HttpException){withContext(Dispatchers.Main) {
+                if (e.code() == 500) navController?.navigate(
+                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
+            }
+        }
+        return null
     }
     fun randomSymbols(i: Int): String {
         val random = Random()
@@ -254,17 +358,32 @@ class PskoveduApi(context: Context, navController: NavController?) {
     suspend fun checkPdaKey(name: String, guid: String){
         val pdBody = PDBody()
         pdBody.sysguid = guid
-        val pda = endpoints.getPda(pdBody) ?: return
-        if (pda.status == "not found") {
-            setPdaKey(name, guid)
-        } else {
-            if (pda.pdakey === "") Toaster.toast("Ошибка потверждения PDA")
-            else {
-                pdaKey = pda.pdakey
-                DPrefs.set(DiaryPreferences.PDA, pda.pdakey)
-                DPrefs.set(DiaryPreferences.PDA_GUID, guid)
-                try { navController?.navigate(navController.currentDestination!!.id)}
-                catch (_: Exception) {}
+        try {
+            val pda = endpoints.getPda(pdBody) ?: return
+            if (pda.status == "not found") {
+                setPdaKey(name, guid)
+            } else {
+                if (pda.pdakey === "") Toaster.toast("Ошибка потверждения PDA")
+                else {
+                    pdaKey = pda.pdakey
+                    DPrefs.set(DiaryPreferences.PDA, pda.pdakey)
+                    DPrefs.set(DiaryPreferences.PDA_GUID, guid)
+                    try { navController?.navigate(navController.currentDestination!!.id)}
+                    catch (_: Exception) {}
+                }
+            }
+        }
+        catch (e: HttpException){withContext(Dispatchers.Main) {
+                if (e.code() == 500) navController?.navigate(
+                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
             }
         }
     }
@@ -274,13 +393,28 @@ class PskoveduApi(context: Context, navController: NavController?) {
         pdBody.sysguid = guid
         val localPda: String = genPdaKey()
         pdBody.pdakey = localPda
-        val pda = endpoints.setPda(pdBody) ?: return
-        if (pda.status == "error") Toaster.toast("Ошибка PDA №2")
-        else if (pda.status == "ok") {
-            DPrefs.set(DiaryPreferences.PDA, pda.pdakey)
-            DPrefs.set(DiaryPreferences.PDA_GUID, guid)
-            try { navController?.navigate(navController.currentDestination!!.id) }
-            catch (_: Exception) {}
+        try {
+            val pda = endpoints.setPda(pdBody) ?: return
+            if (pda.status == "error") Toaster.toast("Ошибка PDA №2")
+            else if (pda.status == "ok") {
+                DPrefs.set(DiaryPreferences.PDA, pda.pdakey)
+                DPrefs.set(DiaryPreferences.PDA_GUID, guid)
+                try { navController?.navigate(navController.currentDestination!!.id) }
+                catch (_: Exception) {}
+            }
+        }
+        catch (e: HttpException){withContext(Dispatchers.Main) {
+                if (e.code() == 500) navController?.navigate(
+                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: Exception){
+            FirebaseCrashlytics.getInstance().recordException(e)
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
+            }
         }
     }
 

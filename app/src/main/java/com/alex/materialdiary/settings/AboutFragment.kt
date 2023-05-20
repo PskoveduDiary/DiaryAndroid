@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.alex.materialdiary.BuildConfig
-import com.alex.materialdiary.FeatureFragmentDirections
+import com.alex.materialdiary.NavGraphDirections
 import com.alex.materialdiary.R
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
 import com.alex.materialdiary.sys.net.PskoveduApi
@@ -87,7 +87,7 @@ class AboutFragment : PreferenceFragmentCompat() {
         }
         val teacher = preferenceManager.findPreference<Preference>("teach_feature") as Preference
         teacher.setOnPreferenceClickListener {
-            val action = FeatureFragmentDirections.toFeatureInstall("teacher_features", "Загрузите дополнительный модуль для управления журналами!")
+            val action = NavGraphDirections.toFeatureInstall("teacher_features", "Загрузите дополнительный модуль для управления журналами!")
             findNavController().navigate(action)
 
             true
