@@ -38,6 +38,7 @@ import org.joda.time.format.DateTimeFormat
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import xdroid.toaster.Toaster
+import java.net.ConnectException
 import java.util.*
 
 class PskoveduApi(context: Context, navController: NavController?) {
@@ -169,6 +170,12 @@ class PskoveduApi(context: Context, navController: NavController?) {
                 )
             }
         }
+        catch (e: ConnectException){withContext(Dispatchers.Main) {
+            navController?.navigate(
+                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+            )
+        }
+        }
         catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
             withContext(Dispatchers.Main) {
@@ -210,18 +217,10 @@ class PskoveduApi(context: Context, navController: NavController?) {
             val rsp = endpoints.getPeriodMarks(body) ?: return
             addMarksCache(MarksTranslator(rsp.data).items)
         }
-        catch (e: HttpException){withContext(Dispatchers.Main) {
-                if (e.code() == 500) navController?.navigate(
-                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
-                )
-            }
+        catch (e: HttpException){
         }
         catch (e: Exception){
-            FirebaseCrashlytics.getInstance().recordException(e)
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
-            }
+
         }
     }
     suspend fun getDay(date: String = ""): DiaryDay? {
@@ -243,6 +242,12 @@ class PskoveduApi(context: Context, navController: NavController?) {
                     NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
                 )
             }
+        }
+        catch (e: ConnectException){withContext(Dispatchers.Main) {
+            navController?.navigate(
+                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+            )
+        }
         }
         catch (e: Exception){
             e.printStackTrace()
@@ -268,6 +273,12 @@ class PskoveduApi(context: Context, navController: NavController?) {
         catch (e: HttpException){withContext(Dispatchers.Main) {
                 if (e.code() == 500) navController?.navigate(
                     NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
+                )
+            }
+        }
+        catch (e: ConnectException){withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
                 )
             }
         }
@@ -297,6 +308,12 @@ class PskoveduApi(context: Context, navController: NavController?) {
             return marks to (getCachedPeriods()?.let { get_cur_period(it.data) } == dates)
         }
         catch (e: HttpException){
+        }
+        catch (e: ConnectException){withContext(Dispatchers.Main) {
+            navController?.navigate(
+                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+            )
+        }
         }
         catch (e: Exception){
         }
@@ -328,18 +345,9 @@ class PskoveduApi(context: Context, navController: NavController?) {
             val periods = endpoints.getItogMarks(body) ?: return null
             return periods
         }
-        catch (e: HttpException){withContext(Dispatchers.Main) {
-                if (e.code() == 500) navController?.navigate(
-                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
-                )
-            }
+        catch (e: HttpException){
         }
         catch (e: Exception){
-            FirebaseCrashlytics.getInstance().recordException(e)
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
-            }
         }
         return null
     }
@@ -379,6 +387,12 @@ class PskoveduApi(context: Context, navController: NavController?) {
                 )
             }
         }
+        catch (e: ConnectException){withContext(Dispatchers.Main) {
+            navController?.navigate(
+                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+            )
+        }
+        }
         catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
             withContext(Dispatchers.Main) {
@@ -408,6 +422,12 @@ class PskoveduApi(context: Context, navController: NavController?) {
                     NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
                 )
             }
+        }
+        catch (e: ConnectException){withContext(Dispatchers.Main) {
+            navController?.navigate(
+                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+            )
+        }
         }
         catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
