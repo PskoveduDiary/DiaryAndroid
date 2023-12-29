@@ -2,6 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MaterialDiary" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+
+        <!--<item name="colorPrimary">#995544</item>
+        <item name="colorSecondary">#995544</item>
+        <item name="colorAccent">#995544</item>
+        <item name="colorSecondaryContainer">#8D995544</item>-->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 

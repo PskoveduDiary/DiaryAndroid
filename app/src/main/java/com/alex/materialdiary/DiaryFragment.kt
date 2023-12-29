@@ -49,7 +49,7 @@ class DiaryFragment : Fragment(){
                 binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                         "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
                 getDay(cuurent_date.toString())
-                binding.progressBar.visibility = View.VISIBLE
+                binding.swiperefresh.isRefreshing = true
                 binding.lessons.adapter = null
             }
         }
@@ -70,7 +70,7 @@ class DiaryFragment : Fragment(){
             binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                     "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
             getDay(cuurent_date.toString())
-            binding.progressBar.visibility = View.VISIBLE
+            binding.swiperefresh.isRefreshing = false
             binding.lessons.adapter = null
         })
         binding.prevDay.setOnClickListener(View.OnClickListener {
@@ -78,7 +78,7 @@ class DiaryFragment : Fragment(){
             binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                     "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
             getDay(cuurent_date.toString())
-            binding.progressBar.visibility = View.VISIBLE
+            binding.swiperefresh.isRefreshing = true
             binding.lessons.adapter = null
         })
         binding.checklist.setOnClickListener {
@@ -86,7 +86,6 @@ class DiaryFragment : Fragment(){
             findNavController().navigate(NavGraphDirections.toCheckList().setDate(dateFormat.format(cuurent_date)))
         }
         return binding.root
-
 
     }
     fun get_nav(): NavController {
@@ -97,6 +96,9 @@ class DiaryFragment : Fragment(){
         binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                 "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
         getDay(cuurent_date.toString())
+        binding.swiperefresh.setOnRefreshListener {
+            getDay(cuurent_date.toString())
+        }
     }
 
     override fun onDestroyView() {
@@ -111,7 +113,7 @@ class DiaryFragment : Fragment(){
                 PskoveduApi.getInstance(requireContext(), findNavController()).getDay(date)
             withContext(Dispatchers.Main) {
                 if (_binding == null) return@withContext
-                binding.progressBar.visibility = View.GONE
+                binding.swiperefresh.isRefreshing = false
                 if (lessons != null) {
                     if (lessons.data.size > 0) {
                         binding.lessons.adapter =

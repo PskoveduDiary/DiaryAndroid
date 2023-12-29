@@ -8,12 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.OptIn;
 import androidx.navigation.NavDirections;
 
 import com.alex.materialdiary.DiaryFragment;
 import com.alex.materialdiary.LessonFragmentDirections;
 import com.alex.materialdiary.R;
 import com.alex.materialdiary.sys.net.models.diary_day.DatumDay;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.badge.ExperimentalBadgeUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +49,7 @@ public class ProgramAdapterDiary extends ArrayAdapter<String> {
      */
     @SuppressLint("ResourceAsColor")
     @Override
+    @OptIn(markerClass = ExperimentalBadgeUtils.class)
     public View getView(final int position, View convertView, ViewGroup parent) {
         // The parameter convertView is null when your app is creating a new item for the first time. It's not null when
         // recycling.

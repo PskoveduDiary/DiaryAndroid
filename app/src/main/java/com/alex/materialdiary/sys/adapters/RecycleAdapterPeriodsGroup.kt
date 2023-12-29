@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import com.alex.materialdiary.R
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +21,7 @@ class RecycleAdapterPeriodsGroup(context: Context, periods: List<Datum>) :
     private val context: Context
     private val inflater: LayoutInflater
     private val periods: List<Datum>
-
+    var viewPool = RecyclerView.RecycledViewPool();
     init {
         inflater = LayoutInflater.from(context)
         this.periods = periods
@@ -36,10 +37,11 @@ class RecycleAdapterPeriodsGroup(context: Context, periods: List<Datum>) :
         val period = periods[position]
         holder.name.text = period.name
         holder.info.visibility = View.GONE
-        holder.marks.visibility = View.GONE
         val llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.HORIZONTAL
+        llm.initialPrefetchItemCount = 4
         holder.recyclerView.layoutManager = llm
+        holder.recyclerView.setRecycledViewPool(viewPool)
         holder.recyclerView.adapter = RecycleAdapterMarksInPeriod(context, period.periods)
     }
 
@@ -50,15 +52,13 @@ class RecycleAdapterPeriodsGroup(context: Context, periods: List<Datum>) :
     class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView
         val recyclerView: RecyclerView
-        val info: ImageView
-        val marks: ImageView
+        val info: Button
 
         init {
             name = view.findViewById(R.id.MarksLessonName)
             view.findViewById<View>(R.id.MarksAverage).visibility = View.GONE
             recyclerView = view.findViewById(R.id.marks_recycle)
             info = view.findViewById(R.id.info)
-            marks = view.findViewById(R.id.marks)
         }
     }
 }

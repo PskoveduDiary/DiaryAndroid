@@ -19,6 +19,7 @@
                     android:layout_width="10dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:src="@drawable/ic_baseline_checklist_24"
                     app:tint="?android:attr/textColorLink" />
 
@@ -48,7 +49,15 @@
                     android:text="›"
                     android:textSize="25sp" />
         </LinearLayout>
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swiperefresh"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            android:layout_height="0dp">
         <ListView
             android:id="@+id/lessons"
             xmlns:card_view="http://schemas.android.com/tools"
@@ -57,22 +66,10 @@
             android:layout_margin="6dp"
             android:divider="@android:color/transparent"
             android:dividerHeight="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:listitem="@layout/lesson_item">
 
 
         </ListView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/lessons"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

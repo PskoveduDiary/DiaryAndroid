@@ -7,38 +7,30 @@
     android:layout_height="match_parent"
     android:layout_margin="2dp"
     tools:context=".MarksFragment">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
-                <Button
-                    android:id="@+id/periodsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="Четвертные оценки" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/tabs"
+            android:layout_height="wrap_content">
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Текущие оценки"
+                    />
 
-                <Button
-                    android:id="@+id/itog_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:text="Итоговые оценки" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Итоговые оценки"
+                    />
 
-                <Button
-                    android:id="@+id/All_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Все оценки"
-                    android:textAlignment="center" />
-        </LinearLayout>
-
+                    />
+        </com.google.android.material.tabs.TabLayout>
+<!--
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/periods"
             android:layout_width="wrap_content"
@@ -51,8 +43,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:itemCount="1"
-            tools:listitem="@layout/period_item" />
-
+            tools:listitem="@layout/period_item" />-->
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/marks"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabs"
+            android:id="@+id/periodsScrollView"
+            android:scrollbars="none"
+            >
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:id="@+id/periods"
+            app:singleLine="true"
+            />
+        </HorizontalScrollView>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/marks"
             android:layout_width="0dp"
@@ -60,7 +69,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/periods"
+            app:layout_constraintTop_toBottomOf="@+id/periodsScrollView"
             tools:listitem="@layout/mark_group_item" />
 
         <ProgressBar
@@ -71,6 +80,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/marks"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/periods" />
+            app:layout_constraintTop_toBottomOf="@+id/periodsScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

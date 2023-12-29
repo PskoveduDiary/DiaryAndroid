@@ -57,7 +57,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     println(obj.hashCode())
                     if (obj is Preference) {
                         val p = obj
-                        println(p.key)
                         if (p.key.equals("news")) {
                             findNavController().navigate(R.id.to_about)
                             return@setOnItemLongClickListener true
@@ -68,12 +67,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             }
             } else {
-                //The view created is not a list view!
-            }
-
+            //The view created is not a list view!
+        }
+        /*
         val api = GoogleApiAvailability.getInstance()
         val resultCode =
-            api.isGooglePlayServicesAvailable(requireContext())
+            api.isGooglePlayServicesAvailable(requireContext())*/
         val news =
             preferenceManager.findPreference<Preference>("news") as Preference
         news.setOnPreferenceClickListener {
@@ -86,161 +85,161 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 true
             }
+                val dev =
+                    preferenceManager.findPreference<Preference>("dev") as Preference
+                dev.setOnPreferenceClickListener {
+                    findNavController().navigate(R.id.to_about)
+                    true
+                }/*
+                val about =
+                    preferenceManager.findPreference<Preference>("about") as Preference
+                about.setOnPreferenceClickListener {
+                        findNavController().navigate(R.id.to_about)
+                        true
+                    }
 
-        val dev =
-            preferenceManager.findPreference<Preference>("dev") as Preference
-        dev.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.to_about)
-            true
-        }
-        val about =
-            preferenceManager.findPreference<Preference>("about") as Preference
-        about.setOnPreferenceClickListener {
-                findNavController().navigate(R.id.to_about)
-                true
-            }
-        val kr_en =
-            preferenceManager.findPreference<SwitchPreferenceCompat>("kr") as SwitchPreferenceCompat
-        val marks_en =
-            preferenceManager.findPreference<SwitchPreferenceCompat>("marks") as SwitchPreferenceCompat
-        if ( Storage.FIREBASE_TOKEN == null){
-            kr_en.isEnabled = false
-            kr_en.summary = "Временно недоступно!"
-            marks_en.isEnabled = false
-            marks_en.summary = "Временно недоступно!"
-        }
-        if (resultCode != ConnectionResult.SUCCESS) {
-            kr_en.isEnabled = false
-            kr_en.summary = "Недоступно на вашем устройстве!"
-            marks_en.isEnabled = false
-            marks_en.summary = "Недоступно на вашем устройстве!"
-        }
-        kr_en.setOnPreferenceChangeListener { _, newValue ->
-            when (newValue) {
-                true -> {
-                    toast("Отправляем запрос на уведомления...")
-                    val request = Request.Builder()
-                        .url("https://pskovedu.ml/api/notify/kr?token=" + Storage.FIREBASE_TOKEN)
-                        .get()
-                        .build()
-                    okHttp.newCall(request).enqueue(object: okhttp3.Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            e.printStackTrace()
-                            toast("Произошла ошибка")
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            val runnable = Runnable {
-                                if (response.code() == 400){
-                                    toast("Не удалось подписаться на уведомления")
-                                    kr_en.isChecked = false
-                                }
-                                else if (response.code() == 200){
-                                    toast("Успешно!")
-                                }
-                                else {
-                                    toast("Неизвестная ошибка!")
-                                    kr_en.isChecked = true
-                                }
-                            }
-                            mainHandler.post(runnable)
-                        }
-                    })
+                val kr_en =
+                    preferenceManager.findPreference<SwitchPreferenceCompat>("kr") as SwitchPreferenceCompat
+                val marks_en =
+                    preferenceManager.findPreference<SwitchPreferenceCompat>("marks") as SwitchPreferenceCompat
+                if ( Storage.FIREBASE_TOKEN == null){
+                    kr_en.isEnabled = false
+                    kr_en.summary = "Временно недоступно!"
+                    marks_en.isEnabled = false
+                    marks_en.summary = "Временно недоступно!"
                 }
-                false -> {
-                    toast("Отправляем запрос на уведомления...")
-                    val request = Request.Builder()
-                    .url("https://pskovedu.ml/api/notify/kr?token=" + Storage.FIREBASE_TOKEN)
-                    .delete()
-                    .build()
-                    okHttp.newCall(request).enqueue(object: okhttp3.Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            e.printStackTrace()
-                            toast("Произошла ошибка")
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            val runnable = Runnable {
-                                if (response.code() == 400) {
-                                    toast("Не удалось отписаться на уведомления")
-                                    kr_en.isChecked = true
-                                } else if (response.code() == 200) {
-                                    toast("Успешно!")
-                                } else {
-                                    toast("Неизвестная ошибка!")
-                                    kr_en.isChecked = true
-                                }
-                            }
-                            mainHandler.post(runnable)
-                        }
-                    })
+                if (resultCode != ConnectionResult.SUCCESS) {
+                    kr_en.isEnabled = false
+                    kr_en.summary = "Недоступно на вашем устройстве!"
+                    marks_en.isEnabled = false
+                    marks_en.summary = "Недоступно на вашем устройстве!"
                 }
-            }
-            true
-        }
-        marks_en.setOnPreferenceChangeListener { _, newValue ->
-            when (newValue) {
-                true -> {
-                    toast("Отправляем запрос на уведомления...")
-                    val request = Request.Builder()
-                        .url("https://pskovedu.ml/api/notify/marks?token=" + Storage.FIREBASE_TOKEN)
-                        .get()
-                        .build()
-                    okHttp.newCall(request).enqueue(object: okhttp3.Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            e.printStackTrace()
-                            toast("Произошла ошибка")
-                        }
+                kr_en.setOnPreferenceChangeListener { _, newValue ->
+                    when (newValue) {
+                        true -> {
+                            toast("Отправляем запрос на уведомления...")
+                            val request = Request.Builder()
+                                .url("https://pskovedu.ml/api/notify/kr?token=" + Storage.FIREBASE_TOKEN)
+                                .get()
+                                .build()
+                            okHttp.newCall(request).enqueue(object: okhttp3.Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    e.printStackTrace()
+                                    toast("Произошла ошибка")
+                                }
 
-                        override fun onResponse(call: Call, response: Response) {
-                            val runnable = Runnable {
-                                if (response.code() == 400){
-                                    toast("Не удалось подписаться на уведомления")
-                                    marks_en.isChecked = false
+                                override fun onResponse(call: Call, response: Response) {
+                                    val runnable = Runnable {
+                                        if (response.code() == 400){
+                                            toast("Не удалось подписаться на уведомления")
+                                            kr_en.isChecked = false
+                                        }
+                                        else if (response.code() == 200){
+                                            toast("Успешно!")
+                                        }
+                                        else {
+                                            toast("Неизвестная ошибка!")
+                                            kr_en.isChecked = true
+                                        }
+                                    }
+                                    mainHandler.post(runnable)
                                 }
-                                else if (response.code() == 200){
-                                    toast("Успешно!")
-                                }
-                                else {
-                                    toast("Неизвестная ошибка!")
-                                    marks_en.isChecked = true
-                                }
-                            }
-                            mainHandler.post(runnable)
+                            })
                         }
-                    })
-                }
-                false -> {
-                    toast("Отправляем запрос на уведомления...")
-                    val request = Request.Builder()
-                    .url("https://pskovedu.ml/api/notify/marks?token=" + Storage.FIREBASE_TOKEN)
-                    .delete()
-                    .build()
-                    okHttp.newCall(request).enqueue(object: okhttp3.Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            e.printStackTrace()
-                            toast("Произошла ошибка")
-                        }
+                        false -> {
+                            toast("Отправляем запрос на уведомления...")
+                            val request = Request.Builder()
+                            .url("https://pskovedu.ml/api/notify/kr?token=" + Storage.FIREBASE_TOKEN)
+                            .delete()
+                            .build()
+                            okHttp.newCall(request).enqueue(object: okhttp3.Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    e.printStackTrace()
+                                    toast("Произошла ошибка")
+                                }
 
-                        override fun onResponse(call: Call, response: Response) {
-                            val runnable = Runnable {
-                                if (response.code() == 400) {
-                                    toast("Не удалось отписаться на уведомления")
-                                    marks_en.isChecked = true
-                                } else if (response.code() == 200) {
-                                    toast("Успешно!")
-                                } else {
-                                    toast("Неизвестная ошибка!")
-                                    marks_en.isChecked = true
+                                override fun onResponse(call: Call, response: Response) {
+                                    val runnable = Runnable {
+                                        if (response.code() == 400) {
+                                            toast("Не удалось отписаться на уведомления")
+                                            kr_en.isChecked = true
+                                        } else if (response.code() == 200) {
+                                            toast("Успешно!")
+                                        } else {
+                                            toast("Неизвестная ошибка!")
+                                            kr_en.isChecked = true
+                                        }
+                                    }
+                                    mainHandler.post(runnable)
                                 }
-                            }
-                            mainHandler.post(runnable)
+                            })
                         }
-                    })
+                    }
+                    true
                 }
-            }
-            true
-        }
+                marks_en.setOnPreferenceChangeListener { _, newValue ->
+                    when (newValue) {
+                        true -> {
+                            toast("Отправляем запрос на уведомления...")
+                            val request = Request.Builder()
+                                .url("https://pskovedu.ml/api/notify/marks?token=" + Storage.FIREBASE_TOKEN)
+                                .get()
+                                .build()
+                            okHttp.newCall(request).enqueue(object: okhttp3.Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    e.printStackTrace()
+                                    toast("Произошла ошибка")
+                                }
+
+                                override fun onResponse(call: Call, response: Response) {
+                                    val runnable = Runnable {
+                                        if (response.code() == 400){
+                                            toast("Не удалось подписаться на уведомления")
+                                            marks_en.isChecked = false
+                                        }
+                                        else if (response.code() == 200){
+                                            toast("Успешно!")
+                                        }
+                                        else {
+                                            toast("Неизвестная ошибка!")
+                                            marks_en.isChecked = true
+                                        }
+                                    }
+                                    mainHandler.post(runnable)
+                                }
+                            })
+                        }
+                        false -> {
+                            toast("Отправляем запрос на уведомления...")
+                            val request = Request.Builder()
+                            .url("https://pskovedu.ml/api/notify/marks?token=" + Storage.FIREBASE_TOKEN)
+                            .delete()
+                            .build()
+                            okHttp.newCall(request).enqueue(object: okhttp3.Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    e.printStackTrace()
+                                    toast("Произошла ошибка")
+                                }
+
+                                override fun onResponse(call: Call, response: Response) {
+                                    val runnable = Runnable {
+                                        if (response.code() == 400) {
+                                            toast("Не удалось отписаться на уведомления")
+                                            marks_en.isChecked = true
+                                        } else if (response.code() == 200) {
+                                            toast("Успешно!")
+                                        } else {
+                                            toast("Неизвестная ошибка!")
+                                            marks_en.isChecked = true
+                                        }
+                                    }
+                                    mainHandler.post(runnable)
+                                }
+                            })
+                        }
+                    }
+                    true
+                }*/
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 }

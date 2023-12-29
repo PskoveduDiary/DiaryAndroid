@@ -5,8 +5,6 @@ import android.content.Intent
 import android.util.Log
 import android.webkit.CookieManager
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
-import com.alex.materialdiary.ChecklistFragmentDirections
 import com.alex.materialdiary.NavGraphDirections
 import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
@@ -17,6 +15,8 @@ import com.alex.materialdiary.sys.net.models.pda.PDBody
 import com.alex.materialdiary.sys.net.models.ShareUser
 import com.alex.materialdiary.sys.net.models.get_user.UserInfoRequest
 import com.alex.materialdiary.sys.net.models.all_periods.AllPeriods
+import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTips
+import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTipsRequestBody
 import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
 import com.alex.materialdiary.sys.net.models.get_user.UserData
 import com.alex.materialdiary.sys.net.models.get_user.UserInfo
@@ -36,7 +36,6 @@ import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 import retrofit2.HttpException
-import retrofit2.Retrofit
 import xdroid.toaster.Toaster
 import java.net.ConnectException
 import java.util.*
@@ -118,6 +117,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
         DPrefs.set(DiaryPreferences.GUID, guid)
         CoroutineScope(Dispatchers.IO).launch {
             checkPdaKey(name, guid)
+            forceUpdatePeriods()
         }
         navController?.navigate(R.id.to_diary)
     }
@@ -132,6 +132,30 @@ class PskoveduApi(context: Context, navController: NavController?) {
             return ""
         }
         return ""
+    }
+    fun getUserName(): String? {
+        if (DPrefs.contains("name")) return DPrefs.get("name")
+        val datas = jsonUtils.readJsonFileData("users.json")
+        if (datas != null) {
+            val entity = gson.fromJson(datas.toString(), UserInfo::class.java)
+            entity.data.name?.let { DPrefs.set("name", it) }
+            return entity.data.name
+        }
+        val name_surname = getShared().find { it.guid == guid }?.name
+        if (name_surname != null) {
+            if (name_surname.split(" ").size > 0)
+                return name_surname.split(" ")[0]
+        }
+        return null
+    }
+
+    fun getUserSnils(): String? {
+        val datas = jsonUtils.readJsonFileData("users.json")
+        if (datas != null) {
+            val entity = gson.fromJson(datas.toString(), UserInfo::class.java)
+            return entity.data.login
+        }
+        return null
     }
     suspend fun getUserInfo(): UserData? {
         val datas = jsonUtils.readJsonFileData("users.json")
@@ -319,8 +343,44 @@ class PskoveduApi(context: Context, navController: NavController?) {
         }
         return null to false
     }
+
+    suspend fun getAssistantTips(): AssistantTips? {
+        val body = AssistantTipsRequestBody()
+        if (pdaKey === "") return null
+        if (getUserSnils() === "") return null
+        body.login = getUserSnils()!!
+        body.apikey = Crypt().encryptSYS_GUID(body.login!!)
+        try {
+            return endpoints.getAssistantTips(body) ?: return null
+        } catch (e: HttpException) {
+        } catch (e: ConnectException) {
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+                )
+            }
+        } catch (e: Exception) {
+        }
+        return null
+    }
     suspend fun getPeriods(): AllPeriods? {
         getCachedPeriods()?.let { return it }
+        val body = ClassicBody()
+        body.guid = guid
+        body.apikey = apikey
+        body.pdakey = pdaKey
+        try {
+            val periods = endpoints.getPeriods(body) ?: return null
+            jsonUtils.createJsonFileData("periods.json", gson.toJson(periods))
+            return periods
+        }
+        catch (e: HttpException){
+        }
+        catch (e: Exception){
+        }
+        return null
+    }
+    suspend fun forceUpdatePeriods(): AllPeriods? {
         val body = ClassicBody()
         body.guid = guid
         body.apikey = apikey

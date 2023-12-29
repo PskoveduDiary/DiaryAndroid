@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.TextView
 import com.alex.materialdiary.R
 import com.alex.materialdiary.sys.net.models.diary_day.Absence
+import com.google.android.material.card.MaterialCardView
 
 class ProgramViewHolderDiary internal constructor(v: View) {
     @JvmField
@@ -20,6 +21,8 @@ class ProgramViewHolderDiary internal constructor(v: View) {
     var HomeWork: TextView
     @JvmField
     var Absence: TextView
+    @JvmField
+    var Card: MaterialCardView
 
     // Get the handles by calling findViewById() on View object inside the constructor
     init {
@@ -30,5 +33,6 @@ class ProgramViewHolderDiary internal constructor(v: View) {
         Teacher = v.findViewById(R.id.lesson_Teacher)
         HomeWork = v.findViewById(R.id.lesson_Homework)
         Absence = v.findViewById(R.id.lesson_Absence)
+        Card = v.findViewById(R.id.lesson_item)
     }
 }

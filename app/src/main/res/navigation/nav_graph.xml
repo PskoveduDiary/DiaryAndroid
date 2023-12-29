@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/DiaryFragment"
+    app:startDestination="@id/HomeFragment"
     >
 
     <fragment
@@ -330,6 +330,16 @@
             app:argType="string"
             android:defaultValue="0.0" />
     </fragment>
+
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.alex.materialdiary.HomeFragment"
+        android:label="Главная"
+        tools:layout="@layout/fragment_home">
+    </fragment>
+    <action
+        android:id="@+id/to_home"
+        app:destination="@id/HomeFragment" />
     <action
         android:id="@+id/to_check_list"
         app:destination="@id/ChecklistFragment" />

@@ -5,8 +5,11 @@ import com.alex.materialdiary.sys.net.models.pda.PDAnswer
 import com.alex.materialdiary.sys.net.models.pda.PDBody
 import com.alex.materialdiary.sys.net.models.get_user.UserInfoRequest
 import com.alex.materialdiary.sys.net.models.all_periods.AllPeriods
+import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTips
+import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTipsRequestBody
 import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
 import com.alex.materialdiary.sys.net.models.get_user.UserInfo
+import com.alex.materialdiary.sys.net.models.marks_average.MarksAverage
 import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarks
 import com.alex.materialdiary.sys.net.models.periods.Periods
 import retrofit2.http.Body
@@ -36,4 +39,10 @@ interface PskoveduEndpoints {
 
     @POST("journals/login")
     suspend fun getUserInfo(@Body body: UserInfoRequest?): UserInfo?
+
+    @POST("journals/assistant-tips")
+    suspend fun getAssistantTips(@Body body: AssistantTipsRequestBody?): AssistantTips?
+
+    @POST("journals/averagemarks")
+    suspend fun getAverageMarks(@Body body: ClassicBody?): MarksAverage?
 }

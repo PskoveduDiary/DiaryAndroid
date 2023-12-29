@@ -56,6 +56,7 @@ open class MainActivity : AppCompatActivity() {
 
         //pg.signatures[0] = new Signature("");
         //KeyHelper.get(pg, "SHA1")
+
         DiaryPreferences(this)
 // Returns an intent object that you use to check for an update.
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
@@ -109,6 +110,9 @@ open class MainActivity : AppCompatActivity() {
         Alarmer().start_kr(applicationContext)*/
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
+
         try {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
@@ -126,7 +130,6 @@ open class MainActivity : AppCompatActivity() {
         }
         catch (_: Exception){}
         bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         val navigation = intent.getStringExtra("navigate")
@@ -141,6 +144,9 @@ open class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.to_fatal_error)
         }
 
+        if (navController.currentDestination?.id == R.id.HomeFragment){
+            supportActionBar?.hide()
+        }
 
         //if (!p.contains("uuid")) {
         //    navController.navigate(R.id.to_ch_users)
@@ -149,6 +155,7 @@ open class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
+                R.id.HomeFragment,
                 R.id.DiaryFragment,
                 /*R.id.ContactsFragment,*/
                 R.id.MarksFragment,
@@ -169,6 +176,10 @@ open class MainActivity : AppCompatActivity() {
         }
         bottomNav.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
             when (it.itemId) {
+                R.id.action_0 -> {
+                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_home)
+                    return@OnItemSelectedListener true
+                }
                 R.id.action_1 -> {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
                     return@OnItemSelectedListener true

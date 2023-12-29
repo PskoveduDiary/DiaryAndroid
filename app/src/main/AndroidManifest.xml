@@ -30,26 +30,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name=".DownloadActivity"
-            android:exported="true"
-            android:label="@string/title_activity_download"
-            android:theme="@style/Theme.MaterialDiary">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="download"
-                    android:scheme="diary" />
-            </intent-filter>
-        </activity>
         <!--
         <receiver
             android:name=".widgets.DiaryWidget"

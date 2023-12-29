@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.alex.materialdiary.MainActivity">
     <item
+        android:id="@+id/action_0"
+        android:icon="@drawable/baseline_home_24"
+        android:orderInCategory="100"
+        android:title="Главная"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_1"
         android:icon="@drawable/ic_baseline_book_24"
         android:orderInCategory="100"

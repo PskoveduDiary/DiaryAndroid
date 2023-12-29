@@ -66,7 +66,7 @@ class ChangeUserFragment : Fragment() {
                     activity?.runOnUiThread(object : Runnable {
                         override fun run() {
                             if(_binding == null) return
-                            binding.users.adapter = RecycleAdapterUsers(this@ChangeUserFragment, userinfo.schools)
+                            binding.users.adapter = RecycleAdapterUsers(this@ChangeUserFragment, userinfo.schools, userinfo.login)
                         }
                     })
                 }

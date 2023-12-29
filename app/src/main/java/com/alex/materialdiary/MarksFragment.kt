@@ -2,6 +2,8 @@ package com.alex.materialdiary
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +12,24 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentMarksBinding
+import com.alex.materialdiary.sys.MarksInfoBottomSheet
 import com.alex.materialdiary.sys.adapters.RecycleAdapterMarksGroup
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriods
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriodsGroup
 import com.alex.materialdiary.sys.net.PskoveduApi
+import com.alex.materialdiary.sys.net.models.period_marks.Mark
+import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarks
+import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarksData
 import com.alex.materialdiary.utils.MarksTranslator
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
+import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 
 
@@ -32,7 +43,7 @@ class MarksFragment : Fragment(){
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
+    val chips: MutableList<Chip> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,38 +57,39 @@ class MarksFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         api = PskoveduApi.getInstance(requireContext(), findNavController())
-        binding.periodsButton.setBackgroundColor(resources.getColor(android.R.color.holo_purple))
-        binding.itogButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-        binding.AllButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-        binding.periodsButton.setOnClickListener {
-            binding.periods.visibility = View.VISIBLE
-            binding.marks.adapter = null
-            it.setBackgroundColor(resources.getColor(android.R.color.holo_purple))
-            binding.AllButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-            binding.itogButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-        }
-        binding.itogButton.setOnClickListener {
-            binding.periods.visibility = View.GONE
-            it.setBackgroundColor(resources.getColor(android.R.color.holo_purple))
-            binding.periodsButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-            binding.AllButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-            getItogMarks()
-            binding.marks.adapter = null
-            binding.progressBar.visibility = View.VISIBLE
-        }
-        binding.AllButton.setOnClickListener {
-            binding.periods.visibility = View.GONE
-            it.setBackgroundColor(resources.getColor(android.R.color.holo_purple))
-            binding.periodsButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-            binding.itogButton.setBackgroundColor(Color.parseColor("#d1bdff"))
-            getAllMarks()
-            binding.marks.adapter = null
-            binding.progressBar.visibility = View.VISIBLE
-        }
-        val llm = LinearLayoutManager(requireContext())
+        binding.tabs.addOnTabSelectedListener((object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                binding.marks.adapter = null
+                println("selected" + tab!!.position)
+                when(tab!!.position){
+                    0 -> {
+                        binding.periods.visibility = View.VISIBLE
+                        getPeriods()
+                    }
+                    1 -> {
+                        binding.periods.visibility = View.GONE
+                        binding.progressBar.visibility = View.VISIBLE
+                        getItogMarks()
+                    }
+                    2 -> {
+                        binding.periods.visibility = View.GONE
+                        binding.progressBar.visibility = View.VISIBLE
+                        getAllMarks()
+                    }
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Handle tab reselect
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Handle tab unselect
+                println("deselected" + tab!!.position)
+            }
+        }))
         val llm2 = LinearLayoutManager(requireContext())
-        llm.orientation = LinearLayoutManager.HORIZONTAL
-        binding.periods.layoutManager = llm
         binding.marks.layoutManager = llm2
         getPeriods()
     }
@@ -106,6 +118,8 @@ class MarksFragment : Fragment(){
     fun getPeriods() {
         CoroutineScope(Dispatchers.IO).launch {
             val periods = api.getPeriods()
+            var cur_per_start: String = ""
+            var cur_per_end: String = ""
             withContext(Dispatchers.Main) {
                 binding.progressBar.visibility = View.GONE
                 if(periods == null) return@withContext
@@ -115,10 +129,30 @@ class MarksFragment : Fragment(){
                     val cur_per = MarksTranslator.get_cur_period(periods.data)
                     val formatter = DateTimeFormat.forPattern("dd.MM.yyyy")
                     binding.progressBar.visibility = View.VISIBLE
-                    getMarks(cur_per[0].toString(formatter), cur_per[1].toString(formatter))
+                    cur_per_start = cur_per[0].toString(formatter)
+                    cur_per_end = cur_per[1].toString(formatter)
+                    getMarks(cur_per_start, cur_per_end)
                 }
                 catch (_: Exception){}
-                binding.periods.adapter = RecycleAdapterPeriods(this@MarksFragment, periods.data)
+                binding.periods.removeAllViews()
+                chips.clear()
+                periods.data.forEach {
+                    val chip = (View.inflate(context, R.layout.period_item, null)) as Chip
+                    chip.text = it.name
+                    if (it.dateBegin == cur_per_start && it.dateEnd == cur_per_end) chip.isSelected = true
+                    chip.setOnClickListener {_ ->
+                        getMarks(it.dateBegin, it.dateEnd)
+                        showLoader()
+                        chips.forEach { it.isSelected = false }
+                        chip.isSelected = true
+                    }
+                    chips += chip
+                    /*chip.setOnLongClickListener {
+                        CoroutineScope(Dispatchers.IO).launch {api.forceUpdatePeriods()}
+                        true
+                    }*/
+                    binding.periods.addView(chip)
+                }
             }
         }
     }
@@ -128,22 +162,37 @@ class MarksFragment : Fragment(){
             val (marks, showdiffs) = api.getPeriodMarks(from, to)
             withContext(Dispatchers.Main) {
                 if (marks?.data == null) return@withContext
-                binding.progressBar.visibility = View.GONE
                 if (_binding == null) return@withContext
-                binding.marks.adapter =
-                    RecycleAdapterMarksGroup(requireContext(), marks.data, showdiffs)
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        binding.marks.adapter =
+                        RecycleAdapterMarksGroup(this@MarksFragment, marks.data, showdiffs)
+                        binding.progressBar.visibility = View.GONE
+                    },
+                    250
+                )
             }
         }
+    }
+    fun openBottomSheet(data: PeriodMarksData){
+        val modalBottomSheet = MarksInfoBottomSheet.newInstance(data)
+        modalBottomSheet.show(requireActivity().supportFragmentManager, MarksInfoBottomSheet.TAG)
+
     }
     fun getAllMarks() {
         CoroutineScope(Dispatchers.IO).launch {
             val marks = api.getAllMarks()
+            if (marks?.data == null) return@launch
+            var adapter = RecycleAdapterMarksGroup(this@MarksFragment, marks.data, false)
             withContext(Dispatchers.Main) {
-                if (marks?.data == null) return@withContext
-                binding.progressBar.visibility = View.GONE
                 if (_binding == null) return@withContext
-                binding.marks.adapter =
-                    RecycleAdapterMarksGroup(requireContext(), marks.data, false)
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        binding.marks.adapter = adapter
+                        binding.progressBar.visibility = View.GONE
+                    },
+                    250
+                )
             }
         }
     }
@@ -152,11 +201,17 @@ class MarksFragment : Fragment(){
         CoroutineScope(Dispatchers.IO).launch {
             val periods = api.getItogMarks()
             withContext(Dispatchers.Main) {
-                binding.progressBar.visibility = View.GONE
                 if (periods == null) return@withContext
                 if (_binding == null) return@withContext
-                binding.marks.adapter =
-                    RecycleAdapterPeriodsGroup(requireContext(), periods.data)
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        binding.marks.adapter =
+                            RecycleAdapterPeriodsGroup(requireContext(), periods.data)
+                        binding.progressBar.visibility = View.GONE
+                    },
+                    250
+                )
+
             }
         }
     }

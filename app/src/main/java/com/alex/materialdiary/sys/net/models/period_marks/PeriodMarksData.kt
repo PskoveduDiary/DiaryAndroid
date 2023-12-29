@@ -1,6 +1,9 @@
 package com.alex.materialdiary.sys.net.models.period_marks
 
+import android.content.Context
+import com.alex.materialdiary.R
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.text.DecimalFormat
 
 data class PeriodMarksData(
@@ -33,7 +36,7 @@ data class PeriodMarksData(
 
     @SerializedName("MARKS")
     var marks: List<Mark>
-) {
+) : Serializable {
     val average: String
         get() {
             if (marks.size == 0) return "Нет оценок"
@@ -44,65 +47,91 @@ data class PeriodMarksData(
             return "Средний бал: " + DecimalFormat("#0.00").format((com.toFloat() / marks.size).toDouble())
         }
 
-    fun get_to_five(): String {
-        if (marks.size == 0) return "3"
-        var sum = 0
+    fun getToFive(context: Context): String {
+        if (marks.size == 0) return "Для атестации нужно минимум 3 оценки"
+        val marks_converted = marks.map{ it -> it.value}.toMutableList()
         var added = 0
-        for (i in marks.indices) {
-            sum += marks[i].value
-        }
-        var average = sum.toFloat() / marks.size
-        if (average >= 4.59) return "Уже 5"
-        while (average < 4.6) {
-            added += 1
-            sum += 5
-            average = sum.toFloat() / (marks.size + added)
-            if (added >= 40) {
-                return "Много"
+        if (marks_converted.average() >= 4.6) return "<font color=#336635>Уже 5</font>"
+        while (marks_converted.average() < 4.6) {
+            marks_converted += 5
+            added++
+            if (marks.size >= 50) {
+                return ""
             }
         }
-        return added.toString()
+        return "До <font color=#336635>5</font> " + context.resources.getQuantityString(R.plurals.five, added).format(added)
+    }
+    fun getToFive(context: Context, marks: MutableList<Int>): String {
+        if (marks.size == 0) return "Для атестации нужно минимум 3 оценки"
+        var added = 0
+        if (marks.average() >= 4.6) return "<font color=#336635>Уже 5</font>"
+        while (marks.average() < 4.6) {
+            marks += 5
+            added++
+            if (marks.size >= 50) {
+                return ""
+            }
+        }
+        return "До <font color=#336635>5</font> " + context.resources.getQuantityString(R.plurals.five, added).format(added)
     }
 
-    fun get_four_to_four(): String {
-        if (marks.size == 0) return "3"
-        var sum = 0
+    fun getFourToFour(context: Context): String {
+        if (marks.size == 0) return "Для атестации нужно минимум 3 оценки"
+        val marks_converted = marks.map{ it -> it.value}.toMutableList()
         var added = 0
-        for (i in marks.indices) {
-            sum += marks[i].value
-        }
-        var average = sum.toFloat() / marks.size
-        if (average >= 4.59) return "Уже 5"
-        if (average >= 3.59) return "Уже 4"
-        while (average < 3.6) {
-            added += 1
-            sum += 4
-            average = sum.toFloat() / (marks.size + added)
-            if (added >= 40) {
-                return "Много"
+        if (marks_converted.average() >= 4.6) return "<font color=#336635>Уже 5</font>"
+        if (marks_converted.average() >= 3.6) return "<font color=#e7a700>Уже 4</font>"
+        while (marks_converted.average() < 3.6) {
+            marks_converted += 4
+            added++
+            if (marks.size >= 50) {
+                return ""
             }
         }
-        return added.toString()
+        return "До <font color=#e7a700>4</font> " + context.resources.getQuantityString(R.plurals.four, added).format(added)
+    }
+    fun getFourToFour(context: Context, marks: MutableList<Int>): String {
+        if (marks.size == 0) return "Для атестации нужно минимум 3 оценки"
+        var added = 0
+        if (marks.average() >= 4.6) return "<font color=#336635>Уже 5</font>"
+        if (marks.average() >= 3.6) return "<font color=#e7a700>Уже 4</font>"
+        while (marks.average() < 3.6) {
+            marks += 4
+            added++
+            if (marks.size >= 50) {
+                return ""
+            }
+        }
+        return "До <font color=#e7a700>4</font> " + context.resources.getQuantityString(R.plurals.four, added).format(added)
     }
 
-    fun get_five_to_four(): String {
-        if (marks.size == 0) return "3"
-        var sum = 0
+    fun getFiveToFour(context: Context): String {
+        if (marks.size == 0) return "Для атестации нужно минимум 3 оценки"
+        val marks_converted = marks.map{ it -> it.value}.toMutableList()
         var added = 0
-        for (i in marks.indices) {
-            sum += marks[i].value
-        }
-        var average = sum.toFloat() / marks.size
-        if (average >= 4.59) return "Уже 5"
-        if (average >= 3.59) return "Уже 4"
-        while (average < 3.6) {
-            added += 1
-            sum += 5
-            average = sum.toFloat() / (marks.size + added)
-            if (added >= 40) {
-                return "Много"
+        if (marks_converted.average() >= 4.6) return "<font color=#336635>Уже 5</font>"
+        if (marks_converted.average() >= 3.6) return "<font color=#e7a700>Уже 4</font>"
+        while (marks_converted.average() < 3.6) {
+            marks_converted += 5
+            added++
+            if (marks.size >= 50) {
+                return ""
             }
         }
-        return added.toString()
+        return "До <font color=#e7a700>4</font> " + context.resources.getQuantityString(R.plurals.five, added).format(added)
+    }
+    fun getFiveToFour(context: Context, marks: MutableList<Int>): String {
+        if (marks.size == 0) return "Для атестации нужно минимум 3 оценки"
+        var added = 0
+        if (marks.average() >= 4.6) return "<font color=#336635>Уже 5</font>"
+        if (marks.average() >= 3.6) return "<font color=#e7a700>Уже 4</font>"
+        while (marks.average() < 3.6) {
+            marks += 5
+            added++
+            if (marks.size >= 50) {
+                return ""
+            }
+        }
+        return "До <font color=#e7a700>4</font> " + context.resources.getQuantityString(R.plurals.five, added).format(added)
     }
 }

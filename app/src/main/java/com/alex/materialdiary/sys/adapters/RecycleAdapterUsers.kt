@@ -18,10 +18,11 @@ import com.alex.materialdiary.ShareQRFragmentDirections
 import com.alex.materialdiary.sys.net.models.get_user.Participant
 import java.util.ArrayList
 
-class RecycleAdapterUsers(context: ChangeUserFragment, schools: List<Schools>?) :
+class RecycleAdapterUsers(context: ChangeUserFragment, schools: List<Schools>?, snils: String?) :
     RecyclerView.Adapter<RecycleAdapterUsers.ViewHolder>() {
     private val inflater: LayoutInflater
     private val fragment: ChangeUserFragment
+    private val snils: String?
     private val participants: List<Participant?>?
     private val schoolsForUsers: MutableList<SchoolInfo?> = ArrayList()
 
@@ -29,6 +30,7 @@ class RecycleAdapterUsers(context: ChangeUserFragment, schools: List<Schools>?) 
         inflater = LayoutInflater.from(context.requireContext())
         participants = transform(schools)
         fragment = context
+        this.snils = snils
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -63,7 +65,8 @@ class RecycleAdapterUsers(context: ChangeUserFragment, schools: List<Schools>?) 
             val action: NavDirections = ShareQRFragmentDirections.toShare(
                 ShareUser(
                     participant.name + " " + participant.surname,
-                    participant.sysGuid!!, school.shortName!!, participant.grade!!.name!!
+                    participant.sysGuid!!, school.shortName!!, participant.grade!!.name!!,
+                    snils, participant.grade!!.sysGuid
                 )
             )
             findNavController(

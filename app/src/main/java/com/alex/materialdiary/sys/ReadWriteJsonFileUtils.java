@@ -4,6 +4,8 @@ import static xdroid.toaster.Toaster.toast;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.reflect.TypeToken;
 import com.labijie.caching.TimePolicy;
 import com.labijie.caching.memory.MemoryCacheManager;
@@ -37,6 +39,7 @@ public class ReadWriteJsonFileUtils {
             e.printStackTrace();
         }
     }
+    @Nullable
     public String readJsonFileData(String filename) {
         Object cached = memoryCache.get(filename, new TypeToken<String>(){}.getType(), "ru");
         if (cached != null) {

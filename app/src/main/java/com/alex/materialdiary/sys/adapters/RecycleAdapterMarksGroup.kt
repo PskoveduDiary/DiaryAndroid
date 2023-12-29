@@ -9,29 +9,34 @@ import android.view.ViewGroup
 import com.alex.materialdiary.R
 import android.os.Build
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.utils.MarksTranslator
 import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.alex.materialdiary.MarksFragment
 import com.alex.materialdiary.NavGraphDirections
 import java.util.ArrayList
 
 class RecycleAdapterMarksGroup(
-    context: Context,
+    fragment: MarksFragment,
     periods: List<PeriodMarksData>,
     needShowDifs: Boolean
 ) : RecyclerView.Adapter<RecycleAdapterMarksGroup.ViewHolder>() {
     private val context: Context
+    private val fragment: MarksFragment
     private val inflater: LayoutInflater
     private val periods: List<PeriodMarksData>
     private val needShowDifs: Boolean
 
+    var viewPool = RecyclerView.RecycledViewPool();
     init {
+        this.context = fragment.requireContext()
+        this.fragment = fragment
         inflater = LayoutInflater.from(context)
         this.periods = periods
-        this.context = context
         this.needShowDifs = needShowDifs
     }
 
@@ -44,22 +49,24 @@ class RecycleAdapterMarksGroup(
         val period = periods[position]
         holder.name.text = period.subjectName
         holder.average.text = period.average
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            holder.info.tooltipText = """
-                До пятерки 5: ${period.get_to_five()}
-                До четверки 5: ${period.get_five_to_four()}
-                До четверки 4: ${period.get_four_to_four()}
-                """.trimIndent()
-        } else holder.info.visibility = View.GONE
-        holder.info.setOnClickListener { obj: View -> obj.performLongClick() }
-        holder.marks.setOnClickListener {
-            Navigation.findNavController(holder.itemView).navigate(NavGraphDirections.toAverage().setMarks(period.marks.map { it.value }.toIntArray()))
+        holder.info.setOnClickListener {
+            fragment.openBottomSheet(period)
         }
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //holder.info.tooltipText = """
+            //    До пятерки 5: ${period.get_to_five()}
+            //    До четверки 5: ${period.get_five_to_four()}
+            //   До четверки 4: ${period.get_four_to_four()}
+             //   """.trimIndent()
+        } else holder.info.visibility = View.GONE
+        holder.info.setOnClickListener { obj: View -> obj.performLongClick() }*/
         val llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.HORIZONTAL
+        llm.initialPrefetchItemCount = 4
         val differences =
             getSubjectMarksDifferences(context, period.subjectName, MarksTranslator(periods as MutableList).items)
         holder.recyclerView.layoutManager = llm
+        holder.recyclerView.setRecycledViewPool(viewPool)
         holder.recyclerView.adapter = RecycleAdapterMarks(
             context,
             period.marks,
@@ -76,15 +83,13 @@ class RecycleAdapterMarksGroup(
         val name: TextView
         val average: TextView
         val recyclerView: RecyclerView
-        val info: ImageView
-        val marks: ImageView
+        val info: Button
 
         init {
             name = view.findViewById(R.id.MarksLessonName)
             average = view.findViewById(R.id.MarksAverage)
             recyclerView = view.findViewById(R.id.marks_recycle)
             info = view.findViewById(R.id.info)
-            marks = view.findViewById(R.id.marks)
         }
     }
 }
