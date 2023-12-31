@@ -101,8 +101,9 @@ public class ProgramAdapterDiary extends ArrayAdapter<String> {
         singleItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavDirections act = LessonFragmentDirections.toLesson(data.get(position));
-                context.get_nav().navigate(act);
+                //NavDirections act = LessonFragmentDirections.toLesson(data.get(position));
+                //context.get_nav().navigate(act);
+                context.openBottomSheet(data.get(position));
                 //Toast.makeText(getContext(), "You clicked:"+ Logins.get(position), Toast.LENGTH_SHORT).show();
                 //Intent openLinksIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls[position]));
                 //context.startActivity(openLinksIntent);

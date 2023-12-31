@@ -11,8 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.databinding.FragmentDiaryBinding
+import com.alex.materialdiary.sys.LessonBottomSheet
+import com.alex.materialdiary.sys.MarksInfoBottomSheet
 import com.alex.materialdiary.sys.adapters.ProgramAdapterDiary
 import com.alex.materialdiary.sys.net.PskoveduApi
+import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarksData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -90,6 +94,11 @@ class DiaryFragment : Fragment(){
     }
     fun get_nav(): NavController {
         return findNavController()
+    }
+    fun openBottomSheet(data: DatumDay){
+        val modalBottomSheet = LessonBottomSheet.newInstance(data)
+        modalBottomSheet.show(requireActivity().supportFragmentManager, LessonBottomSheet.TAG)
+
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

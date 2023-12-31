@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
 @Parcelize
 data class DatumDay (
@@ -78,4 +79,4 @@ data class DatumDay (
 
     @SerializedName("NOTES")
     var notes: List<String>? = null,
-)  : Parcelable
+)  : Parcelable, Serializable

@@ -97,4 +97,5 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     implementation 'com.faltenreich:skeletonlayout:5.0.0'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }

@@ -21,6 +21,7 @@ import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
 import com.alex.materialdiary.sys.net.models.get_user.UserData
 import com.alex.materialdiary.sys.net.models.get_user.UserInfo
 import com.alex.materialdiary.sys.net.models.marks.Item
+import com.alex.materialdiary.sys.net.models.news.News
 import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarks
 import com.alex.materialdiary.sys.net.models.periods.Periods
 import com.alex.materialdiary.ui.login.LoginActivity
@@ -352,6 +353,36 @@ class PskoveduApi(context: Context, navController: NavController?) {
         body.apikey = Crypt().encryptSYS_GUID(body.login!!)
         try {
             return endpoints.getAssistantTips(body) ?: return null
+        } catch (e: HttpException) {
+        } catch (e: ConnectException) {
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+                )
+            }
+        } catch (e: Exception) {
+        }
+        return null
+    }
+    suspend fun getSchoolNews(): News? {
+        val body = ClassicBody()
+        try {
+            return endpoints.getSchoolNews(body) ?: return null
+        } catch (e: HttpException) {
+        } catch (e: ConnectException) {
+            withContext(Dispatchers.Main) {
+                navController?.navigate(
+                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
+                )
+            }
+        } catch (e: Exception) {
+        }
+        return null
+    }
+    suspend fun getEduNews(): News? {
+        val body = ClassicBody()
+        try {
+            return endpoints.getEduNews(body) ?: return null
         } catch (e: HttpException) {
         } catch (e: ConnectException) {
             withContext(Dispatchers.Main) {

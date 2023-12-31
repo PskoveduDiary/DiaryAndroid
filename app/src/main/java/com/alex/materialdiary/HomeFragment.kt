@@ -15,6 +15,7 @@ import com.alex.materialdiary.databinding.FragmentHomeBinding
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
 import com.alex.materialdiary.sys.adapters.RecycleAdapterAdvices
 import com.alex.materialdiary.sys.adapters.RecycleAdapterLastMarks
+import com.alex.materialdiary.sys.adapters.RecycleAdapterNews
 import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.sys.net.models.marks.Item
 import com.alex.materialdiary.sys.net.models.marks.LastMark
@@ -91,6 +92,7 @@ class HomeFragment : Fragment() {
         checkLastMarks()
         checkAdvices()
         checkTime()
+        checkNews()
     }
 
     override fun onDestroyView() {
@@ -147,7 +149,6 @@ class HomeFragment : Fragment() {
         tipsJob = CoroutineScope(Dispatchers.IO).launch {
             try {
                 val tips = api.getAssistantTips()
-                println(tips)
                 withContext(Dispatchers.Main) {
                     if (tips == null || tips.data.isEmpty()) {
                         binding.advices.visibility = View.GONE
@@ -155,6 +156,25 @@ class HomeFragment : Fragment() {
                     else {
                         binding.advicesRecycleView.adapter = RecycleAdapterAdvices(this@HomeFragment,
                             tips.data.toMutableList())
+                    }
+                }
+            }  catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun checkNews(){
+        tipsJob = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val news = api.getEduNews()
+                withContext(Dispatchers.Main) {
+                    if (news?.news == null || news.news.isEmpty()) {
+                        binding.news.visibility = View.GONE
+                    }
+                    else {
+                        binding.newsRecycleView.adapter = RecycleAdapterNews(this@HomeFragment,
+                            news.news.toMutableList())
                     }
                 }
             }  catch (e: Exception) {
