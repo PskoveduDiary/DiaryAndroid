@@ -18,6 +18,8 @@ import com.alex.materialdiary.sys.net.models.all_periods.AllPeriods
 import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTips
 import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTipsRequestBody
 import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
+import com.alex.materialdiary.sys.net.models.dop_programs.DopProgramData
+import com.alex.materialdiary.sys.net.models.dop_programs.DopPrograms
 import com.alex.materialdiary.sys.net.models.get_user.UserData
 import com.alex.materialdiary.sys.net.models.get_user.UserInfo
 import com.alex.materialdiary.sys.net.models.marks.Item
@@ -110,6 +112,16 @@ class PskoveduApi(context: Context, navController: NavController?) {
             } else navController?.navigate(R.id.to_new_ch_users)
 
     }
+    fun HttpError(){
+        MainActivity.showSnack("Невозможно получить данные, попробуйте позже")
+    }
+    fun ConnectError(){
+        MainActivity.showSnack("Невозможно получить данные, проверьте подключение к интернету")
+    }
+
+    fun UnknownError(){
+        MainActivity.showSnack("Произошла ошибка, мы уже работаем над решением проблемы")
+    }
 
     fun changeGuid(guid: String, name: String){
         this.guid = guid
@@ -156,6 +168,12 @@ class PskoveduApi(context: Context, navController: NavController?) {
             val entity = gson.fromJson(datas.toString(), UserInfo::class.java)
             return entity.data.login
         }
+        else {
+            val shared = getShared()
+            if (shared != null) {
+                return shared.find { it.guid == guid }?.snils
+            }
+        }
         return null
     }
     suspend fun getUserInfo(): UserData? {
@@ -189,24 +207,16 @@ class PskoveduApi(context: Context, navController: NavController?) {
             jsonUtils.createJsonFileData("users.json", gson.toJson(user))
             return user.data
         }
-        catch (e: HttpException){withContext(Dispatchers.Main) {
-                if (e.code() == 500) navController?.navigate(
-                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
-                )
-            }
+        catch (e: HttpException){
+            HttpError()
         }
         catch (e: ConnectException){withContext(Dispatchers.Main) {
-            navController?.navigate(
-                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-            )
+            ConnectError()
         }
         }
         catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
-            }
+            UnknownError()
         }
         return null
     }
@@ -262,26 +272,15 @@ class PskoveduApi(context: Context, navController: NavController?) {
         }
         catch (e: HttpException){
             e.printStackTrace()
-            withContext(Dispatchers.Main) {
-                if (e.code() == 500) navController?.navigate(
-                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
-                )
-            }
+                HttpError()
         }
-        catch (e: ConnectException){withContext(Dispatchers.Main) {
-            navController?.navigate(
-                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-            )
-        }
+        catch (e: ConnectException){
+            ConnectError()
         }
         catch (e: Exception){
             e.printStackTrace()
             FirebaseCrashlytics.getInstance().recordException(e)
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже")
-                )
-            }
+            UnknownError()
         }
         return null
     }
@@ -295,24 +294,15 @@ class PskoveduApi(context: Context, navController: NavController?) {
             val marks = endpoints.getPeriodMarks(body) ?: return null
             return marks
         }
-        catch (e: HttpException){withContext(Dispatchers.Main) {
-                if (e.code() == 500) navController?.navigate(
-                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
-                )
-            }
+        catch (e: HttpException){
+            HttpError()
         }
-        catch (e: ConnectException){withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-                )
-            }
+        catch (e: ConnectException){
+            ConnectError()
         }
         catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
-            }
+            UnknownError()
         }
         return null
     }
@@ -334,11 +324,8 @@ class PskoveduApi(context: Context, navController: NavController?) {
         }
         catch (e: HttpException){
         }
-        catch (e: ConnectException){withContext(Dispatchers.Main) {
-            navController?.navigate(
-                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-            )
-        }
+        catch (e: ConnectException){
+            ConnectError()
         }
         catch (e: Exception){
         }
@@ -355,11 +342,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
             return endpoints.getAssistantTips(body) ?: return null
         } catch (e: HttpException) {
         } catch (e: ConnectException) {
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-                )
-            }
+            ConnectError()
         } catch (e: Exception) {
         }
         return null
@@ -370,11 +353,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
             return endpoints.getSchoolNews(body) ?: return null
         } catch (e: HttpException) {
         } catch (e: ConnectException) {
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-                )
-            }
+            ConnectError()
         } catch (e: Exception) {
         }
         return null
@@ -385,11 +364,21 @@ class PskoveduApi(context: Context, navController: NavController?) {
             return endpoints.getEduNews(body) ?: return null
         } catch (e: HttpException) {
         } catch (e: ConnectException) {
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-                )
-            }
+            ConnectError()
+        } catch (e: Exception) {
+        }
+        return null
+    }
+    suspend fun getDopPrograms(): List<DopProgramData>? {
+        val body = ClassicBody()
+        body.areaname = "г.Псков"
+        body.bias = 1
+        body.blocksize = 5
+        try {
+            return endpoints.getDopPrograms(body)?.data ?: return null
+        } catch (e: HttpException) {
+        } catch (e: ConnectException) {
+            ConnectError()
         } catch (e: Exception) {
         }
         return null
@@ -472,24 +461,15 @@ class PskoveduApi(context: Context, navController: NavController?) {
                 }
             }
         }
-        catch (e: HttpException){withContext(Dispatchers.Main) {
-                if (e.code() == 500) navController?.navigate(
-                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
-                )
-            }
+        catch (e: HttpException){
+            HttpError()
         }
-        catch (e: ConnectException){withContext(Dispatchers.Main) {
-            navController?.navigate(
-                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-            )
-        }
+        catch (e: ConnectException){
+            ConnectError()
         }
         catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
-            }
+            UnknownError()
         }
     }
     suspend fun setPdaKey(name: String, guid: String) {
@@ -508,24 +488,15 @@ class PskoveduApi(context: Context, navController: NavController?) {
                 catch (_: Exception) {}
             }
         }
-        catch (e: HttpException){withContext(Dispatchers.Main) {
-                if (e.code() == 500) navController?.navigate(
-                    NavGraphDirections.toError("К сожалению на сервере произошла ошибка, попробуйте позже")
-                )
-            }
+        catch (e: HttpException){
+            HttpError()
         }
-        catch (e: ConnectException){withContext(Dispatchers.Main) {
-            navController?.navigate(
-                NavGraphDirections.toError("Не удается подключиться к серверу, попробуйте позже")
-            )
-        }
+        catch (e: ConnectException){
+            ConnectError()
         }
         catch (e: Exception){
             FirebaseCrashlytics.getInstance().recordException(e)
-            withContext(Dispatchers.Main) {
-                navController?.navigate(
-                    NavGraphDirections.toError("Произошла неизвестная ошибка, проверьте подключение к интернету или попробуйте позже"))
-            }
+            UnknownError()
         }
     }
 

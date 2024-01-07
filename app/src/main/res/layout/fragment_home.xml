@@ -85,6 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/advices"
+            android:layout_marginVertical="4dp"
             android:orientation="vertical">
 
             <TextView
@@ -106,6 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/news"
+            android:layout_marginVertical="4dp"
             android:orientation="vertical">
 
             <TextView
@@ -121,6 +123,27 @@
                 android:layout_margin="5dp"
                 tools:itemCount="1"
                 tools:listitem="@layout/news_item" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dop"
+            android:layout_marginVertical="4dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Программы дополнительного образования:"
+                android:textColor="@color/text" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dopRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                tools:itemCount="1"
+                tools:listitem="@layout/dop_item" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

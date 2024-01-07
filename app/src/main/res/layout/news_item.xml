@@ -34,9 +34,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|start"
-                android:textSize="16sp"
-                android:maxLines="2"
-                android:maxWidth="130dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
+                android:width="175dp"
                 android:text="Набор в ЗФТШ"/>
             <TextView
                 android:id="@+id/newsText"

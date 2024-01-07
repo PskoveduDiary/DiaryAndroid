@@ -15,11 +15,8 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.FileProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.alex.materialdiary.BuildConfig
-import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.ui.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -63,7 +61,7 @@ class RecycleAdapterFiles(context: Context, links: MutableList<String>) :
         //val guid = links.get(position).replace("https://one.pskovedu.ru:/file/download/", "")
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val (name, file) = getFileName(links.get(position))
+                val name = getFileName(links.get(position))
                 //val file = FilesService.instance.jSONApi.getFile(guid)
                 withContext(Dispatchers.Main) {
                     holder.progress.visibility = View.GONE
@@ -95,26 +93,41 @@ class RecycleAdapterFiles(context: Context, links: MutableList<String>) :
                         }
                     }
                     holder.itemView.setOnClickListener {
-                        if (file != null) {
-                            val downloadedFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                                , name)
-                            val sink: BufferedSink = Okio.buffer(Okio.sink(downloadedFile))
-                            sink.writeAll(file)
-                            sink.close()
-                            val uri: Uri = FileProvider.getUriForFile(
-                                context,
-                                BuildConfig.APPLICATION_ID + ".provider",
-                                downloadedFile
-                            )
-                            val intent = Intent(Intent.ACTION_VIEW, uri)
-                            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                            if (intent.resolveActivity(context.packageManager) != null) {
-                                context.startActivity(intent);
+                        CoroutineScope(Dispatchers.IO).launch {
+                            withContext(Dispatchers.Main) {
+                                holder.progress.visibility = View.VISIBLE
+                                holder.icon.visibility = View.GONE
                             }
-                            else toast("Нет приложения для данного типа файлов")
+                            val file = getFile(links.get(position))
+                            if (file != null) {
+                                val downloadedFile = File(
+                                    context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+                                    name
+                                )
+                                val sink: BufferedSink = Okio.buffer(Okio.sink(downloadedFile))
+                                sink.writeAll(file)
+                                sink.close()
+                                val uri: Uri = FileProvider.getUriForFile(
+                                    context,
+                                    BuildConfig.APPLICATION_ID + ".provider",
+                                    downloadedFile
+                                )
+                                val intent = Intent(Intent.ACTION_VIEW)
+                                val type = context.contentResolver.getType(uri)
+                                intent.setDataAndType(uri, type)
+                                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                                val chooser = Intent.createChooser(intent, "Выберите приложение")
+                                /*if (intent.resolveActivity(context.packageManager) != null) {
+                                    context.startActivity(intent);
+                                } else toast("Нет приложения для данного типа файлов")*/
+                                context.startActivity(chooser)
 
+                            } else toast("Произошла ошибка")
+                            withContext(Dispatchers.Main) {
+                                holder.progress.visibility = View.GONE
+                                holder.icon.visibility = View.VISIBLE
+                            }
                         }
-                        else toast("Произошла ошибка")
                     }
 
                 }
@@ -122,8 +135,11 @@ class RecycleAdapterFiles(context: Context, links: MutableList<String>) :
             catch (e: Exception){
                 withContext(Dispatchers.Main) {
                     e.printStackTrace()
-                    links.removeAt(position)
-                    notifyItemRemoved(position)
+                    try {
+                        links.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
+                    catch (_: IndexOutOfBoundsException){}
                 }
             }
         }
@@ -131,7 +147,7 @@ class RecycleAdapterFiles(context: Context, links: MutableList<String>) :
     override fun getItemCount(): Int {
         return links.size
     }
-    suspend fun getFileName(link: String): Pair<String, BufferedSource?> {
+    suspend fun getFileName(link: String): String {
         val logging = HttpLoggingInterceptor()
         // set your desired log level
         logging.level = HttpLoggingInterceptor.Level.BODY
@@ -154,12 +170,42 @@ class RecycleAdapterFiles(context: Context, links: MutableList<String>) :
             .build()
         val request = okhttp3.Request.Builder()
             .url(link)
-            .post(RequestBody.create(null, ByteArray(0)))
+            .head()
             .build()
         val response = client.newCall(request).execute()
         val headers = response.headers()
-        if (headers.get("Location") == "/auth/login") return "Истекло время авторизации" to null
-        return URLUtil.guessFileName(link, headers.get("Content-Disposition"), headers.get("Content-Type")) to response.body()?.source()
+        if (headers.get("Location") == "/auth/login") return "Истекло время авторизации"
+        return URLUtil.guessFileName(link, headers.get("Content-Disposition"), headers.get("Content-Type"))
+    }
+    suspend fun getFile(link: String): BufferedSource? {
+        val logging = HttpLoggingInterceptor()
+        // set your desired log level
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .followRedirects(false)
+            .followSslRedirects(false)
+            .addInterceptor(
+                Interceptor { chain ->
+                    val builder = chain.request().newBuilder()
+                    builder
+                        .header("Cookie",
+                            CookieManager.getInstance()
+                                .getCookie("one.pskovedu.ru") + "; " + CookieManager.getInstance()
+                                .getCookie("pskovedu.ru")
+                        )
+                    return@Interceptor chain.proceed(builder.build())
+                }
+            )
+            .build()
+        val request = okhttp3.Request.Builder()
+            .url(link)
+            .post(RequestBody.create(null, ""))
+            .build()
+        val response = client.newCall(request).execute()
+        val headers = response.headers()
+        if (headers.get("Location") == "/auth/login") return null
+        return response.body()?.source()
     }
     class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
         val progress: ProgressBar

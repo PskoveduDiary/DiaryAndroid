@@ -12,8 +12,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentAverageBinding
 import com.alex.materialdiary.databinding.FragmentHomeBinding
+import com.alex.materialdiary.sys.ChangeNameBottomSheet
+import com.alex.materialdiary.sys.LessonBottomSheet
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
 import com.alex.materialdiary.sys.adapters.RecycleAdapterAdvices
+import com.alex.materialdiary.sys.adapters.RecycleAdapterDopPrograms
 import com.alex.materialdiary.sys.adapters.RecycleAdapterLastMarks
 import com.alex.materialdiary.sys.adapters.RecycleAdapterNews
 import com.alex.materialdiary.sys.net.PskoveduApi
@@ -56,6 +59,7 @@ class HomeFragment : Fragment() {
     private var marksJob: Job? = null
     private var timeJob: Job? = null
     private var tipsJob: Job? = null
+    private var dopJob: Job? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -80,6 +84,7 @@ class HomeFragment : Fragment() {
         binding.lastMarksRecycleView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.advicesRecycleView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.newsRecycleView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.dopRecycleView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.lastMarksRecycleView.adapter = RecycleAdapterLastMarks(this, lastMarks)
 
         skeletonAdvices = binding.advicesRecycleView.applySkeleton(R.layout.advice_item)
@@ -87,18 +92,25 @@ class HomeFragment : Fragment() {
 
         skeletonAdvices.showSkeleton()
         skeletonNews.showSkeleton()
-
+        binding.MainText.setOnClickListener {
+            ChangeNameBottomSheet(this).show(requireActivity().supportFragmentManager, "ChangeNameBottomSheet")
+        }
 
         checkLastMarks()
         checkAdvices()
         checkTime()
         checkNews()
+        checkDop()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as MainActivity).supportActionBar?.show()
         _binding = null
+    }
+    fun reloadName(){
+        val name = api.getUserName()
+        binding.MainText.text = if (name != null) "Добро пожаловать, \n${name}!" else "Добро пожаловать!"
     }
     fun checkLastMarks(){
         marksJob = CoroutineScope(Dispatchers.IO).launch {
@@ -137,8 +149,8 @@ class HomeFragment : Fragment() {
                     }
                     else
                         lastMarks.sortByDescending { LocalDate.parse(it.date, pattern) }
-                    binding.marks.visibility = View.VISIBLE
-                    binding.lastMarksRecycleView.adapter?.notifyDataSetChanged()
+                    if (_binding != null) binding.marks.visibility = View.VISIBLE
+                    if (_binding != null) binding.lastMarksRecycleView.adapter?.notifyDataSetChanged()
                 }
             }  catch (e: Exception) {
                 e.printStackTrace()
@@ -151,15 +163,16 @@ class HomeFragment : Fragment() {
                 val tips = api.getAssistantTips()
                 withContext(Dispatchers.Main) {
                     if (tips == null || tips.data.isEmpty()) {
-                        binding.advices.visibility = View.GONE
+                        if (_binding != null) binding.advices.visibility = View.GONE
                     }
                     else {
-                        binding.advicesRecycleView.adapter = RecycleAdapterAdvices(this@HomeFragment,
+                        if (_binding != null) binding.advicesRecycleView.adapter = RecycleAdapterAdvices(this@HomeFragment,
                             tips.data.toMutableList())
                     }
                 }
             }  catch (e: Exception) {
                 e.printStackTrace()
+                if (_binding != null) binding.advices.visibility = View.GONE
             }
         }
     }
@@ -170,11 +183,29 @@ class HomeFragment : Fragment() {
                 val news = api.getEduNews()
                 withContext(Dispatchers.Main) {
                     if (news?.news == null || news.news.isEmpty()) {
-                        binding.news.visibility = View.GONE
+                        if (_binding != null) binding.news.visibility = View.GONE
                     }
                     else {
-                        binding.newsRecycleView.adapter = RecycleAdapterNews(this@HomeFragment,
+                        if (_binding != null) binding.newsRecycleView.adapter = RecycleAdapterNews(this@HomeFragment,
                             news.news.toMutableList())
+                    }
+                }
+            }  catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+    fun checkDop(){
+        dopJob = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val programs = api.getDopPrograms()
+                withContext(Dispatchers.Main) {
+                    if (programs.isNullOrEmpty()) {
+                        if (_binding != null) binding.dop.visibility = View.GONE
+                    }
+                    else {
+                        binding.dopRecycleView.adapter = RecycleAdapterDopPrograms(this@HomeFragment,
+                            programs)
                     }
                 }
             }  catch (e: Exception) {
@@ -185,8 +216,8 @@ class HomeFragment : Fragment() {
     @OptIn(ExperimentalStdlibApi::class)
     fun checkTime(){
         timeJob = CoroutineScope(Dispatchers.IO).launch {
-            var itog = ""
-            val day = api.getDay()
+            var itog = "Завтра нет уроков"
+            val day = api.getDay(LocalDate.now().toString("dd.MM.yyyy"))
             val lastLesson = day?.data?.lastOrNull()
             val firstLesson = day?.data?.lastOrNull()
             if (lastLesson != null && firstLesson != null){
@@ -213,7 +244,7 @@ class HomeFragment : Fragment() {
                     }
                 }
                 else {
-                    val nextday = api.getDay(LocalDate.now().plusDays(1).toString())
+                    val nextday = api.getDay(LocalDate.now().plusDays(1).toString("dd.MM.yyyy"))
                     val nextDayfirstLesson = nextday?.data?.first()
                     if (nextDayfirstLesson != null) {
                             itog = "Завтра ${resources.getQuantityString(R.plurals.lesson,
@@ -241,6 +272,7 @@ class HomeFragment : Fragment() {
         marksJob?.cancel()
         timeJob?.cancel()
         tipsJob?.cancel()
+        dopJob?.cancel()
         super.onDestroy()
     }
 }

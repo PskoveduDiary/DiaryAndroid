@@ -72,8 +72,8 @@ class LessonBottomSheet : BottomSheetDialogFragment() {
         }
         binding.lessComment.text = data!!.notes?.joinToString(", ")
         if (data!!.homeworkPrevious?.homework != null) {
-            val homework = data!!.homeworkPrevious!!.homework!!
-            if (homework.contains("https://one.pskovedu.ru:/file/download/")){
+            val homework = data!!.homeworkPrevious!!.homework!!.replace(".ru:/", ".ru/")
+            if (homework.contains("https://one.pskovedu.ru/file/download/")){
                 binding.card5.visibility = View.VISIBLE
                 val links = homework.split(" ", "\n").filter {
                     it.contains("https://one.pskovedu.ru/file/download/")

@@ -27,4 +27,16 @@ class ClassicBody {
     @SerializedName("pdakey")
     @Expose
     var pdakey: String? = null
+
+    @SerializedName("bias")
+    @Expose
+    var bias: Int? = null
+
+    @SerializedName("areaname")
+    @Expose
+    var areaname: String? = null
+
+    @SerializedName("blocksize")
+    @Expose
+    var blocksize: Int? = null
 }

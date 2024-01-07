@@ -52,7 +52,7 @@ class DiaryFragment : Fragment(){
                 cuurent_date = cal.time
                 binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                         "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
-                getDay(cuurent_date.toString())
+                getDay(SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(cuurent_date.time))
                 binding.swiperefresh.isRefreshing = true
                 binding.lessons.adapter = null
             }
@@ -73,7 +73,7 @@ class DiaryFragment : Fragment(){
             cuurent_date = Date(cuurent_date.getTime() + 86400000)
             binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                     "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
-            getDay(cuurent_date.toString())
+            getDay(SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(cuurent_date.time))
             binding.swiperefresh.isRefreshing = false
             binding.lessons.adapter = null
         })
@@ -81,7 +81,7 @@ class DiaryFragment : Fragment(){
             cuurent_date = Date(cuurent_date.getTime() - 86400000)
             binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                     "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
-            getDay(cuurent_date.toString())
+            getDay(SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(cuurent_date.time))
             binding.swiperefresh.isRefreshing = true
             binding.lessons.adapter = null
         })
@@ -104,9 +104,9 @@ class DiaryFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                 "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
-        getDay(cuurent_date.toString())
+        getDay(SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(cuurent_date.time))
         binding.swiperefresh.setOnRefreshListener {
-            getDay(cuurent_date.toString())
+            getDay(SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(cuurent_date.time))
         }
     }
 

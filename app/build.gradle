@@ -6,6 +6,7 @@ plugins {
     //id 'androidx.navigation.safeargs'
     id 'androidx.navigation.safeargs'
     id 'kotlin-parcelize'
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 
@@ -20,8 +21,8 @@ android {
         applicationId "com.alex.materialdiary"
         minSdk 21
         targetSdk 34
-        versionCode 55
-        versionName "2.81"
+        versionCode 57
+        versionName "3-alpha2"
         ndk {
             abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
         }
@@ -42,12 +43,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
         freeCompilerArgs = ['-Xjvm-default=all-compatibility']
+    }
+    kapt {
+        arguments {arg("room.schemaLocation", "$projectDir/schemas")}
     }
     buildFeatures {
         viewBinding true
@@ -98,4 +102,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     implementation 'com.faltenreich:skeletonlayout:5.0.0'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'androidx.room:room-runtime:2.5.0'
+    kapt "androidx.room:room-compiler:2.5.0"
+    implementation 'androidx.room:room-ktx:2.5.0'
 }

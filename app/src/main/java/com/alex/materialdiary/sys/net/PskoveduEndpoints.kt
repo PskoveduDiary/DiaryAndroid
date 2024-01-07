@@ -8,6 +8,7 @@ import com.alex.materialdiary.sys.net.models.all_periods.AllPeriods
 import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTips
 import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTipsRequestBody
 import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
+import com.alex.materialdiary.sys.net.models.dop_programs.DopPrograms
 import com.alex.materialdiary.sys.net.models.get_user.UserInfo
 import com.alex.materialdiary.sys.net.models.marks_average.MarksAverage
 import com.alex.materialdiary.sys.net.models.news.News
@@ -50,4 +51,6 @@ interface PskoveduEndpoints {
     suspend fun getEduNews(@Body body: ClassicBody?): News?
     @POST("news/schoolnews")
     suspend fun getSchoolNews(@Body body: ClassicBody?): News?
+    @POST("navigator/programs")
+    suspend fun getDopPrograms(@Body body: ClassicBody?): DopPrograms?
 }

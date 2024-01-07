@@ -42,7 +42,7 @@ public class ReadWriteJsonFileUtils {
     @Nullable
     public String readJsonFileData(String filename) {
         Object cached = memoryCache.get(filename, new TypeToken<String>(){}.getType(), "ru");
-        if (cached != null) {
+        if (cached != null && filename != "shared.json") {
             return (String) cached;
         }
         try {

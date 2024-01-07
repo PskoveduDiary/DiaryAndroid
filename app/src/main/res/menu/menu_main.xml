@@ -6,12 +6,14 @@
         android:id="@+id/action_marks"
         android:icon="@drawable/ic_baseline_filter_5_24"
         android:orderInCategory="100"
+        android:iconTint="@color/icons"
         android:title="Расчет среднего балла"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_baseline_supervised_user_circle_24"
         android:orderInCategory="100"
+        android:iconTint="@color/icons"
         android:title="Сменить пользователя"
         app:showAsAction="always" />
 </menu>

@@ -27,6 +27,7 @@ import com.alex.materialdiary.workers.KRNotifyWorker
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
@@ -35,6 +36,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import org.joda.time.format.DateTimeFormat
 import java.io.File
+import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
 
@@ -110,6 +112,7 @@ open class MainActivity : AppCompatActivity() {
         Alarmer().start_kr(applicationContext)*/
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        root = binding.root
         setSupportActionBar(binding.toolbar)
 
 
@@ -227,15 +230,27 @@ open class MainActivity : AppCompatActivity() {
     }
 
     fun checkNav() {
-        if (PskoveduApi.getInstance(
-                this,
-                findNavController(R.id.nav_host_fragment_content_main)
-            ).guid == ""
-        ) {
-            binding.contentMain.bottomNavigation.visibility = View.GONE
-        } else binding.contentMain.bottomNavigation.visibility = View.VISIBLE
-    }
+        try {
+            if (PskoveduApi.getInstance(
+                    this,
+                    findNavController(R.id.nav_host_fragment_content_main)
+                ).guid == ""
+            ) {
+                binding.contentMain.bottomNavigation.visibility = View.GONE
+            } else binding.contentMain.bottomNavigation.visibility = View.VISIBLE
+        }
+        catch (_: IllegalArgumentException) {}
 
+    }
+    companion object {
+        var root: View? = null
+        fun showSnack(text: String) {
+            root?.let {
+                Snackbar.make(it, text, Snackbar.LENGTH_LONG)
+                    .setAnchorView(R.id.bottom_navigation).show()
+            }
+        }
+    }
     override fun onDestroy() {
         marksJob?.cancel()
         super.onDestroy()
