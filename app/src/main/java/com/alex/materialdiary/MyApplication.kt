@@ -5,6 +5,7 @@ package com.alex.materialdiary
  * This can be done in multiple ways.
  * See https://developer.android.com/guide/playcore#access_downloaded_modules for more guidance.
  */
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.room.Room
@@ -18,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
+import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 
@@ -28,24 +30,30 @@ import kotlin.system.exitProcess
  */
 class MyApplication : SplitCompatApplication() {
     private var db: CacheDatabase? = null
-
+    var excHandler: Thread.UncaughtExceptionHandler? = null
     companion object {
         var instance: MyApplication? = null
+    }
+    init {
+        instance = this
     }
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
-        Thread.setDefaultUncaughtExceptionHandler { _, e ->
-            FirebaseCrashlytics.getInstance().recordException(e)
+        excHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(DefaultExceptionHandler(applicationContext, excHandler))
+        /*Thread.setDefaultUncaughtExceptionHandler { t, e ->
+            /*FirebaseCrashlytics.getInstance().recordException(e)*/
             Log.e("crash", Log.getStackTraceString(e))
             val i = Intent(applicationContext, FatalErrorActivity::class.java)
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(i)
 
+            //
             exitProcess(1)
-        }
+            excHandler?.uncaughtException(t, e)
+        }*/
         db = databaseBuilder(this, CacheDatabase::class.java, "cache.db")
             .build()
         db!!.openHelper.writableDatabase
@@ -63,4 +71,30 @@ class MyApplication : SplitCompatApplication() {
     }
 
     fun getDb(): CacheDatabase? = db
+
+    class DefaultExceptionHandler(
+        private val context: Context,
+        private val defaultExceptionHandler: Thread.UncaughtExceptionHandler?
+    ) : Thread.UncaughtExceptionHandler {
+
+        override fun uncaughtException(t: Thread, e: Throwable) {
+            startNewTask(context)
+            FirebaseCrashlytics.getInstance().recordException(e)
+            defaultExceptionHandler?.uncaughtException(t, e)
+        }
+
+        private fun startNewTask(context: Context) {
+            thread(isDaemon = true, priority = Thread.MAX_PRIORITY) {
+                /*val packageManager = context.packageManager
+                val intent = packageManager.getLaunchIntentForPackage(context.packageName)
+                val componentName = intent?.component
+                val mainIntent = Intent.makeRestartActivityTask(componentName)*/
+                val i = Intent(context, FatalErrorActivity::class.java)
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(i)
+                exitProcess(1)
+            }
+        }
+    }
 }

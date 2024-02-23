@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
@@ -23,41 +26,48 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="30dp"
         android:text="Добро пожаловать!"
-        android:textColor="@color/text"
+        android:textColor="@color/big_text"
         android:textSize="30sp"
+        android:autoSizeMinTextSize="25sp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="2"
+        android:ellipsize="end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/Linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MainText">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/status_text_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
-        app:contentPadding="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MainText">
-
-        <TextView
-            android:id="@+id/status_text"
-            android:layout_width="wrap_content"
+        app:contentPadding="5dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/advertsRecycleView"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            tools:listitem="@layout/advert_item"
+            tools:itemCount="2"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:showDividers="middle"/>
+
     </com.google.android.material.card.MaterialCardView>
 
-
-    <LinearLayout
-        android:id="@+id/lastMarksLinear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="60dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MainText">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -147,3 +157,4 @@
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>

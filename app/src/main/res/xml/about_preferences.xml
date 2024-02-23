@@ -31,10 +31,14 @@
         app:title="set ma-cache to []"
         app:key="marks_clear">
     </Preference>
-    <Preference
-        app:title="request teacher features"
-        app:key="teach_feature">
-    </Preference>
+        <Preference
+            app:title="request teacher features"
+            app:key="teach_feature">
+        </Preference>
+        <Preference
+            app:title="force crash"
+            app:key="crash">
+        </Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>

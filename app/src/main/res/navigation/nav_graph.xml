@@ -340,6 +340,16 @@
     <action
         android:id="@+id/to_home"
         app:destination="@id/HomeFragment" />
+
+    <fragment
+        android:id="@+id/NotificationFragment"
+        android:name="com.alex.materialdiary.NotificationFragment"
+        android:label="Настройте уведомления"
+        tools:layout="@layout/fragment_notification">
+    </fragment>
+    <action
+        android:id="@+id/to_setup_notify"
+        app:destination="@id/NotificationFragment" />
     <action
         android:id="@+id/to_check_list"
         app:destination="@id/ChecklistFragment" />

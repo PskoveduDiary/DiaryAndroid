@@ -1,6 +1,7 @@
 package com.alex.materialdiary.sys.adapters
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.alex.materialdiary.sys.net.models.period_marks.Mark
 import java.lang.Exception
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 class RecycleAdapterMarks(
     context: Context?,
@@ -37,7 +39,8 @@ class RecycleAdapterMarks(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mark = periods[position]
         val itemView = holder.itemView as MaterialCardView
-        itemView.strokeColor = inflater.context.resources.getColor(R.color.gray)
+        itemView.cardElevation = 4F
+        itemView.strokeColor = inflater.context.resources.getColor(android.R.color.transparent)
         if (diffs.contains(
                 com.alex.materialdiary.sys.net.models.marks.Mark(
                     mark.value,
@@ -45,9 +48,10 @@ class RecycleAdapterMarks(
                 )
             )
         ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                itemView.strokeColor = Color.RED
-            }
+            //itemView.setBackgroundColor(inflater.context.resources.getColor(R.color.new_mark))
+            //itemView.setCardBackgroundColor(inflater.context.resources.getColor(R.color.new_mark))
+            itemView.strokeColor = inflater.context.resources.getColor(R.color.two)
+            itemView.cardElevation = 0F
         }
         val c = inflater.context
         val year: Any = Calendar.getInstance()[Calendar.YEAR]
@@ -60,11 +64,13 @@ class RecycleAdapterMarks(
         }
         holder.date.text = text.replace(".$yearr", "")
         holder.mark.text = mark.value.toString()
-        if (mark.value == 5) holder.mark.setTextColor(c.resources.getColor(R.color.five)) else if (mark.value == 4) holder.mark.setTextColor(
-            c.resources.getColor(R.color.four)
-        ) else if (mark.value == 3) holder.mark.setTextColor(c.resources.getColor(R.color.three)) else if (mark.value == 2) holder.mark.setTextColor(
-            c.resources.getColor(R.color.two)
-        ) else if (mark.value == 1) holder.mark.setTextColor(c.resources.getColor(R.color.one))
+        holder.mark.setTextColor(Color.WHITE)
+        holder.date.setTextColor(Color.WHITE)
+        if (mark.value == 5)(holder.itemView as MaterialCardView).backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.five_tint))
+        else if (mark.value == 4) (holder.itemView as MaterialCardView).backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.four_tint))
+        else if (mark.value == 3) (holder.itemView as MaterialCardView).backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.three_tint))
+        else if (mark.value == 2) (holder.itemView as MaterialCardView).backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.two_tint))
+        else if (mark.value == 1) (holder.itemView as MaterialCardView).backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.one_tint))
     }
 
     override fun getItemCount(): Int {

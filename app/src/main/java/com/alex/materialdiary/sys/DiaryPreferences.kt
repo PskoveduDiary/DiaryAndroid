@@ -29,6 +29,14 @@ class DiaryPreferences(context: Context) {
     fun get(name: String): String {
         return preferences.getString(name, "")!!
     }
+    fun setInt(name: String, value: Int){
+        val editor = preferences.edit()
+        editor.putInt(name, value)
+        editor.apply()
+    }
+    fun getInt(name: String): Int{
+        return preferences.getInt(name, 0)
+    }
     fun contains(name: String): Boolean{
         return preferences.contains(name)
     }

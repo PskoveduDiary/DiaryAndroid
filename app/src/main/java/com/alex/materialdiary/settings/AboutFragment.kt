@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import xdroid.toaster.Toaster.toast
+import java.lang.Exception
 
 
 class AboutFragment : PreferenceFragmentCompat() {
@@ -79,6 +80,7 @@ class AboutFragment : PreferenceFragmentCompat() {
                 toast("Ошибка, в кэше ничего нет")
                 return@setOnPreferenceClickListener false
             }
+            str = str.replace(".2024", ".2020")
             str = str.replace(".2023", ".2020")
             ReadWriteJsonFileUtils(requireContext()).createJsonFileData("marks.json", str)
             toast("Успешно, перезапустите приложение")
@@ -89,6 +91,12 @@ class AboutFragment : PreferenceFragmentCompat() {
         teacher.setOnPreferenceClickListener {
             val action = NavGraphDirections.toFeatureInstall("teacher_features", "Загрузите дополнительный модуль для управления журналами!")
             findNavController().navigate(action)
+
+            true
+        }
+        val crash = preferenceManager.findPreference<Preference>("crash") as Preference
+        crash.setOnPreferenceClickListener {
+            throw Exception("Forced")
 
             true
         }

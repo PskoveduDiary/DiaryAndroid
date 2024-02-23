@@ -46,7 +46,7 @@ class OthListAdapter(private val context: Context,
 
         title.text = item.Label
         thumbnail.setImageResource(item.Image)
-        thumbnail.setColorFilter(context.getResources().getColor(R.color.icons))
+        /*thumbnail.setColorFilter(context.getResources().getColor(R.color.icons))*/
 
         rowView.setOnClickListener{
                 find.findNavController().navigate(item.Id)

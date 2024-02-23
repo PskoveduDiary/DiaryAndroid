@@ -44,7 +44,7 @@ data class PeriodMarksData(
             for (i in marks.indices) {
                 com += marks[i].value
             }
-            return "Средний бал: " + DecimalFormat("#0.00").format((com.toFloat() / marks.size).toDouble())
+            return "Средний балл: " + DecimalFormat("#0.00").format((com.toFloat() / marks.size).toDouble())
         }
 
     fun getToFive(context: Context): String {

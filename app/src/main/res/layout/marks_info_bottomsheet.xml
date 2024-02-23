@@ -27,6 +27,7 @@
     android:layout_width="wrap_content"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp"
+    app:strokeColor="@android:color/transparent"
     android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -160,6 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="0"
+            app:strokeColor="@android:color/transparent"
             app:cardCornerRadius="5dp">
 
             <LinearLayout

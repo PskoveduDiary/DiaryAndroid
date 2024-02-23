@@ -2,6 +2,8 @@ package com.alex.materialdiary.sys.net
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.webkit.CookieManager
 import androidx.navigation.NavController
@@ -109,7 +111,9 @@ class PskoveduApi(context: Context, navController: NavController?) {
                         }
                     }
                 }
-            } else navController?.navigate(R.id.to_new_ch_users)
+            } else {
+                Handler(Looper.getMainLooper()).post {navController?.navigate(R.id.to_new_ch_users)}
+            }
 
     }
     fun HttpError(){
@@ -369,11 +373,11 @@ class PskoveduApi(context: Context, navController: NavController?) {
         }
         return null
     }
-    suspend fun getDopPrograms(): List<DopProgramData>? {
+    suspend fun getDopPrograms(bias: Int = 1, count: Int = 5): List<DopProgramData>? {
         val body = ClassicBody()
         body.areaname = "г.Псков"
-        body.bias = 1
-        body.blocksize = 5
+        body.bias = bias
+        body.blocksize = count
         try {
             return endpoints.getDopPrograms(body)?.data ?: return null
         } catch (e: HttpException) {

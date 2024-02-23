@@ -2,13 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="icons">#DFDFDF</color>
+    <color name="icons">#FFFFFF</color>
     <color name="text">#FFFFFF</color>
     <color name="five">#43A047</color>
     <color name="four">#FFB300</color>
     <color name="three">#F4511E</color>
     <color name="two">#D81B60</color>
+    <color name="one">#3949AB</color>
+    <color name="five_tint">#8043A047</color>
+    <color name="four_tint">#80FFB300</color>
+    <color name="three_tint">#80F4511E</color>
+    <color name="two_tint">#80D81B60</color>
+    <color name="one_tint">#803949AB</color>
     <color name="custom_text_color">#331c6b</color>
     <color name="background_start">#FF6750A4</color>
     <color name="background_end">#FF625B71</color>
+    <color name="new_mark">#493232</color>
+    <color name="big_text">#DAB3FF</color>
 </resources>

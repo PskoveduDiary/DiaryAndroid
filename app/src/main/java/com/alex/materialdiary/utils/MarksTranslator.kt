@@ -32,6 +32,7 @@ class MarksTranslator(val pm: MutableList<PeriodMarksData>) {
                 ?: return ArrayList()
             val listType = object : TypeToken<ArrayList<Item?>?>() {}.type
             val old = Gson().fromJson<List<Item>>(readed, listType)
+            old ?: return ArrayList()
             val old_item = old.find { it.name == subj_name } ?: return ArrayList()
             val new_item = neww.find { it.name == subj_name } ?: return ArrayList()
             val diff: MutableList<Mark> = ArrayList(

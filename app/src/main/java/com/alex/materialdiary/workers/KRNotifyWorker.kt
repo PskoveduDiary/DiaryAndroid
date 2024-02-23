@@ -1,6 +1,9 @@
 package com.alex.materialdiary.workers
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Worker
@@ -25,13 +28,13 @@ class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :
 
         val cuurent_date = Date(Calendar.getInstance().time.time + 86400000)
         getDay(cuurent_date.toString())
-        val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "kr")
+        /*val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, "kr")
             .setSmallIcon(R.drawable.ic_baseline_message_24)
             .setContentTitle("Сработало!")
             .setOnlyAlertOnce(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
-        notificationManager.notify(1233, builder.build())
+        notificationManager.notify(1233, builder.build())*/
         return Result.success()
     }
     fun check(str: String): MutableList<String> {
@@ -86,7 +89,11 @@ class KRNotifyWorker(appContext: Context, workerParams: WorkerParameters) :
                     .setOnlyAlertOnce(true)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setAutoCancel(true)
-                notificationManager.notify(1233, builder.build())
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_DENIED
+            ) notificationManager.notify(69, builder.build())
         }
     }
 

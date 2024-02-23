@@ -26,6 +26,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
@@ -36,14 +37,17 @@ import org.joda.time.format.DateTimeFormat
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class MarksFragment : Fragment(){
+class MarksFragment : Fragment() {
     private var _binding: FragmentMarksBinding? = null
 
     lateinit var api: PskoveduApi
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
     val chips: MutableList<Chip> = mutableListOf()
+    var marksJob: Job? = null
+    var periodsJob: Job? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,16 +66,18 @@ class MarksFragment : Fragment(){
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 binding.marks.adapter = null
                 println("selected" + tab!!.position)
-                when(tab!!.position){
+                when (tab!!.position) {
                     0 -> {
                         binding.periods.visibility = View.VISIBLE
                         getPeriods()
                     }
+
                     1 -> {
                         binding.periods.visibility = View.GONE
                         binding.progressBar.visibility = View.VISIBLE
                         getItogMarks()
                     }
+
                     2 -> {
                         binding.periods.visibility = View.GONE
                         binding.progressBar.visibility = View.VISIBLE
@@ -93,13 +99,18 @@ class MarksFragment : Fragment(){
         binding.marks.layoutManager = llm2
         getPeriods()
     }
-    fun showLoader(){
+
+    fun showLoader() {
         binding.progressBar.visibility = View.VISIBLE
     }
+
     override fun onDestroyView() {
         CoroutineScope(Dispatchers.IO).launch {
-            PskoveduApi.getInstance(requireContext(), findNavController()).updateMarksCache()
+            if (context != null)
+                PskoveduApi.getInstance(requireContext(), findNavController()).updateMarksCache()
         }
+        marksJob?.cancel()
+        periodsJob?.cancel()
         super.onDestroyView()
         _binding = null
     }
@@ -115,14 +126,15 @@ class MarksFragment : Fragment(){
             PskoveduApi.getInstance(requireContext(), findNavController()).updateMarksCache()
         }
     }
+
     fun getPeriods() {
-        CoroutineScope(Dispatchers.IO).launch {
+        periodsJob = CoroutineScope(Dispatchers.IO).launch {
             val periods = api.getPeriods()
             var cur_per_start: String = ""
             var cur_per_end: String = ""
             withContext(Dispatchers.Main) {
                 binding.progressBar.visibility = View.GONE
-                if(periods == null) return@withContext
+                if (periods == null) return@withContext
                 if (_binding == null) return@withContext
 
                 try {
@@ -132,15 +144,16 @@ class MarksFragment : Fragment(){
                     cur_per_start = cur_per[0].toString(formatter)
                     cur_per_end = cur_per[1].toString(formatter)
                     getMarks(cur_per_start, cur_per_end)
+                } catch (_: Exception) {
                 }
-                catch (_: Exception){}
                 binding.periods.removeAllViews()
                 chips.clear()
                 periods.data.forEach {
                     val chip = (View.inflate(context, R.layout.period_item, null)) as Chip
                     chip.text = it.name
-                    if (it.dateBegin == cur_per_start && it.dateEnd == cur_per_end) chip.isSelected = true
-                    chip.setOnClickListener {_ ->
+                    if (it.dateBegin == cur_per_start && it.dateEnd == cur_per_end) chip.isSelected =
+                        true
+                    chip.setOnClickListener { _ ->
                         getMarks(it.dateBegin, it.dateEnd)
                         showLoader()
                         chips.forEach { it.isSelected = false }
@@ -158,15 +171,16 @@ class MarksFragment : Fragment(){
     }
 
     fun getMarks(from: String, to: String) {
-        CoroutineScope(Dispatchers.IO).launch {
+        marksJob = CoroutineScope(Dispatchers.IO).launch {
             val (marks, showdiffs) = api.getPeriodMarks(from, to)
             withContext(Dispatchers.Main) {
                 if (marks?.data == null) return@withContext
                 if (_binding == null) return@withContext
                 Handler(Looper.getMainLooper()).postDelayed(
                     {
+                        if (_binding == null) return@postDelayed
                         binding.marks.adapter =
-                        RecycleAdapterMarksGroup(this@MarksFragment, marks.data, showdiffs)
+                            RecycleAdapterMarksGroup(this@MarksFragment, marks.data, showdiffs)
                         binding.progressBar.visibility = View.GONE
                     },
                     250
@@ -174,13 +188,15 @@ class MarksFragment : Fragment(){
             }
         }
     }
-    fun openBottomSheet(data: PeriodMarksData){
+
+    fun openBottomSheet(data: PeriodMarksData) {
         val modalBottomSheet = MarksInfoBottomSheet.newInstance(data)
         modalBottomSheet.show(requireActivity().supportFragmentManager, MarksInfoBottomSheet.TAG)
 
     }
+
     fun getAllMarks() {
-        CoroutineScope(Dispatchers.IO).launch {
+        marksJob = CoroutineScope(Dispatchers.IO).launch {
             val marks = api.getAllMarks()
             if (marks?.data == null) return@launch
             var adapter = RecycleAdapterMarksGroup(this@MarksFragment, marks.data, false)
@@ -188,8 +204,10 @@ class MarksFragment : Fragment(){
                 if (_binding == null) return@withContext
                 Handler(Looper.getMainLooper()).postDelayed(
                     {
-                        binding.marks.adapter = adapter
-                        binding.progressBar.visibility = View.GONE
+                        if (_binding != null) {
+                            binding.marks.adapter = adapter
+                            binding.progressBar.visibility = View.GONE
+                        }
                     },
                     250
                 )
@@ -198,7 +216,7 @@ class MarksFragment : Fragment(){
     }
 
     fun getItogMarks() {
-        CoroutineScope(Dispatchers.IO).launch {
+        marksJob = CoroutineScope(Dispatchers.IO).launch {
             val periods = api.getItogMarks()
             withContext(Dispatchers.Main) {
                 if (periods == null) return@withContext

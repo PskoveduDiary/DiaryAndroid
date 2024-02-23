@@ -11,9 +11,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    card_view:cardCornerRadius="10dp"
-    android:backgroundTint="?android:attr/textColorLinkInverse"
-    card_view:cardElevation="10dp">
+    card_view:cardCornerRadius="8dp"
+    app:strokeColor="@android:color/transparent"
+    app:cardElevation="2dp">
 
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_weight="0"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorSurfaceVariant"
             android:orientation="horizontal">
 
             <ImageView
@@ -35,7 +35,7 @@
                 android:layout_weight="0"
                 android:visibility="visible"
                 app:srcCompat="@drawable/ic_baseline_share_24"
-                app:tint="#FFFFFF" />
+                app:tint="?attr/colorPrimaryVariant" />
 
             <ImageView
                 android:id="@+id/scanQr"
@@ -54,7 +54,7 @@
                 android:gravity="end"
                 android:layout_marginEnd="3dp"
                 android:text="8Г класс"
-                android:textColor="@color/white" />
+                android:textColor="?attr/colorPrimaryVariant" />
 
         </LinearLayout>
 
