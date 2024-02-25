@@ -211,7 +211,7 @@
             app:cardElevation="2dp"
             android:outlineSpotShadowColor="@android:color/transparent"
             android:outlineAmbientShadowColor="@android:color/transparent"
-            android:backgroundTint="#19FF0000"
+            android:backgroundTint="#48FF0000"
             android:id="@+id/SundayDay"
             app:strokeColor="@android:color/transparent">
 

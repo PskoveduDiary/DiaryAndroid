@@ -2,31 +2,41 @@ package com.alex.materialdiary
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.alex.materialdiary.databinding.FragmentDiaryBinding
 import com.alex.materialdiary.sys.LessonBottomSheet
+import com.alex.materialdiary.sys.adapters.PagerVH
 import com.alex.materialdiary.sys.adapters.ProgramAdapterDiary
 import com.alex.materialdiary.sys.adapters.WeekAdapter
+import com.alex.materialdiary.sys.adapters.toText
 import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
+import org.joda.time.LocalDate
+import org.joda.time.Period
+import org.joda.time.Weeks
+import org.joda.time.format.DateTimeFormat
 import java.util.*
 
-fun Date?.toText(): String {
-    if(this == null) return SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Calendar.getInstance().time)
-    return SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(this)
+
+fun LocalDate?.toText(): String {
+    if (this == null) return LocalDate.now().toString(DateTimeFormat.forPattern("dd.MM.yyyy"))
+    return this.toString(DateTimeFormat.forPattern("dd.MM.yyyy"))
 }
 
 /**
@@ -34,7 +44,7 @@ fun Date?.toText(): String {
  */
 class DiaryFragment : Fragment(){
     private var _binding: FragmentDiaryBinding? = null
-    var cuurent_date: Date? = null;
+    var current_date: LocalDate? = null;
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -44,55 +54,47 @@ class DiaryFragment : Fragment(){
     ): View? {
         _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         PskoveduApi.getInstance(requireContext(), findNavController())
-        if (cuurent_date == null) cuurent_date = Calendar.getInstance().time
-        val dateSetListener = object : DatePickerDialog.OnDateSetListener {
-            override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
-                                   dayOfMonth: Int) {
-                val cal: Calendar = Calendar.getInstance()
-                cal.set(Calendar.YEAR, year)
-                cal.set(Calendar.MONTH, monthOfYear)
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                cuurent_date = cal.time
-                /*binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
-                        "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"*/
-                getDay(cuurent_date.toText())
+        if (current_date == null) current_date = LocalDate.now()
+        val dateSetListener =
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                current_date = LocalDate(year, monthOfYear+1, dayOfMonth)
+                getDay(current_date)
                 binding.lessons.adapter = null
+                (binding.datePickerPager.adapter as WeekAdapter).clearSelection()
+                val weeks =
+                Weeks.weeksBetween(current_date!!.withDayOfWeek(1), LocalDate.now().withDayOfWeek(1)).weeks
+                binding.datePickerPager.setCurrentItem(50-weeks, weeks in -5..5)
+                Handler().postDelayed({
+                    val cur = binding.datePickerPager.currentItem
+                    val rv = binding.datePickerPager.get(0) as RecyclerView
+                    val vh = rv.findViewHolderForAdapterPosition(cur)
+                    (binding.datePickerPager.adapter as WeekAdapter).selectDayOfWeek(vh as PagerVH?, current_date!!.dayOfWeek)
+                }, 1)
             }
-        }
-        binding.date.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View) {
-                val cur = Calendar.getInstance()
-                cur.time = cuurent_date!!
-                DatePickerDialog(this@DiaryFragment.requireContext(),
-                    dateSetListener,
-                    cur.get(Calendar.YEAR),
-                    cur.get(Calendar.MONTH),
-                    cur.get(Calendar.DAY_OF_MONTH)).show()
+        binding.datePickerPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                    //(binding.datePickerPager.adapter as WeekAdapter).clearSelection()
             }
-
         })
+        binding.date.setOnClickListener {
+            if (current_date == null) current_date = LocalDate.now()
+            DatePickerDialog(
+                this@DiaryFragment.requireContext(),
+                dateSetListener,
+                current_date!!.year,
+                current_date!!.monthOfYear-1,
+                current_date!!.dayOfMonth
+            ).show()
+        }
         binding.today.setOnClickListener {
-            cuurent_date = Calendar.getInstance().time
-            getDay(cuurent_date.toText())
+            current_date = LocalDate.now()
+            getDay(current_date)
             binding.lessons.adapter = null
+            binding.datePickerPager.currentItem = 50
+            (binding.datePickerPager.adapter as WeekAdapter).clearSelection()
         }
-        /*binding.nextDay.setOnClickListener(View.OnClickListener {
-            cuurent_date = Date(cuurent_date.getTime() + 86400000)
-            binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
-                    "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
-            getDay(SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(cuurent_date.time))
-            binding.swiperefresh.isRefreshing = true
-            binding.lessons.adapter = null
-        })
-        binding.prevDay.setOnClickListener(View.OnClickListener {
-            cuurent_date = Date(cuurent_date.getTime() - 86400000)
-            binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
-                    "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"
-            getDay(SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(cuurent_date.time))
-            binding.swiperefresh.isRefreshing = true
-            binding.lessons.adapter = null
-        })
-        binding.checklist.setOnClickListener {
+        /*binding.checklist.setOnClickListener {
             val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy")
             /*findNavController().navigate(NavGraphDirections.toCheckList().setDate(dateFormat.format(cuurent_date)))*/
         }*/
@@ -112,10 +114,10 @@ class DiaryFragment : Fragment(){
         /*binding.currentDate.text = SimpleDateFormat("EE", Locale.getDefault()).format(cuurent_date.getTime()).uppercase() +
                 "\n ${SimpleDateFormat("dd.MM", Locale.getDefault()).format(cuurent_date.getTime())}"*/
         binding.datePickerPager.adapter = WeekAdapter(this)
-        binding.datePickerPager.setCurrentItem(300, false)
-        getDay(cuurent_date.toText())
+        binding.datePickerPager.setCurrentItem(50, false)
+        getDay(current_date)
         binding.swiperefresh.setOnRefreshListener {
-            getDay(cuurent_date.toText())
+            getDay(current_date)
         }
     }
 
@@ -124,19 +126,28 @@ class DiaryFragment : Fragment(){
         _binding = null
     }
 
-    fun getDay(date: String, updateCurrent: Date? = null) {
+    fun getDay(date: LocalDate?) {
         binding.today.paint?.isUnderlineText =
-            date != SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Calendar.getInstance().time)
-        binding.date.text = date
+            date != LocalDate.now()
+        binding.date.text = date.toText()
+        (binding.datePickerPager.adapter as WeekAdapter).selectedDate = date
         binding.today.text = "Сегодня"
         binding.swiperefresh.isRefreshing = true
-        if (updateCurrent != null) cuurent_date = updateCurrent
+        val timestart = System.currentTimeMillis()
+        if (current_date != date) current_date = date
         CoroutineScope(Dispatchers.IO).launch {
             val lessons =
-                PskoveduApi.getInstance(requireContext(), findNavController()).getDay(date)
+                PskoveduApi.getInstance(requireContext(), findNavController()).getDay(date.toText())
             withContext(Dispatchers.Main) {
                 if (_binding == null) return@withContext
-                binding.swiperefresh.isRefreshing = false
+                val timeend = System.currentTimeMillis()
+                if (timeend - timestart < 800){
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if (_binding == null) return@postDelayed
+                        binding.swiperefresh.isRefreshing = false
+                    }, 800-(timeend-timestart))
+                }
+                else binding.swiperefresh.isRefreshing = false
                 if (lessons != null) {
                     if (lessons.data.size > 0) {
                         binding.lessons.adapter =

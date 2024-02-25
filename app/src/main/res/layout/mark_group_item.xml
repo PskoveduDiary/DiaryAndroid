@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipToOutline="false"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="5dp"
-    app:cardElevation="1dp"
+    app:cardElevation="3dp"
+    android:layout_margin="6dp"
     app:strokeColor="@android:color/transparent"
     android:orientation="vertical">
 
@@ -36,6 +38,11 @@
             android:layout_width="match_parent"
             tools:listitem="@layout/mark_item"
             tools:itemCount="1"
+            android:elevation="20dp"
+            android:fadingEdgeLength="100dp"
+            android:clipChildren="false"
+            android:outlineProvider="background"
+            android:clipToOutline="true"
             android:layout_height="match_parent" />
 
         <LinearLayout

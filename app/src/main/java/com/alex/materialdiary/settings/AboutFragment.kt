@@ -64,6 +64,14 @@ class AboutFragment : PreferenceFragmentCompat() {
             clipboardManager.setPrimaryClip(clipData);
             true
         }
+        val token = preferenceManager.findPreference<Preference>("token") as Preference
+        token.summary = PskoveduApi.getInstance().apikey
+        token.setOnPreferenceClickListener {
+            val clipData = ClipData.newPlainText("text", token.summary);
+            toast("Скопировано!")
+            clipboardManager.setPrimaryClip(clipData);
+            true
+        }
         val marks = preferenceManager.findPreference<Preference>("marks") as Preference
         marks.setOnPreferenceClickListener {
             CoroutineScope(Dispatchers.IO).launch {

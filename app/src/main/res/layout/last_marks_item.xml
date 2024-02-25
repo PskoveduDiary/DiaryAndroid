@@ -10,14 +10,14 @@
     android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_margin="5dp"
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="vertical">
             <TextView
                 android:id="@+id/mark"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="13dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -27,7 +27,7 @@
                 android:textColor="@color/five"
                 android:textSize="36sp"
                 android:gravity="center"
-                android:text="5" />
+                android:text="" />
         <TextView
             android:id="@+id/subjName"
             android:layout_width="78dp"
@@ -35,9 +35,11 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="14sp"
+            android:autoSizeMinTextSize="10sp"
             android:maxLines="2"
+            android:autoSizeTextType="uniform"
             android:ellipsize="end"
-            android:text="Алгебра"/>
+            android:text=""/>
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"

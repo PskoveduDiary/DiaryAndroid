@@ -14,6 +14,11 @@
         app:key="sid">
     </Preference>
     <Preference
+        app:title="token"
+        app:summary="unknown"
+        app:key="token">
+    </Preference>
+    <Preference
         app:title="pda-key"
         app:summary="unknown"
         app:key="pdakey">
@@ -31,6 +36,10 @@
         app:title="set ma-cache to []"
         app:key="marks_clear">
     </Preference>
+    <SwitchPreference
+        app:title="Использовать Badges"
+        app:key="useBadge">
+    </SwitchPreference>
         <Preference
             app:title="request teacher features"
             app:key="teach_feature">

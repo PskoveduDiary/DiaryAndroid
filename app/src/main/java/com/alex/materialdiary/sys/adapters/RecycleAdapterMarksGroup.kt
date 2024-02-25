@@ -36,7 +36,7 @@ class RecycleAdapterMarksGroup(
         this.context = fragment.requireContext()
         this.fragment = fragment
         inflater = LayoutInflater.from(context)
-        this.periods = periods
+        this.periods = periods.filter { it.hideInReports != true }
         this.needShowDifs = needShowDifs
     }
 
