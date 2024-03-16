@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentMarksBinding
 import com.alex.materialdiary.sys.MarksInfoBottomSheet
+import com.alex.materialdiary.sys.SortMarksBottomSheet
 import com.alex.materialdiary.sys.adapters.RecycleAdapterMarksGroup
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriods
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriodsGroup
@@ -41,7 +42,8 @@ class MarksFragment : Fragment() {
     private var _binding: FragmentMarksBinding? = null
 
     lateinit var api: PskoveduApi
-
+    var sort: String = "name_asc"
+    val marks_data: MutableList<PeriodMarksData> = mutableListOf()
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -65,6 +67,7 @@ class MarksFragment : Fragment() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 binding.marks.adapter = null
+                sort = "name_asc"
                 println("selected" + tab!!.position)
                 when (tab!!.position) {
                     0 -> {
@@ -96,6 +99,9 @@ class MarksFragment : Fragment() {
             }
         }))
         val llm2 = LinearLayoutManager(requireContext())
+        binding.sortClick.setOnClickListener{
+            openSortBottomSheet()
+        }
         binding.marks.layoutManager = llm2
         getPeriods()
     }
@@ -106,8 +112,8 @@ class MarksFragment : Fragment() {
 
     override fun onDestroyView() {
         CoroutineScope(Dispatchers.IO).launch {
-            if (context != null)
-                PskoveduApi.getInstance(requireContext(), findNavController()).updateMarksCache()
+            if (activity != null)
+                PskoveduApi.getInstance(requireActivity().applicationContext, findNavController()).updateMarksCache()
         }
         marksJob?.cancel()
         periodsJob?.cancel()
@@ -123,7 +129,8 @@ class MarksFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         CoroutineScope(Dispatchers.IO).launch {
-            PskoveduApi.getInstance(requireContext(), findNavController()).updateMarksCache()
+            if (activity != null)
+                PskoveduApi.getInstance(requireActivity().applicationContext, findNavController()).updateMarksCache()
         }
     }
 
@@ -154,6 +161,8 @@ class MarksFragment : Fragment() {
                     if (it.dateBegin == cur_per_start && it.dateEnd == cur_per_end) chip.isSelected =
                         true
                     chip.setOnClickListener { _ ->
+                        marks_data.clear()
+                        sort = "name_asc"
                         getMarks(it.dateBegin, it.dateEnd)
                         showLoader()
                         chips.forEach { it.isSelected = false }
@@ -169,19 +178,22 @@ class MarksFragment : Fragment() {
             }
         }
     }
-
+    fun updateData(showdiffs: Boolean = false){
+        if (_binding == null) return
+        binding.marks.adapter =
+            RecycleAdapterMarksGroup(this@MarksFragment, marks_data, showdiffs)
+        binding.progressBar.visibility = View.GONE
+    }
     fun getMarks(from: String, to: String) {
         marksJob = CoroutineScope(Dispatchers.IO).launch {
             val (marks, showdiffs) = api.getPeriodMarks(from, to)
+            if (marks?.data == null) return@launch
+            marks_data.clear()
+            marks_data.addAll(marks.data)
             withContext(Dispatchers.Main) {
-                if (marks?.data == null) return@withContext
-                if (_binding == null) return@withContext
                 Handler(Looper.getMainLooper()).postDelayed(
                     {
-                        if (_binding == null) return@postDelayed
-                        binding.marks.adapter =
-                            RecycleAdapterMarksGroup(this@MarksFragment, marks.data, showdiffs)
-                        binding.progressBar.visibility = View.GONE
+                        updateData(showdiffs)
                     },
                     250
                 )
@@ -194,20 +206,23 @@ class MarksFragment : Fragment() {
         modalBottomSheet.show(requireActivity().supportFragmentManager, MarksInfoBottomSheet.TAG)
 
     }
+    fun openSortBottomSheet() {
+        val modalBottomSheet = SortMarksBottomSheet(this)
+        modalBottomSheet.show(requireActivity().supportFragmentManager, "SortBottomSheet")
+
+    }
 
     fun getAllMarks() {
         marksJob = CoroutineScope(Dispatchers.IO).launch {
             val marks = api.getAllMarks()
             if (marks?.data == null) return@launch
+            marks_data.clear()
+            marks_data.addAll(marks.data)
             var adapter = RecycleAdapterMarksGroup(this@MarksFragment, marks.data, false)
             withContext(Dispatchers.Main) {
-                if (_binding == null) return@withContext
                 Handler(Looper.getMainLooper()).postDelayed(
                     {
-                        if (_binding != null) {
-                            binding.marks.adapter = adapter
-                            binding.progressBar.visibility = View.GONE
-                        }
+                        updateData()
                     },
                     250
                 )

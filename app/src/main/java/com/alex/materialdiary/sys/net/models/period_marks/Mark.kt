@@ -16,5 +16,7 @@ data class Mark (
     var shortName: String? = null,
 
     @SerializedName("VALUE")
-    var value: Int
+    var value: Int,
+    @SerializedName("GRADE_TYPE_NAME")
+    var typeName: String? = "Тип не указан"
 )

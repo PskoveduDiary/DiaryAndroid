@@ -80,6 +80,11 @@ class RecycleAdapterMarks(
             holder.mark.setTextColor(Color.WHITE)
             holder.date.setTextColor(Color.WHITE)
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            holder.view.tooltipText = mark.typeName
+            if (mark.typeName == null) holder.view.tooltipText = "Тип не указан"
+        }
+        holder.view.setOnClickListener { obj: View -> obj.performLongClick() }
         if (mark.value == 5) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.five_tint))
         else if (mark.value == 4) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.four_tint))
         else if (mark.value == 3) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.three_tint))

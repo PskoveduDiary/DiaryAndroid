@@ -1,0 +1,100 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/standard_bottom_sheet"
+    style="@style/Widget.Material3.BottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:id="@+id/drag_handle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Сортировать по:"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="start"
+                        android:textSize="20sp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_margin="2dp"
+                            android:layout_gravity="center"
+                            app:checkedChip="@id/chip_name_ascending"
+                            app:singleSelection="true"
+                            app:selectionRequired="true"
+
+                            android:id="@+id/chipGroup"
+                            app:chipSpacingVertical="1dp"
+                            app:chipSpacingHorizontal="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_name_ascending"
+                                android:layout_width="wrap_content"
+                                android:checkable="true"
+                                android:layout_height="wrap_content"
+                                android:text="По названию (А-Я)" />
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_name_descending"
+                                android:layout_width="wrap_content"
+                                android:checkable="true"
+                                android:layout_height="wrap_content"
+                                android:text="По названию (Я-А)" />
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_average_descending"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checkable="true"
+                                app:chipIconTint="?attr/colorPrimary"
+                                android:text="Среднему баллу"
+                                app:chipIcon="@drawable/baseline_arrow_downward_24"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_average_ascending"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:chipIconTint="?attr/colorPrimary"
+                                android:text="Среднему баллу"
+                                android:checkable="true"
+                                app:chipIcon="@drawable/baseline_arrow_upward_24"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_count_descending"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:chipIconTint="?attr/colorPrimary"
+                                android:text="Количеству оценок"
+                                android:checkable="true"
+                                app:chipIcon="@drawable/baseline_arrow_downward_24"/>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_count_ascending"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:chipIconTint="?attr/colorPrimary"
+                                android:text="Количеству оценок"
+                                android:checkable="true"
+                                app:chipIcon="@drawable/baseline_arrow_upward_24"/>
+                        </com.google.android.material.chip.ChipGroup>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

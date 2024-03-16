@@ -37,14 +37,14 @@ data class PeriodMarksData(
     @SerializedName("MARKS")
     var marks: List<Mark>
 ) : Serializable {
-    val average: String
+    val average: Double
         get() {
-            if (marks.size == 0) return "Нет оценок"
+            if (marks.size == 0) return -100.0
             var com = 0
             for (i in marks.indices) {
                 com += marks[i].value
             }
-            return "Средний балл: " + DecimalFormat("#0.00").format((com.toFloat() / marks.size).toDouble())
+            return (com.toFloat() / marks.size).toDouble()
         }
 
     fun getToFive(context: Context): String {

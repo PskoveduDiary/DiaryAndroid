@@ -82,4 +82,6 @@
     <string name="title_teacher_features">Функции учителя</string>
     <string name="title_activity_login">Вход</string>
     <string name="app_widget_description">Описание</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

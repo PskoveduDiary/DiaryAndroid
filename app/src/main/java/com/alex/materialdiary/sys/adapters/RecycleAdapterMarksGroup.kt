@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.alex.materialdiary.MarksFragment
 import com.alex.materialdiary.NavGraphDirections
+import java.text.DecimalFormat
 import java.util.ArrayList
 
 class RecycleAdapterMarksGroup(
@@ -48,7 +49,9 @@ class RecycleAdapterMarksGroup(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val period = periods[position]
         holder.name.text = period.subjectName
-        holder.average.text = period.average
+        val avg = period.average
+        if (avg == -100.0) holder.average.text = "Нет оценок"
+        else holder.average.text = "Средний балл: " + DecimalFormat("#0.00").format(period.average)
         holder.info.setOnClickListener {
             fragment.openBottomSheet(period)
         }

@@ -30,6 +30,30 @@
                     android:text="Все оценки"
                     />
         </com.google.android.material.tabs.TabLayout>
+
+        <LinearLayout
+            android:id="@+id/sortClick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/periodsScrollView">
+
+                <ImageView
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_filter_list_24"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:layout_width="wrap_content"
+                    android:textColor="?attr/colorPrimary"
+                    android:layout_height="wrap_content"
+                    android:text="Сортировать" />
+        </LinearLayout>
 <!--
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/periods"
@@ -44,24 +68,30 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:itemCount="1"
             tools:listitem="@layout/period_item" />-->
+
         <HorizontalScrollView
+            android:id="@+id/periodsScrollView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/marks"
+            android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabs"
-            android:id="@+id/periodsScrollView"
-            android:scrollbars="none"
-            >
-        <com.google.android.material.chip.ChipGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:id="@+id/periods"
-            app:singleLine="true"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tabs">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/periods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    app:singleLine="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ddd" />
+                </com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/marks"
             android:layout_width="0dp"
@@ -69,7 +99,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/periodsScrollView"
+            app:layout_constraintTop_toBottomOf="@id/sortClick"
             tools:listitem="@layout/mark_group_item" />
 
         <ProgressBar

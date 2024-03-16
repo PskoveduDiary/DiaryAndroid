@@ -91,8 +91,13 @@ class DiaryFragment : Fragment(){
             current_date = LocalDate.now()
             getDay(current_date)
             binding.lessons.adapter = null
-            binding.datePickerPager.currentItem = 50
             (binding.datePickerPager.adapter as WeekAdapter).clearSelection()
+            binding.datePickerPager.currentItem = 50
+            Handler().postDelayed({
+                val rv = binding.datePickerPager.get(0) as RecyclerView
+                val vh = rv.findViewHolderForAdapterPosition(50)
+                (binding.datePickerPager.adapter as WeekAdapter).selectDayOfWeek(vh as PagerVH?, current_date!!.dayOfWeek)
+            }, 20)
         }
         /*binding.checklist.setOnClickListener {
             val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy")
