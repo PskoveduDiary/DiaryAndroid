@@ -34,6 +34,8 @@
         <LinearLayout
             android:id="@+id/sortClick"
             android:layout_width="match_parent"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginVertical="3dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="none"
+            android:paddingHorizontal="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabs">
@@ -84,11 +87,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     app:singleLine="true">
-
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ddd" />
                 </com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
 

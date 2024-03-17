@@ -15,6 +15,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.alex.materialdiary.R
 import com.alex.materialdiary.containers.Storage
+import com.alex.materialdiary.sys.ChooseColorSchemeBottomSheet
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import okhttp3.Call
@@ -36,11 +37,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-        mainHandler  = Handler(requireContext().mainLooper)
+        mainHandler = Handler(requireContext().mainLooper)
         okHttp = okhttp3.OkHttpClient.Builder()
             .addInterceptor(logging)
             .build()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,31 +68,41 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     return@setOnItemLongClickListener false
                 }
             }
-            } else {
+        } else {
             //The view created is not a list view!
         }
         /*
         val api = GoogleApiAvailability.getInstance()
         val resultCode =
             api.isGooglePlayServicesAvailable(requireContext())*/
+        val color =
+            preferenceManager.findPreference<Preference>("marks_color_scheme") as Preference
+        color.setOnPreferenceClickListener {
+            ChooseColorSchemeBottomSheet().show(
+                requireActivity().supportFragmentManager,
+                "ChooseColorSchemeBottomSheet"
+            )
+            true
+        }
         val news =
             preferenceManager.findPreference<Preference>("news") as Preference
         news.setOnPreferenceClickListener {
-                try {
-                    val telegram =
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/pskovedu_diary"))
-                    startActivity(telegram)
-                } catch (e: Exception) {
-                    toast("Telegram не установлен")
-                }
-                true
+            try {
+                val telegram =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/pskovedu_diary"))
+                startActivity(telegram)
+            } catch (e: Exception) {
+                toast("Telegram не установлен")
             }
-                val dev =
-                    preferenceManager.findPreference<Preference>("dev") as Preference
-                dev.setOnPreferenceClickListener {
-                    findNavController().navigate(R.id.to_about)
-                    true
-                }/*
+            true
+        }
+
+        val dev =
+            preferenceManager.findPreference<Preference>("dev") as Preference
+        dev.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.to_about)
+            true
+        }/*
                 val about =
                     preferenceManager.findPreference<Preference>("about") as Preference
                 about.setOnPreferenceClickListener {

@@ -50,6 +50,8 @@ class MarksFragment : Fragment() {
     val chips: MutableList<Chip> = mutableListOf()
     var marksJob: Job? = null
     var periodsJob: Job? = null
+    var dontshowepmty: Boolean = false
+    var showhidden: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,18 +74,21 @@ class MarksFragment : Fragment() {
                 when (tab!!.position) {
                     0 -> {
                         binding.periods.visibility = View.VISIBLE
+                        binding.sortClick.visibility = View.VISIBLE
                         getPeriods()
                     }
 
                     1 -> {
                         binding.periods.visibility = View.GONE
                         binding.progressBar.visibility = View.VISIBLE
+                        binding.sortClick.visibility = View.GONE
                         getItogMarks()
                     }
 
                     2 -> {
                         binding.periods.visibility = View.GONE
                         binding.progressBar.visibility = View.VISIBLE
+                        binding.sortClick.visibility = View.VISIBLE
                         getAllMarks()
                     }
                 }
@@ -179,9 +184,12 @@ class MarksFragment : Fragment() {
         }
     }
     fun updateData(showdiffs: Boolean = false){
+        var marks_after_filters = marks_data.toList()
+        if (dontshowepmty) marks_after_filters = marks_after_filters.filter { it.marks.isNotEmpty() }
+        if (!showhidden) marks_after_filters = marks_after_filters.filter { (it.hideInReports == false) and (it.hideInSchedule == false) }
         if (_binding == null) return
         binding.marks.adapter =
-            RecycleAdapterMarksGroup(this@MarksFragment, marks_data, showdiffs)
+            RecycleAdapterMarksGroup(this@MarksFragment, marks_after_filters.toMutableList(), showdiffs)
         binding.progressBar.visibility = View.GONE
     }
     fun getMarks(from: String, to: String) {

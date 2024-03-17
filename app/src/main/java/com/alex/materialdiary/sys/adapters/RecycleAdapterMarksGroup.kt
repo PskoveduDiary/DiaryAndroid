@@ -55,6 +55,8 @@ class RecycleAdapterMarksGroup(
         holder.info.setOnClickListener {
             fragment.openBottomSheet(period)
         }
+        if (period.marks.isEmpty()) holder.info.visibility = View.GONE
+        else holder.info.visibility = View.VISIBLE
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //holder.info.tooltipText = """
             //    До пятерки 5: ${period.get_to_five()}
@@ -66,8 +68,9 @@ class RecycleAdapterMarksGroup(
         val llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.HORIZONTAL
         llm.initialPrefetchItemCount = 4
-        val differences =
+        val differences = if (needShowDifs)
             getSubjectMarksDifferences(context, period.subjectName, MarksTranslator(periods as MutableList).items)
+        else listOf()
         holder.recyclerView.layoutManager = llm
         holder.recyclerView.setRecycledViewPool(viewPool)
         holder.recyclerView.adapter = RecycleAdapterMarks(
@@ -86,7 +89,7 @@ class RecycleAdapterMarksGroup(
         val name: TextView
         val average: TextView
         val recyclerView: RecyclerView
-        val info: Button
+        val info: TextView
 
         init {
             name = view.findViewById(R.id.MarksLessonName)

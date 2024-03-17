@@ -4,16 +4,31 @@
     <color name="white">#FFFFFFFF</color>
     <color name="icons">#9E4F31A0</color>
     <color name="text">#000000</color>
+
     <color name="five">#43A047</color>
     <color name="four">#FFB300</color>
     <color name="three">#F4511E</color>
     <color name="two">#D81B60</color>
     <color name="one">#3949AB</color>
+
     <color name="five_tint">#A643A047</color>
     <color name="four_tint">#A6FFB300</color>
     <color name="three_tint">#A6F4511E</color>
     <color name="two_tint">#A6D81B60</color>
-    <color name="one_tint">#A63949AB</color>
+    <color name="one_tint">#A6397DAB</color>
+
+    <color name="five2_tint">#A600FF5D</color>
+    <color name="four2_tint">#A6E6FF00</color>
+    <color name="three2_tint">#A6F4AD1E</color>
+    <color name="two2_tint">#A6FB4112</color>
+    <color name="one2_tint">#A6FF0033</color>
+
+    <color name="five3_tint">#A6673AB7</color>
+    <color name="four3_tint">#A69C27B0</color>
+    <color name="three3_tint">#A6FF9800</color>
+    <color name="two3_tint">#A6F44336</color>
+    <color name="one3_tint">#A6E91E63</color>
+
     <color name="gray">#868686</color>
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>

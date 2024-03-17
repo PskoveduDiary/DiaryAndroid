@@ -15,6 +15,7 @@ import com.alex.materialdiary.databinding.SortMarksBottomsheetBinding
 import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 
 
@@ -42,6 +43,8 @@ class SortMarksBottomSheet(marks: MarksFragment) : BottomSheetDialogFragment() {
             "count_asc" -> binding.chipCountAscending.id
             else -> 0
         })
+        binding.ShowHidden.isChecked = marksFragment.showhidden
+        binding.dontShowWithoutMarks.isChecked = marksFragment.dontshowepmty
         binding.chipAverageDescending.setOnClickListener {
             marksFragment.marks_data.sortBy { -it.average }
             binding.chipGroup.check(it.id)
@@ -77,6 +80,14 @@ class SortMarksBottomSheet(marks: MarksFragment) : BottomSheetDialogFragment() {
             binding.chipGroup.check(it.id)
             marksFragment.updateData()
             marksFragment.sort = "count_asc"
+        }
+        binding.ShowHidden.addOnCheckedStateChangedListener { checkBox, state ->
+            marksFragment.showhidden = (state == 1)
+            marksFragment.updateData()
+        }
+        binding.dontShowWithoutMarks.addOnCheckedStateChangedListener { checkBox, state ->
+            marksFragment.dontshowepmty = (state == 1)
+            marksFragment.updateData()
         }
     }
 }

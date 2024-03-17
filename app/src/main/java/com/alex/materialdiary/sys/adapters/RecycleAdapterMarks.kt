@@ -15,6 +15,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import com.alex.materialdiary.sys.ColorSchemes
 import com.alex.materialdiary.sys.net.models.period_marks.Mark
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
@@ -25,7 +26,8 @@ import kotlin.coroutines.coroutineContext
 class RecycleAdapterMarks(
     context: Context?,
     periods: List<Mark>,
-    diffs: List<com.alex.materialdiary.sys.net.models.marks.Mark>
+    diffs: List<com.alex.materialdiary.sys.net.models.marks.Mark>,
+    val scheme: Int? = null
 ) : RecyclerView.Adapter<RecycleAdapterMarks.ViewHolder>() {
     private val inflater: LayoutInflater
     private val periods: List<Mark>
@@ -75,6 +77,7 @@ class RecycleAdapterMarks(
         } catch (_: Exception) {
         }
         holder.date.text = text.replace(".$yearr", "")
+        if (mark.date == "") holder.date.visibility = View.GONE
         holder.mark.text = mark.value.toString()
         if (mark.value in 1..5){
             holder.mark.setTextColor(Color.WHITE)
@@ -85,11 +88,12 @@ class RecycleAdapterMarks(
             if (mark.typeName == null) holder.view.tooltipText = "Тип не указан"
         }
         holder.view.setOnClickListener { obj: View -> obj.performLongClick() }
-        if (mark.value == 5) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.five_tint))
-        else if (mark.value == 4) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.four_tint))
-        else if (mark.value == 3) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.three_tint))
-        else if (mark.value == 2) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.two_tint))
-        else if (mark.value == 1) holder.card.backgroundTintList = ColorStateList.valueOf(c.resources.getColor(R.color.one_tint))
+        val color_scheme = ColorSchemes.getInstance(c).getCurrentScheme(scheme)
+        if (mark.value == 5) holder.card.backgroundTintList = ColorStateList.valueOf(color_scheme[4])
+        else if (mark.value == 4) holder.card.backgroundTintList = ColorStateList.valueOf(color_scheme[3])
+        else if (mark.value == 3) holder.card.backgroundTintList = ColorStateList.valueOf(color_scheme[2])
+        else if (mark.value == 2) holder.card.backgroundTintList = ColorStateList.valueOf(color_scheme[1])
+        else if (mark.value == 1) holder.card.backgroundTintList = ColorStateList.valueOf(color_scheme[0])
     }
 
     override fun getItemCount(): Int {

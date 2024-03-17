@@ -1,20 +1,20 @@
 package com.alex.materialdiary
 
-import android.graphics.Color
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alex.materialdiary.databinding.FragmentAverageBinding
 import com.alex.materialdiary.databinding.FragmentHomeBinding
 import com.alex.materialdiary.sys.ChangeNameBottomSheet
+import com.alex.materialdiary.sys.ChooseColorSchemeBottomSheet
 import com.alex.materialdiary.sys.DiaryPreferences
-import com.alex.materialdiary.sys.LessonBottomSheet
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
 import com.alex.materialdiary.sys.adapters.RecycleAdapterAdverts
 import com.alex.materialdiary.sys.adapters.RecycleAdapterAdvices
@@ -27,8 +27,6 @@ import com.alex.materialdiary.sys.net.models.marks.LastMark
 import com.alex.materialdiary.utils.MarksTranslator
 import com.faltenreich.skeletonlayout.Skeleton
 import com.faltenreich.skeletonlayout.applySkeleton
-import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.testing.FakeReviewManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -36,16 +34,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeoutOrNull
-import org.joda.time.Interval
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import org.joda.time.Period
-import org.joda.time.PeriodType
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-import java.text.DecimalFormat
-import java.util.*
 
 
 private val String.parsed: LocalTime
@@ -245,14 +237,30 @@ class HomeFragment : Fragment() {
 
     fun checkAdverts() {
         val launch = DiaryPreferences.getInstance().getInt("launches")
+        val scheme = DiaryPreferences.getInstance().getInt("color_scheme")
         if (launch > 10) adverts += "Пожалуйста, оцените наше приложение" to ::reviewWindowFlow
+        if (scheme == 0) adverts += "Выберите цветовую схему оценок" to ::chooseColorScheme
         /*adverts += "Настройте уведомление" to ::toSetupNotifications
         if (_binding!= null) binding.advertsRecycleView.adapter?.notifyDataSetChanged()*/
     }
     fun toSetupNotifications() = findNavController().navigate(R.id.to_setup_notify)
+    fun chooseColorScheme(){
+        ChooseColorSchemeBottomSheet().show(
+            requireActivity().supportFragmentManager,
+            "ChooseColorSchemeBottomSheet"
+        )
+    }
     fun reviewWindowFlow() {
-        DiaryPreferences.getInstance().setInt("launches", -40)
-        val reviewManager = ReviewManagerFactory.create(requireActivity())
+        DiaryPreferences.getInstance().setInt("launches", -10000)
+        if (context == null) return
+        val uri = Uri.parse("market://details?id=" + requireContext().packageName)
+        val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+        try {
+            startActivity(goToMarket)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, "Не удается запустить Google Play", Toast.LENGTH_LONG).show()
+        }
+        /*val reviewManager = ReviewManagerFactory.create(requireActivity())
         val requestReviewFlow = reviewManager.requestReviewFlow()
 
         requestReviewFlow.addOnCompleteListener { request ->
@@ -265,7 +273,7 @@ class HomeFragment : Fragment() {
                 }
             } else {
             }
-        }
+        }*/
     }
 
     @OptIn(ExperimentalStdlibApi::class)

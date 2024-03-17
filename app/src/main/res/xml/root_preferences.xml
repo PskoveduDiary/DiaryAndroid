@@ -22,6 +22,11 @@
                             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>-->
+
+    <Preference
+        app:title="Цветовая схема оценок"
+        app:key="marks_color_scheme">
+    </Preference>
     <PreferenceCategory app:title="Другое">
     <Preference
         app:title="Новости"

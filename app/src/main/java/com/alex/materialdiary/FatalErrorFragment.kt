@@ -1,20 +1,19 @@
 package com.alex.materialdiary
 
-import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
-import android.text.Html
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
-import android.webkit.WebView
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.alex.materialdiary.databinding.FragmentFatalErrorBinding
-import java.lang.Exception
+import xdroid.toaster.Toaster.toast
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -40,7 +39,6 @@ class FatalErrorFragment : Fragment() {
         binding.toHome.setOnClickListener {
             findNavController().navigate(R.id.to_diary)
         }
-
     }
 
     override fun onDestroyView() {

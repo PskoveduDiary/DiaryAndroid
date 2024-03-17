@@ -20,5 +20,6 @@
         android:layout_height="25dp"
         android:layout_gravity="center"
         android:layout_weight="0"
-        android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+        app:tint="?attr/colorPrimary" />
 </LinearLayout>

@@ -52,7 +52,7 @@ class RecycleAdapterPeriodsGroup(context: Context, periods: List<Datum>) :
     class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView
         val recyclerView: RecyclerView
-        val info: Button
+        val info: TextView
 
         init {
             name = view.findViewById(R.id.MarksLessonName)

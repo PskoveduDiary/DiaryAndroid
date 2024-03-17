@@ -30,6 +30,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Сортировать по:"
+                        android:padding="5dp"
                         android:layout_marginBottom="10dp"
                         android:layout_gravity="start"
                         android:textSize="20sp" />
@@ -43,7 +44,7 @@
                             app:checkedChip="@id/chip_name_ascending"
                             app:singleSelection="true"
                             app:selectionRequired="true"
-
+                            android:padding="6dp"
                             android:id="@+id/chipGroup"
                             app:chipSpacingVertical="1dp"
                             app:chipSpacingHorizontal="20dp"
@@ -94,6 +95,36 @@
                                 android:checkable="true"
                                 app:chipIcon="@drawable/baseline_arrow_upward_24"/>
                         </com.google.android.material.chip.ChipGroup>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Фильтры:"
+                        android:padding="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="start"
+                        android:textSize="20sp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:padding="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:id="@+id/dontShowWithoutMarks"
+                            android:layout_height="wrap_content"
+                            android:text="Не показывать предметы без оценок"/>
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:layout_width="wrap_content"
+                            android:id="@+id/ShowHidden"
+                            android:layout_height="wrap_content"
+                            android:text="Показать скрытые предметы"/>
+                        </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
     </LinearLayout>
