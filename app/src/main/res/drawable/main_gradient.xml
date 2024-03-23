@@ -4,10 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 <corners android:bottomLeftRadius="30dp" android:bottomRightRadius="30dp"/>
     <gradient
-        android:startColor="@color/background_start"
-        android:endColor="@color/background_end"
+        android:startColor="?attr/colorPrimaryVariant"
+        android:endColor="#00000000"
         android:type="linear"
-        android:angle="315"
-        android:gradientRadius="100%"
+        android:angle="270"
+        android:gradientRadius="50dp"
         />
 </shape>

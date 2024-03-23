@@ -1,11 +1,14 @@
 package com.alex.materialdiary.sys.net.models.period_marks
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import com.alex.materialdiary.R
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 import java.text.DecimalFormat
-
+@Parcelize
 data class PeriodMarksData(
     @SerializedName("JOURNAL_SYS_GUID")
     var journalSysGuid: String? = null,
@@ -36,7 +39,7 @@ data class PeriodMarksData(
 
     @SerializedName("MARKS")
     var marks: List<Mark>
-) : Serializable {
+) : Parcelable {
     val average: Double
         get() {
             if (marks.size == 0) return -100.0
@@ -134,4 +137,5 @@ data class PeriodMarksData(
         }
         return "До <font color=#e7a700>4</font> " + context.resources.getQuantityString(R.plurals.five, added).format(added)
     }
+
 }

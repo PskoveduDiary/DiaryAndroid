@@ -1,7 +1,10 @@
 package com.alex.materialdiary.sys.net.models.period_marks
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Mark (
     @SerializedName("SYS_GUID")
     var sysGuid: String? = null,
@@ -19,4 +22,4 @@ data class Mark (
     var value: Int,
     @SerializedName("GRADE_TYPE_NAME")
     var typeName: String? = "Тип не указан"
-)
+) : Parcelable

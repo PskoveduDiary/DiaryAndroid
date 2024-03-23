@@ -8,10 +8,16 @@ package com.alex.materialdiary
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.datastore.preferences.core.Preferences
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 import com.alex.materialdiary.sys.net.database.CacheDatabase
+import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.DynamicColorsOptions
+import com.google.android.material.color.utilities.DynamicColor
 import com.google.android.play.core.splitcompat.SplitCompatApplication
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +46,18 @@ class MyApplication : SplitCompatApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        //getSharedPreferences("settings")
+            AppCompatDelegate.setDefaultNightMode(
+                when (PreferenceManager
+                    .getDefaultSharedPreferences(this).getString("theme", "system")){
+                    "dark" -> AppCompatDelegate.MODE_NIGHT_YES
+                    "light" -> AppCompatDelegate.MODE_NIGHT_NO
+                    else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
+            )
+        if (PreferenceManager
+                .getDefaultSharedPreferences(this).getBoolean("dynamic_colors", true))
+            DynamicColors.applyToActivitiesIfAvailable(this)
         excHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(DefaultExceptionHandler(applicationContext, excHandler))
         /*Thread.setDefaultUncaughtExceptionHandler { t, e ->

@@ -26,7 +26,7 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="30dp"
         android:text="Добро пожаловать!"
-        android:textColor="@color/big_text"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:autoSizeMinTextSize="25sp"
         android:autoSizeTextType="uniform"

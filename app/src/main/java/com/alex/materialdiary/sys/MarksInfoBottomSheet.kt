@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,11 +24,11 @@ import java.text.DecimalFormat
 
 class MarksInfoBottomSheet : BottomSheetDialogFragment() {
     @Suppress("DEPRECATION")
-    inline fun <reified T : Serializable> Bundle.customGetSerializable(key: String): T? {
+    inline fun <reified T : Parcelable> Bundle.customGetParcelable(key: String): T? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getSerializable(key, T::class.java)
+            getParcelable(key, T::class.java)
         } else {
-            getSerializable(key) as? T
+            getParcelable(key) as? T
         }
     }
     private var _binding: MarksInfoBottomsheetBinding? = null
@@ -40,7 +41,7 @@ class MarksInfoBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = MarksInfoBottomsheetBinding.inflate(inflater, container, false)
-        data = arguments?.customGetSerializable<PeriodMarksData>("data")
+        data = arguments?.customGetParcelable<PeriodMarksData>("data")
         if (data != null) {
             marks = data!!.marks.map { it -> it.value }.toMutableList()
             binding.fivetofive.text = data!!.getToFive(requireContext()).parseAsHtml()
@@ -119,7 +120,7 @@ class MarksInfoBottomSheet : BottomSheetDialogFragment() {
             data: PeriodMarksData
         ): MarksInfoBottomSheet = MarksInfoBottomSheet().apply {
             arguments = Bundle().apply {
-                putSerializable("data", data)
+                putParcelable("data", data)
             }
         }
     }

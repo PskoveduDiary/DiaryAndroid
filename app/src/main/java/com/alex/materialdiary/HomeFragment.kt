@@ -1,19 +1,24 @@
 package com.alex.materialdiary
 
+import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentHomeBinding
 import com.alex.materialdiary.sys.ChangeNameBottomSheet
-import com.alex.materialdiary.sys.ChooseColorSchemeBottomSheet
 import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
 import com.alex.materialdiary.sys.adapters.RecycleAdapterAdverts
@@ -237,18 +242,49 @@ class HomeFragment : Fragment() {
 
     fun checkAdverts() {
         val launch = DiaryPreferences.getInstance().getInt("launches")
-        val scheme = DiaryPreferences.getInstance().getInt("color_scheme")
+        val appearance = DiaryPreferences.getInstance().getInt("setup_appearance")
+        val widget = DiaryPreferences.getInstance().getInt("widget")
+//        val scheme = DiaryPreferences.getInstance().getInt("color_scheme")
         if (launch > 10) adverts += "Пожалуйста, оцените наше приложение" to ::reviewWindowFlow
-        if (scheme == 0) adverts += "Выберите цветовую схему оценок" to ::chooseColorScheme
+        if (appearance == 0) adverts += "Настройте внешний вид приложения" to ::chooseColorScheme
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) if(widget == 0) adverts += "Добавьте виджет с расписание на главный экран" to ::addWidget
+//        if (scheme == 0) adverts += "Выберите цветовую схему оценок" to ::chooseColorScheme
         /*adverts += "Настройте уведомление" to ::toSetupNotifications
         if (_binding!= null) binding.advertsRecycleView.adapter?.notifyDataSetChanged()*/
     }
     fun toSetupNotifications() = findNavController().navigate(R.id.to_setup_notify)
     fun chooseColorScheme(){
-        ChooseColorSchemeBottomSheet().show(
+        DiaryPreferences.getInstance().setInt("setup_appearance", 1)
+        /*ChooseColorSchemeBottomSheet().show(
             requireActivity().supportFragmentManager,
             "ChooseColorSchemeBottomSheet"
-        )
+        )*/
+        findNavController().navigate(R.id.to_settings)
+
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addWidget(){
+        DiaryPreferences.getInstance().setInt("widget", 1)
+        /*ChooseColorSchemeBottomSheet().show(
+            requireActivity().supportFragmentManager,
+            "ChooseColorSchemeBottomSheet"
+        )*/
+        val mAppWidgetManager = getSystemService(requireContext(), AppWidgetManager::class.java)
+
+        val myProvider = ComponentName(requireActivity(), SheduleWidget::class.java)
+
+        val b = Bundle()
+        b.putString("ggg", "ggg")
+        if (mAppWidgetManager!!.isRequestPinAppWidgetSupported) {
+            val pinnedWidgetCallbackIntent =
+                Intent(requireActivity(), SheduleWidget::class.java)
+            val successCallback = PendingIntent.getBroadcast(
+                requireActivity(), 0,
+                pinnedWidgetCallbackIntent, PendingIntent.FLAG_IMMUTABLE
+            )
+            mAppWidgetManager.requestPinAppWidget(myProvider, b, successCallback)
+        }
+
     }
     fun reviewWindowFlow() {
         DiaryPreferences.getInstance().setInt("launches", -10000)

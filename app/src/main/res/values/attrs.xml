@@ -4,4 +4,5 @@
         <attr name="appWidgetInnerRadius" format="dimension" />
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
+    <attr name="backgroundRadius" format="dimension" />
 </resources>

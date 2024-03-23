@@ -70,7 +70,6 @@
     public protected *;
 }
 
--keep class com.alex.materialdiary.READ_ME_INTEGRICS { *; }
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }

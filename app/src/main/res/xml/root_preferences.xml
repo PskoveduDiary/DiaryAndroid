@@ -22,11 +22,19 @@
                             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>-->
-
+    <PreferenceCategory app:title="Внешний вид">
+        <SwitchPreference
+            app:title="Использовать динамические цвета"
+            app:defaultValue="true"
+            app:key="dynamic_colors"/>
+        <ListPreference
+            app:title="Тема приложения"
+            app:key="theme"/>
     <Preference
         app:title="Цветовая схема оценок"
         app:key="marks_color_scheme">
     </Preference>
+    </PreferenceCategory>
     <PreferenceCategory app:title="Другое">
     <Preference
         app:title="Новости"

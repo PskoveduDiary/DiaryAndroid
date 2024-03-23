@@ -37,6 +37,9 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_marginBottom="5dp"
+                        app:cardElevation="-2dp"
+                        android:elevation="0dp"
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
                         android:layout_height="wrap_content">
                         <com.google.android.material.chip.ChipGroup
                             android:layout_margin="2dp"
@@ -47,7 +50,7 @@
                             android:padding="6dp"
                             android:id="@+id/chipGroup"
                             app:chipSpacingVertical="1dp"
-                            app:chipSpacingHorizontal="20dp"
+                            app:chipSpacingHorizontal="16dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <com.google.android.material.chip.Chip
@@ -107,7 +110,9 @@
                         android:textSize="20sp" />
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
+                        app:cardElevation="-2dp"
                         android:layout_marginBottom="5dp"
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
                         android:layout_height="wrap_content">
                         <LinearLayout
                             android:padding="6dp"

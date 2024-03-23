@@ -55,7 +55,10 @@ class RecycleAdapterNews(context: HomeFragment, items: MutableList<NewsItem>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items.get(position)
         holder.title.text = item.name
-        imgLoader.displayImage("https://pskovedu.ru" + item.image, holder.image);
+        try {
+            imgLoader.displayImage("https://pskovedu.ru" + item.image, holder.image);
+        }
+        catch (_: java.io.FileNotFoundException) {}
         holder.text.text = item.content.parseAsHtml()
 
 

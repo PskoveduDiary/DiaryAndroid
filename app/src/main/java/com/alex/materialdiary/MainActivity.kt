@@ -6,7 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.IntentSender
-import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -25,9 +25,7 @@ import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.databinding.ActivityMainBinding
 import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.utils.KRWorkManager
 import com.alex.materialdiary.utils.MarksTranslator
-import com.alex.materialdiary.workers.KRNotifyWorker
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -39,9 +37,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import org.joda.time.format.DateTimeFormat
-import java.io.File
-import java.lang.IllegalArgumentException
-import java.util.concurrent.TimeUnit
 
 
 open class MainActivity : AppCompatActivity() {
@@ -64,6 +59,7 @@ open class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
+        installSplashScreen()
         DiaryPreferences(this)
         checkGPUpdates()
         checkNotificationsPermissionsAndRegisterChannels()
@@ -275,6 +271,11 @@ open class MainActivity : AppCompatActivity() {
             when (navigation) {
                 "kr" -> navController.navigate(R.id.to_kr)
                 "marks" -> navController.navigate(R.id.to_marks)
+                "diary" -> {
+                    navController.navigate(R.id.to_diary)
+
+                    bottomNav.selectedItemId = R.id.action_1
+                    }
             }
         }
         val crash = intent.getBooleanExtra("crash", false)

@@ -9,21 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.ListView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreference
 import com.alex.materialdiary.R
-import com.alex.materialdiary.containers.Storage
 import com.alex.materialdiary.sys.ChooseColorSchemeBottomSheet
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import okhttp3.Call
-import okhttp3.Request
-import okhttp3.Response
+import com.google.android.material.color.DynamicColors
 import okhttp3.logging.HttpLoggingInterceptor
 import xdroid.toaster.Toaster.toast
-import java.io.IOException
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -83,6 +80,38 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 "ChooseColorSchemeBottomSheet"
             )
             true
+        }
+        (preferenceManager.findPreference<SwitchPreference>("dynamic_colors") as Preference)
+            .setOnPreferenceChangeListener{ preference: Preference, any: Any ->
+                preference.summary = "Перезапустите приложение для применения"
+                true
+        }
+        val theme = preferenceManager.findPreference<ListPreference>("theme")
+        theme?.entries = arrayOf("Темная", "Светлая", "Системная")
+        theme?.entryValues = arrayOf("dark", "light", "system")
+        if (theme?.value == null) theme?.setValueIndex(2)
+        theme?.summary = when(theme?.value.toString()){
+            "dark" -> "Темная"
+            "light" -> "Светлая"
+            "system" -> "Такая же как в системе"
+            else -> ""
+        }
+        theme?.setOnPreferenceChangeListener{ preference: Preference, any: Any ->
+            //theme.summary = theme.va
+            preference.summary = when(any.toString()){
+                "dark" -> "Темная"
+                "light" -> "Светлая"
+                "system" -> "Такая же как в системе"
+                else -> ""
+            }
+            AppCompatDelegate.setDefaultNightMode(
+                when (any.toString()){
+                    "dark" -> AppCompatDelegate.MODE_NIGHT_YES
+                    "light" -> AppCompatDelegate.MODE_NIGHT_NO
+                    else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
+            )
+                true
         }
         val news =
             preferenceManager.findPreference<Preference>("news") as Preference

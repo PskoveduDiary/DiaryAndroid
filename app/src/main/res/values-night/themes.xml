@@ -1,7 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MaterialDiary" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.MaterialDiary" parent="Theme.Material3.DayNight">
         <!-- Customize your dark theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
     <style name="App.Dialog.DateTime" parent="Theme.AppCompat.DayNight.Dialog">

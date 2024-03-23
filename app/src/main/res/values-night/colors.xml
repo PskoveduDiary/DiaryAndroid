@@ -32,7 +32,8 @@
 
     <color name="custom_text_color">#331c6b</color>
     <color name="background_start">#FF6750A4</color>
-    <color name="background_end">#FF625B71</color>
+<!--    <color name="background_end">#FF625B71</color>-->
+    <color name="background_end">#303030</color>
     <color name="new_mark">#493232</color>
     <color name="big_text">#DAB3FF</color>
 </resources>

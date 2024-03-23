@@ -52,8 +52,10 @@ class RecycleAdapterAdvices(context: HomeFragment, items: MutableList<TipData>) 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items.get(position)
         holder.title.text = item.title
-
-        imgLoader.displayImage("https://one.pskovedu.ru" + item.avatar_url, holder.image);
+        try {
+            imgLoader.displayImage("https://one.pskovedu.ru" + item.avatar_url, holder.image);
+        } catch (_: java.io.FileNotFoundException) {
+        }
         holder.text.text = item.text
 
 

@@ -7,11 +7,11 @@
         android:icon="@drawable/ic_baseline_filter_5_24"
         android:orderInCategory="100"
         android:title="Расчет среднего балла"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_baseline_supervised_user_circle_24"
         android:orderInCategory="100"
         android:title="Сменить пользователя"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

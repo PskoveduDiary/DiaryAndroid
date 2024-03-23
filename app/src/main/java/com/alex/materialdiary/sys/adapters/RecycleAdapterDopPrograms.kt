@@ -47,6 +47,7 @@ class RecycleAdapterDopPrograms(context: HomeFragment, items: List<DopProgramDat
     private val inflater: LayoutInflater
     val items: List<DopProgramData>
     val imgLoader = ImageLoader.getInstance()
+
     init {
         inflater = LayoutInflater.from(context.requireContext())
         this.context = context
@@ -83,10 +84,22 @@ class RecycleAdapterDopPrograms(context: HomeFragment, items: List<DopProgramDat
             }
 
         }
-        imgLoader.displayImage("https://dop.pskovedu.ru/file/big_thumb/" + item.fileguid, holder.image, listener)
+        try {
+            imgLoader.displayImage(
+                "https://dop.pskovedu.ru/file/big_thumb/" + item.fileguid,
+                holder.image,
+                listener
+            )
+
+        } catch (e: java.io.FileNotFoundException) {
+            e.printStackTrace()
+        }
         holder.text.text = item.description.parseAsHtml()
         holder.itemView.setOnClickListener {
-            DopBottomSheet(item).show(context.requireActivity().supportFragmentManager, "DopBottomSheet")
+            DopBottomSheet(item).show(
+                context.requireActivity().supportFragmentManager,
+                "DopBottomSheet"
+            )
         }
 
 
