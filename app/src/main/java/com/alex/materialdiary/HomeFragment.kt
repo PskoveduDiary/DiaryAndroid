@@ -246,7 +246,7 @@ class HomeFragment : Fragment() {
         val widget = DiaryPreferences.getInstance().getInt("widget")
 //        val scheme = DiaryPreferences.getInstance().getInt("color_scheme")
         if (launch > 10) adverts += "Пожалуйста, оцените наше приложение" to ::reviewWindowFlow
-        if (appearance == 0) adverts += "Настройте внешний вид приложения" to ::chooseColorScheme
+        //if (appearance == 0) adverts += "Настройте внешний вид приложения" to ::chooseColorScheme
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) if(widget == 0) adverts += "Добавьте виджет с расписание на главный экран" to ::addWidget
 //        if (scheme == 0) adverts += "Выберите цветовую схему оценок" to ::chooseColorScheme
         /*adverts += "Настройте уведомление" to ::toSetupNotifications

@@ -13,7 +13,7 @@ import java.util.*
 
 class Alarmer {
     fun start_kr(context: Context){
-        var alarmMgr: AlarmManager? = null
+        /*var alarmMgr: AlarmManager? = null
         alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmKrReceiver::class.java)
         var alarmIntent: PendingIntent = intent.let {
@@ -33,6 +33,6 @@ class Alarmer {
             calendar.timeInMillis,
             AlarmManager.INTERVAL_FIFTEEN_MINUTES,
             alarmIntent
-        )
+        )*/
     }
 }
