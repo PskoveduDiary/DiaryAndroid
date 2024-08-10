@@ -1,28 +1,17 @@
 package com.alex.materialdiary.sys
 
-import android.app.Dialog
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.parseAsHtml
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alex.materialdiary.AverageFragmentArgs
-import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.LessonBottomsheetBinding
 
-import com.alex.materialdiary.databinding.MarksInfoBottomsheetBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterFiles
-import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.Serializable
-import java.text.DecimalFormat
 
 
 class LessonBottomSheet : BottomSheetDialogFragment() {
@@ -35,7 +24,7 @@ class LessonBottomSheet : BottomSheetDialogFragment() {
         }
     }
     private var _binding: LessonBottomsheetBinding? = null
-    var data: DatumDay? = null
+    var data: DiaryDayData? = null
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +32,7 @@ class LessonBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = LessonBottomsheetBinding.inflate(inflater, container, false)
-        data = arguments?.customGetSerializable<DatumDay>("data")
+        data = arguments?.customGetSerializable<DiaryDayData>("data")
         return binding.root
     }
 
@@ -88,7 +77,7 @@ class LessonBottomSheet : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "ModalBottomSheet"
         fun newInstance(
-            data: DatumDay
+            data: DiaryDayData
         ): LessonBottomSheet = LessonBottomSheet().apply {
             arguments = Bundle().apply {
                 putSerializable("data", data)

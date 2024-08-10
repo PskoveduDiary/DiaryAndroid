@@ -5,19 +5,13 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.alex.materialdiary.DiaryFragment
+import com.alex.materialdiary.ui.fragments.DiaryFragment
 import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.WeekItemBinding
 import com.google.android.material.card.MaterialCardView
 import org.joda.time.LocalDate
-import org.joda.time.Months
 import org.joda.time.Weeks
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 fun LocalDate?.toText(): String {
     if (this == null) return LocalDate.now().toString(DateTimeFormat.forPattern("dd.MM.yyyy"))

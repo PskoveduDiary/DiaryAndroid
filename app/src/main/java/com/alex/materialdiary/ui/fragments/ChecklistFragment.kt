@@ -1,6 +1,5 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
-import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentChecklistBinding
 import com.alex.materialdiary.sys.adapters.RecycleAdapterCheckList
-import com.alex.materialdiary.sys.net.AdlemxApi
 import com.alex.materialdiary.sys.net.AdlemxClient
 import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.sys.net.PskoveduEndpoints
-import com.alex.materialdiary.sys.net.models.check_list.CheckList
 import com.alex.materialdiary.sys.net.models.check_list.CheckListShow
 import com.alex.materialdiary.sys.net.models.check_list.Lesson
 import kotlinx.coroutines.CoroutineScope

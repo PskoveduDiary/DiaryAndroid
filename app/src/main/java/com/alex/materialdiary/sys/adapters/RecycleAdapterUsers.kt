@@ -2,7 +2,7 @@ package com.alex.materialdiary.sys.adapters
 
 import androidx.navigation.Navigation.findNavController
 import com.alex.materialdiary.sys.net.PskoveduApi.Companion.getInstance
-import com.alex.materialdiary.ChangeUserFragment
+import com.alex.materialdiary.ui.fragments.ChangeUserFragment
 import com.alex.materialdiary.sys.net.models.get_user.Schools
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ import com.alex.materialdiary.R
 import com.alex.materialdiary.sys.net.models.ShareUser
 import android.widget.TextView
 import androidx.navigation.NavDirections
-import com.alex.materialdiary.ShareQRFragmentDirections
+import com.alex.materialdiary.ui.fragments.ShareQRFragmentDirections
 import com.alex.materialdiary.sys.net.models.get_user.Participant
 import java.util.ArrayList
 

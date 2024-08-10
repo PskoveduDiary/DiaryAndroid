@@ -1,4 +1,4 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
 import android.R
 import android.graphics.Bitmap

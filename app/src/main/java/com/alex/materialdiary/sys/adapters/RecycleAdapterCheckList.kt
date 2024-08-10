@@ -1,8 +1,6 @@
 package com.alex.materialdiary.sys.adapters
 
-import android.content.Context
 import android.graphics.Paint
-import com.alex.materialdiary.sys.net.models.kr.kr_info
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,10 +8,8 @@ import com.alex.materialdiary.R
 import android.os.Build
 import android.view.View
 import android.widget.CheckBox
-import com.alex.materialdiary.sys.net.models.kr.kr_info.TYPES
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.TextView
-import com.alex.materialdiary.ChecklistFragment
+import com.alex.materialdiary.ui.fragments.ChecklistFragment
 import com.alex.materialdiary.sys.net.models.check_list.CheckListShow
 import com.alex.materialdiary.sys.net.models.check_list.Lesson
 

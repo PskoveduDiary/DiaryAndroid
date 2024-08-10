@@ -1,4 +1,4 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

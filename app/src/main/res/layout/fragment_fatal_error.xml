@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="false"
-    tools:context=".FatalErrorFragment">
+    tools:context=".ui.fragments.FatalErrorFragment">
 
     <TextView
         android:id="@+id/textView2"

@@ -1,34 +1,15 @@
 package com.alex.materialdiary.sys.adapters
 
-import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.ColorFilter
-import android.graphics.Paint
-import com.alex.materialdiary.sys.net.models.kr.kr_info
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.alex.materialdiary.R
-import android.os.Build
 import android.view.View
-import android.widget.CheckBox
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.ProgressBar
-import com.alex.materialdiary.sys.net.models.kr.kr_info.TYPES
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.TextView
 import androidx.core.text.parseAsHtml
-import com.alex.materialdiary.ChecklistFragment
-import com.alex.materialdiary.HomeFragment
-import com.alex.materialdiary.sys.net.models.assistant_tips.AssistantTipsRequestBody
-import com.alex.materialdiary.sys.net.models.assistant_tips.TipData
-import com.alex.materialdiary.sys.net.models.check_list.CheckListShow
-import com.alex.materialdiary.sys.net.models.check_list.Lesson
-import com.alex.materialdiary.sys.net.models.marks.LastMark
-import com.alex.materialdiary.sys.net.models.news.News
+import com.alex.materialdiary.ui.fragments.HomeFragment
 import com.alex.materialdiary.sys.net.models.news.NewsItem
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 

@@ -2,7 +2,7 @@ package com.alex.materialdiary.sys.net.models.periods
 
 import com.google.gson.annotations.SerializedName
 
-class Datum {
+class PeriodsData {
     @SerializedName("SYS_GUID")
     var sysGuid: String? = null
 

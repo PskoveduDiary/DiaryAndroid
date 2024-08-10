@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
 import androidx.navigation.fragment.navArgs
-import com.alex.materialdiary.AverageFragmentArgs
+import com.alex.materialdiary.ui.fragments.AverageFragmentArgs
 import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.FragmentMarksBinding
 import com.alex.materialdiary.databinding.MarksInfoBottomsheetBinding

@@ -13,7 +13,7 @@ data class Schools (
     var government: Any? = null,
 
     @SerializedName("TEACHER")
-    var teacher: Any? = null,
+    var teacher: Teacher? = null,
 
     @SerializedName("PARENT")
     var parent: Parent? = null,

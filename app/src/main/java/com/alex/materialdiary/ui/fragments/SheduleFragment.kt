@@ -1,6 +1,5 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +11,7 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_OFF
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
 import androidx.webkit.WebViewFeature
+import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.FragmentSheduleBinding
 import com.alex.materialdiary.sys.MyWebViewClient
 

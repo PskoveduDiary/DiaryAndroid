@@ -4,5 +4,5 @@ data class DiaryDay (
     var success: Boolean? = null,
     var system: Boolean? = null,
     var message: String? = null,
-    var data: MutableList<DatumDay>
+    var data: MutableList<DiaryDayData>
 )

@@ -1,22 +1,12 @@
 package com.alex.materialdiary.sys
 
-import android.app.Dialog
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.iterator
-import androidx.navigation.fragment.findNavController
-import com.alex.materialdiary.HomeFragment
-import com.alex.materialdiary.MarksFragment
+import com.alex.materialdiary.ui.fragments.MarksFragment
 import com.alex.materialdiary.databinding.SortMarksBottomsheetBinding
-import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.checkbox.MaterialCheckBox
-import com.google.android.material.chip.Chip
 
 
 class SortMarksBottomSheet(marks: MarksFragment) : BottomSheetDialogFragment() {

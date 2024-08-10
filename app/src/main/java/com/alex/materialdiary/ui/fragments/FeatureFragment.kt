@@ -1,6 +1,5 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
-import android.R
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.alex.materialdiary.databinding.FragmentRequestFeatureBinding
@@ -18,8 +16,6 @@ import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.jiang.android.pbutton.CProgressButton
-import xdroid.toaster.Toaster
-import xdroid.toaster.Toaster.toast
 
 
 class FeatureFragment : Fragment() {

@@ -1,6 +1,5 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,15 +11,16 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_OFF
 import androidx.webkit.WebSettingsCompat.FORCE_DARK_ON
 import androidx.webkit.WebViewFeature
-import com.alex.materialdiary.databinding.FragmentSheduleBinding
+import com.alex.materialdiary.R
+import com.alex.materialdiary.databinding.FragmentEskudBinding
 import com.alex.materialdiary.sys.MyWebViewClient
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class ResultsFragment : Fragment() {
+class ESKUDFragment : Fragment() {
     private lateinit var webView: WebView
-    private var _binding: FragmentSheduleBinding? = null
+    private var _binding: FragmentEskudBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,7 +31,7 @@ class ResultsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSheduleBinding.inflate(inflater, container, false)
+        _binding = FragmentEskudBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -56,7 +56,7 @@ class ResultsFragment : Fragment() {
         }
         webView.webViewClient = MyWebViewClient()
         webView.settings.javaScriptEnabled = true
-        webView.loadUrl("https://one.pskovedu.ru/ear/exam-results/participant")
+        webView.loadUrl("https://one.pskovedu.ru/eskud/index/")
     }
 
     override fun onDestroyView() {

@@ -8,7 +8,7 @@
     android:paddingHorizontal="5dp"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ErrorFragment">
+    tools:context=".ui.fragments.ErrorFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

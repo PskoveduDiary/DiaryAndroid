@@ -4,61 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="false"
+    android:fillViewport="true"
     tools:context=".AddContactFragment">
 
-        <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="top"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-                <Button
-                    android:id="@+id/standard_auth"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:text="Войти через PSKOVEDU" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <View
-                    android:id="@+id/divider"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
-                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:text="или" />
+                    tools:itemCount="3"
+                    tools:listitem="@layout/users_item" />
+            </LinearLayout>
+        </ScrollView>
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Добавить"
+            android:id="@+id/add_fab"
+            app:icon="@drawable/ic_baseline_add_24"
+            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="12dp"
+            app:layout_constraintStart_toStartOf="parent">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" >
+        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:layout_width="match_parent"
-                                    tools:itemCount="3"
-                                    android:id="@+id/recycler_view"
-                                    tools:listitem="@layout/users_item"
-                                    android:layout_height="wrap_content" />
-                        </LinearLayout>
-                </ScrollView>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_qr_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сканировть QR-код"
+            app:icon="@drawable/ic_baseline_qr_code_scanner_24"
+            app:layout_constraintBottom_toTopOf="@+id/add_fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent">
 
-                <Button
-                    android:id="@+id/scan_shared"
-                    android:layout_width="wrap_content"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_height="wrap_content"
-                    android:text="Добавить через QR-код" />
+        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_site_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Войти на сайте"
+            app:icon="@drawable/baseline_account_box_24"
+            app:layout_constraintBottom_toTopOf="@+id/add_qr_fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="parent">
 
-        </LinearLayout>
+        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -1,14 +1,14 @@
 package com.alex.materialdiary.workers
 
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
-import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData
+import com.google.firebase.Firebase
+import com.google.firebase.crashlytics.crashlytics
 import kotlinx.coroutines.runBlocking
 
 class ScheduleWidgetService : RemoteViewsService() {
@@ -20,7 +20,7 @@ class ScheduleWidgetService : RemoteViewsService() {
         private val context: Context
 
         //private val reminderRepository: ReminderRepository
-        private var schedule_data: MutableList<DatumDay> = mutableListOf()
+        private var schedule_data: MutableList<DiaryDayData> = mutableListOf()
 
         init {
             this.context = context
@@ -34,8 +34,14 @@ class ScheduleWidgetService : RemoteViewsService() {
 
         override fun onDataSetChanged() {
             runBlocking {
-                val data = PskoveduApi.getInstance(context).getDay()?.data
-                schedule_data = data!!
+                try {
+                    val data = PskoveduApi.getInstance(context).getDay()?.data
+                    if (data != null)
+                        schedule_data = data
+                }
+                catch (e: Exception){
+                    Firebase.crashlytics.recordException(e)
+                }
             }
 
         }

@@ -4,6 +4,7 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.sys.net.database.CacheRepository
 import com.alex.materialdiary.sys.net.database.CachedData
 import com.alex.materialdiary.sys.net.models.ClassicBody
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDay
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.CoroutineScope
@@ -58,15 +59,23 @@ internal class CacheInterceptor(repository: CacheRepository?) : Interceptor {
                         contains("diaryday") -> {
                             if (data.date == "") return@with
                             CoroutineScope(Dispatchers.IO).launch {
-                                repository.insertNewCacheRecord(
-                                    CachedData(
-                                        id = 0,
-                                        req_type = "day",
-                                        optional = data.guid + "_" + data.date,
-                                        actuality = Calendar.getInstance().getTime().time,
-                                        response = responseBody
-                                    )
-                                )
+                                try {
+                                    val day = Gson().fromJson(responseBody, DiaryDay::class.java)
+                                    if (day.success == true) {
+                                        repository.insertNewCacheRecord(
+                                            CachedData(
+                                                id = 0,
+                                                req_type = "day",
+                                                optional = data.guid + "_" + data.date,
+                                                actuality = Calendar.getInstance().time.time,
+                                                response = responseBody
+                                            )
+                                        )
+                                    }
+                                }
+                                catch (_: JsonSyntaxException){
+
+                                }
                             }
                         }
 
@@ -143,6 +152,7 @@ internal class CacheInterceptor(repository: CacheRepository?) : Interceptor {
                                 }
                             }
                         }
+
                         contains("periodmarks") -> {
                             if (data.guid == null) return@with
                             runBlocking(Dispatchers.IO) {

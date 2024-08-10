@@ -1,4 +1,4 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -17,6 +17,9 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alex.materialdiary.MainActivity
+import com.alex.materialdiary.R
+import com.alex.materialdiary.SheduleWidget
 import com.alex.materialdiary.databinding.FragmentHomeBinding
 import com.alex.materialdiary.sys.ChangeNameBottomSheet
 import com.alex.materialdiary.sys.DiaryPreferences

@@ -1,4 +1,4 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.databinding.FragmentKrBinding
+import com.alex.materialdiary.keywords
 import com.alex.materialdiary.sys.adapters.RecycleAdapterKrInfo
 import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData
 import com.alex.materialdiary.sys.net.models.kr.kr_info
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +80,7 @@ class KrFragment : Fragment() {
         _binding = null
     }
 
-    fun setDay(lesson: MutableList<DatumDay>?) {
+    fun setDay(lesson: MutableList<DiaryDayData>?) {
         binding.progressBar.visibility = View.GONE
         if (lesson == null) {
             binding.textView4.visibility = View.VISIBLE

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Mark (
+data class DiaryMark (
     @SerializedName("SYS_GUID")
     var sysGuid: String? = null,
 

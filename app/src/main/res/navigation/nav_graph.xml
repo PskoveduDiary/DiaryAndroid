@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/DiaryFragment"
-        android:name="com.alex.materialdiary.DiaryFragment"
+        android:name="com.alex.materialdiary.ui.fragments.DiaryFragment"
         android:label="@string/diary_label"
         tools:layout="@layout/fragment_diary">
     </fragment>
@@ -28,7 +28,7 @@
 
         <fragment
             android:id="@+id/ShareQRFragment"
-            android:name="com.alex.materialdiary.ShareQRFragment"
+            android:name="com.alex.materialdiary.ui.fragments.ShareQRFragment"
             android:label="@string/qr_label"
             tools:layout="@layout/fragment_qr">
 
@@ -39,14 +39,14 @@
 
         <fragment
             android:id="@+id/UserChangeFragment"
-            android:name="com.alex.materialdiary.ChangeUserFragment"
+            android:name="com.alex.materialdiary.ui.fragments.ChangeUserFragment"
             android:label="@string/users_label"
             tools:layout="@layout/fragment_users">
         </fragment>
 
         <fragment
             android:id="@+id/NewChangeUserFragment"
-            android:name="com.alex.materialdiary.NewChangeUserFragment"
+            android:name="com.alex.materialdiary.ui.fragments.NewChangeUserFragment"
             android:label="@string/users_label"
             tools:layout="@layout/fragment_ch_user_new">
         </fragment>
@@ -59,12 +59,12 @@
             </fragment>-->
         <fragment
             android:id="@+id/LessonFragment"
-            android:name="com.alex.materialdiary.LessonFragment"
+            android:name="com.alex.materialdiary.ui.fragments.LessonFragment"
             android:label="@string/lesson_label"
             tools:layout="@layout/fragment_lesson">
             <argument
                 android:name="lesson"
-                app:argType="com.alex.materialdiary.sys.net.models.diary_day.DatumDay" />
+                app:argType="com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData" />
         </fragment>
         <!-- <fragment
              android:id="@+id/UserInfoFragment"
@@ -81,7 +81,7 @@
          </fragment>-->
     <fragment
         android:id="@+id/ErrorFragment"
-        android:name="com.alex.materialdiary.ErrorFragment"
+        android:name="com.alex.materialdiary.ui.fragments.ErrorFragment"
         android:label="@string/error_label"
         tools:layout="@layout/fragment_error">
         <argument
@@ -90,7 +90,7 @@
     </fragment>
     <fragment
         android:id="@+id/FatalErrorFragment"
-        android:name="com.alex.materialdiary.FatalErrorFragment"
+        android:name="com.alex.materialdiary.ui.fragments.FatalErrorFragment"
         android:label="@string/error_label"
         tools:layout="@layout/fragment_fatal_error">
         <argument
@@ -100,13 +100,13 @@
 
      <fragment
          android:id="@+id/OtherFragment"
-         android:name="com.alex.materialdiary.OthFragment"
+         android:name="com.alex.materialdiary.ui.fragments.OthFragment"
          android:label="@string/other_label"
          tools:layout="@layout/content_msg">
      </fragment>
      <fragment
          android:id="@+id/KrFragment"
-         android:name="com.alex.materialdiary.KrFragment"
+         android:name="com.alex.materialdiary.ui.fragments.KrFragment"
          android:label="Контрольные"
          tools:layout="@layout/fragment_kr">
      </fragment>
@@ -120,35 +120,35 @@
 
     <fragment
         android:id="@+id/ServicesFragment"
-        android:name="com.alex.materialdiary.ServicesFragment"
+        android:name="com.alex.materialdiary.ui.fragments.ServicesFragment"
         android:label="@string/services_label"
         tools:layout="@layout/fragment_services">
     </fragment>
 
     <fragment
         android:id="@+id/EskudFragment"
-        android:name="com.alex.materialdiary.ESKUDFragment"
+        android:name="com.alex.materialdiary.ui.fragments.ESKUDFragment"
         android:label="@string/eskud_label"
         tools:layout="@layout/fragment_eskud">
     </fragment>
 
     <fragment
         android:id="@+id/SheduleFragment"
-        android:name="com.alex.materialdiary.SheduleFragment"
+        android:name="com.alex.materialdiary.ui.fragments.SheduleFragment"
         android:label="@string/shedule_label"
         tools:layout="@layout/fragment_shedule">
     </fragment>
 
     <fragment
         android:id="@+id/MarksFragment"
-        android:name="com.alex.materialdiary.MarksFragment"
+        android:name="com.alex.materialdiary.ui.fragments.MarksFragment"
         android:label="@string/marks_label"
         tools:layout="@layout/fragment_marks">
     </fragment>
 
     <fragment
         android:id="@+id/AverageFragment"
-        android:name="com.alex.materialdiary.AverageFragment"
+        android:name="com.alex.materialdiary.ui.fragments.AverageFragment"
         android:label="@string/average_label"
         tools:layout="@layout/fragment_average">
         <argument
@@ -160,7 +160,7 @@
 
     <fragment
         android:id="@+id/ResultsFragment"
-        android:name="com.alex.materialdiary.ResultsFragment"
+        android:name="com.alex.materialdiary.ui.fragments.ResultsFragment"
         android:label="@string/results_label"
         tools:layout="@layout/fragment_results">
     </fragment>
@@ -192,14 +192,14 @@
 
     <fragment
         android:id="@+id/ScanSharedQrFragment"
-        android:name="com.alex.materialdiary.ScanSharedQrFragment"
+        android:name="com.alex.materialdiary.ui.fragments.ScanSharedQrFragment"
         android:label="Сканировать QR-код"
         tools:layout="@layout/fragment_scan_qr">
     </fragment>
 
     <fragment
         android:id="@+id/WebLoginFragment"
-        android:name="com.alex.materialdiary.WebLoginFragment"
+        android:name="com.alex.materialdiary.ui.fragments.WebLoginFragment"
         android:label="Вход в веб-версию"
         tools:layout="@layout/fragment_scan_qr">
         <argument
@@ -212,7 +212,7 @@
 
     <fragment
         android:id="@+id/FeatureFragment"
-        android:name="com.alex.materialdiary.FeatureFragment"
+        android:name="com.alex.materialdiary.ui.fragments.FeatureFragment"
         android:label="Получение ресурсов..."
         tools:layout="@layout/fragment_request_feature" >
         <argument
@@ -322,7 +322,7 @@
         app:destination="@id/FeatureFragment" />
     <fragment
         android:id="@+id/ChecklistFragment"
-        android:name="com.alex.materialdiary.ChecklistFragment"
+        android:name="com.alex.materialdiary.ui.fragments.ChecklistFragment"
         android:label="Выполнение ДЗ"
         tools:layout="@layout/fragment_checklist">
         <argument
@@ -333,7 +333,7 @@
 
     <fragment
         android:id="@+id/HomeFragment"
-        android:name="com.alex.materialdiary.HomeFragment"
+        android:name="com.alex.materialdiary.ui.fragments.HomeFragment"
         android:label="Главная"
         tools:layout="@layout/fragment_home">
     </fragment>
@@ -343,7 +343,7 @@
 
     <fragment
         android:id="@+id/NotificationFragment"
-        android:name="com.alex.materialdiary.NotificationFragment"
+        android:name="com.alex.materialdiary.ui.fragments.NotificationFragment"
         android:label="Настройте уведомления"
         tools:layout="@layout/fragment_notification">
     </fragment>

@@ -21,7 +21,7 @@ interface PskoveduEndpoints {
     @POST("journals/diaryday")
     suspend fun getDiaryDay(@Body body: ClassicBody?): DiaryDay?
 
-    @POST("journals/allmarks") // get all marks, equal: marksbyperiod without from, to args
+    @POST("journals/allmarks") // get all marks, equal: marksbyperiod without from and to args
     suspend fun getAllMarks(@Body body: ClassicBody?): PeriodMarks?
 
     @POST("journals/marksbyperiod") // get marks in period

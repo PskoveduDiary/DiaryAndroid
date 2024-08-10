@@ -1,13 +1,12 @@
 package com.alex.materialdiary.sys.net.models.diary_day
 
 import android.os.Parcelable
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
 @Parcelize
-data class DatumDay (
+data class DiaryDayData (
     @SerializedName("JOURNAL_SYS_GUID")
     var journalSysGuid: String? = null,
 
@@ -72,7 +71,7 @@ data class DatumDay (
     var homeworkPrevious: HomeworkPrevious? = null,
 
     @SerializedName("MARKS")
-    var marks: List<Mark>? = null,
+    var marks: List<DiaryMark>? = null,
 
     @SerializedName("ABSENCE")
     var absence: List<Absence>? = null,

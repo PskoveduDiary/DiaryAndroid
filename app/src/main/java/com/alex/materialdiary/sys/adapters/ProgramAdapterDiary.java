@@ -9,14 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.OptIn;
-import androidx.navigation.NavDirections;
 
-import com.alex.materialdiary.DiaryFragment;
-import com.alex.materialdiary.LessonFragmentDirections;
+import com.alex.materialdiary.ui.fragments.DiaryFragment;
 import com.alex.materialdiary.R;
-import com.alex.materialdiary.sys.net.models.diary_day.DatumDay;
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.badge.BadgeUtils;
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData;
 import com.google.android.material.badge.ExperimentalBadgeUtils;
 
 import java.util.Arrays;
@@ -24,10 +20,10 @@ import java.util.List;
 
 public class ProgramAdapterDiary extends ArrayAdapter<String> {
     DiaryFragment context;
-    List<DatumDay> data;
+    List<DiaryDayData> data;
 
     // This is the constructor of the class. It's called when you create an object of the class.
-    public ProgramAdapterDiary(DiaryFragment context, List<DatumDay> data) {
+    public ProgramAdapterDiary(DiaryFragment context, List<DiaryDayData> data) {
         super(context.getContext(), R.layout.lesson_item, R.id.lesson_Name, Arrays.asList(new String[data.size()]));
 
         this.context = context;

@@ -15,12 +15,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 object PskoveduClient {
     private var retrofit: Retrofit? = null
     private var endpoints: PskoveduEndpoints? = null
-    private const val baseUrl = "http://213.145.5.42:8090"//"http://192.168.1.222:8000"////"https://api.pskovedu.ml"
+    private const val baseUrl = "http://213.145.5.42:8090"//"https://diary.adlemx.ru/api/demo/"
+        //"http://192.168.0.111:8000"//"http://213.145.5.42:8090"//"http://192.168.1.222:8000"////"https://api.pskovedu.ml"
+
     fun getClient(): Retrofit {
         if (retrofit == null) {
             val db = MyApplication.instance?.getDb()
             var cacheRepository: CacheRepository? = null
-            if (db != null){
+            if (db != null) {
                 cacheRepository = CacheRepository(MyApplication.instance!!.getDb()!!.cacheDao())
             }
 
@@ -31,6 +33,13 @@ object PskoveduClient {
             val okHttpClient = OkHttpClient.Builder()
                 .addNetworkInterceptor(interceptor)
                 .addInterceptor(cacheInterceptor)
+                .addNetworkInterceptor {
+                    it.proceed(
+                        it.request().newBuilder()
+                            .header("User-Agent", "ADLEMX Apps")
+                            .build()
+                    )
+                }
                 .build()
 
             retrofit = Retrofit.Builder()
@@ -41,8 +50,9 @@ object PskoveduClient {
         }
         return retrofit!!
     }
-    fun getEndpoints(): PskoveduEndpoints{
-        if (endpoints==null)
+
+    fun getEndpoints(): PskoveduEndpoints {
+        if (endpoints == null)
             endpoints = PskoveduClient.getClient().create(PskoveduEndpoints::class.java)
         return endpoints!!
     }

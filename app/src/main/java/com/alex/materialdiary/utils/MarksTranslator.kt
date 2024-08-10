@@ -51,12 +51,13 @@ class MarksTranslator(val pm: MutableList<PeriodMarksData>) {
                 it.forEach { thi += LocalDate.parse(it, formatter) }
                 dates += thi
             }
+            if (dates.size == 0) return mutableListOf()
             dates.forEach {
-                if (LocalDate.now() in it[0]..it[1])  {
+                if (LocalDate.now() in it[0]..it[1]) {
                     return it
                 }
             }
-            return mutableListOf()
+            return dates.last()
         }
     }
 }

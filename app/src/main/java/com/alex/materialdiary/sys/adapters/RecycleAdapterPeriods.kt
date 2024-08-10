@@ -1,6 +1,6 @@
 package com.alex.materialdiary.sys.adapters
 
-import com.alex.materialdiary.MarksFragment
+import com.alex.materialdiary.ui.fragments.MarksFragment
 import com.alex.materialdiary.sys.net.models.all_periods.AllPeriodData
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater

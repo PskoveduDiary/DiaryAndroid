@@ -2,7 +2,7 @@ package com.alex.materialdiary.sys.adapters
 
 import androidx.navigation.Navigation.findNavController
 import com.alex.materialdiary.sys.net.PskoveduApi.Companion.getInstance
-import com.alex.materialdiary.NewChangeUserFragment
+import com.alex.materialdiary.ui.fragments.NewChangeUserFragment
 import com.alex.materialdiary.sys.net.models.ShareUser
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import android.widget.ImageView
 import com.alex.materialdiary.R
 import android.widget.TextView
 import androidx.navigation.NavDirections
-import com.alex.materialdiary.ShareQRFragmentDirections
+import com.alex.materialdiary.ui.fragments.ShareQRFragmentDirections
 
 class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: List<ShareUser>) :
     RecyclerView.Adapter<RecycleAdapterSharedUsers.ViewHolder>() {

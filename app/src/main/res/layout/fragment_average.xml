@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="2dp"
-    tools:context=".MarksFragment">
+    tools:context=".ui.fragments.MarksFragment">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -21,17 +21,14 @@ import com.alex.materialdiary.sys.adapters.ProgramAdapterDiary
 import com.alex.materialdiary.sys.adapters.WeekAdapter
 import com.alex.materialdiary.sys.adapters.toText
 import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.sys.net.models.diary_day.DatumDay
+import com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.joda.time.LocalDate
-import org.joda.time.Period
 import org.joda.time.Weeks
 import org.joda.time.format.DateTimeFormat
-import java.util.*
 
 
 fun LocalDate?.toText(): String {
@@ -109,7 +106,7 @@ class DiaryFragment : Fragment(){
     fun get_nav(): NavController {
         return findNavController()
     }
-    fun openBottomSheet(data: DatumDay){
+    fun openBottomSheet(data: DiaryDayData){
         val modalBottomSheet = LessonBottomSheet.newInstance(data)
         modalBottomSheet.show(requireActivity().supportFragmentManager, LessonBottomSheet.TAG)
 
@@ -153,7 +150,7 @@ class DiaryFragment : Fragment(){
                     }, 800-(timeend-timestart))
                 }
                 else binding.swiperefresh.isRefreshing = false
-                if (lessons != null) {
+                if (lessons?.data != null) {
                     if (lessons.data.size > 0) {
                         binding.lessons.adapter =
                             ProgramAdapterDiary(

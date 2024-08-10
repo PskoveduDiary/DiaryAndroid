@@ -1,28 +1,23 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.FragmentMarksBinding
 import com.alex.materialdiary.sys.MarksInfoBottomSheet
 import com.alex.materialdiary.sys.SortMarksBottomSheet
 import com.alex.materialdiary.sys.adapters.RecycleAdapterMarksGroup
-import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriods
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriodsGroup
 import com.alex.materialdiary.sys.net.PskoveduApi
-import com.alex.materialdiary.sys.net.models.period_marks.Mark
-import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarks
 import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarksData
 import com.alex.materialdiary.utils.MarksTranslator
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
@@ -30,8 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
-import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 
 
@@ -242,7 +235,7 @@ class MarksFragment : Fragment() {
         marksJob = CoroutineScope(Dispatchers.IO).launch {
             val periods = api.getItogMarks()
             withContext(Dispatchers.Main) {
-                if (periods == null) return@withContext
+                if (periods?.data == null) return@withContext
                 if (_binding == null) return@withContext
                 Handler(Looper.getMainLooper()).postDelayed(
                     {

@@ -1,26 +1,22 @@
 package com.alex.materialdiary.sys.adapters
 
 import android.content.Context
-import com.alex.materialdiary.sys.net.models.periods.Datum
+import com.alex.materialdiary.sys.net.models.periods.PeriodsData
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import com.alex.materialdiary.R
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alex.materialdiary.sys.adapters.RecycleAdapterMarksInPeriod
 import android.widget.TextView
 import com.alex.materialdiary.sys.net.models.periods.Period
 import java.text.DecimalFormat
-import java.util.*
 
-class RecycleAdapterPeriodsGroup(context: Context, periods: List<Datum>) :
+class RecycleAdapterPeriodsGroup(context: Context, periods: List<PeriodsData>) :
     RecyclerView.Adapter<RecycleAdapterPeriodsGroup.ViewHolder>() {
     private val context: Context
     private val inflater: LayoutInflater
-    private val periods: List<Datum>
+    private val periods: List<PeriodsData>
     var viewPool = RecyclerView.RecycledViewPool();
     init {
         inflater = LayoutInflater.from(context)

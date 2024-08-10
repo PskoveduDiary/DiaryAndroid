@@ -1,28 +1,17 @@
 package com.alex.materialdiary.sys.adapters
 
 import android.content.Context
-import com.alex.materialdiary.utils.MarksTranslator.Companion.getSubjectMarksDifferences
-import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarksData
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.alex.materialdiary.R
-import android.os.Build
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alex.materialdiary.utils.MarksTranslator
 import android.widget.TextView
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import com.alex.materialdiary.MarksFragment
-import com.alex.materialdiary.NavGraphDirections
 import com.alex.materialdiary.sys.ChooseColorSchemeBottomSheet
 import com.alex.materialdiary.sys.ColorSchemes
 import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.net.models.period_marks.Mark
-import java.text.DecimalFormat
 import java.util.ArrayList
 
 class RecycleAdapterMarksScheme(

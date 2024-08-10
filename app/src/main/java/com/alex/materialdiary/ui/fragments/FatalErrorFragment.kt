@@ -1,46 +1,39 @@
-package com.alex.materialdiary
+package com.alex.materialdiary.ui.fragments
 
-import android.app.Dialog
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
-import android.webkit.WebView
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.alex.materialdiary.databinding.FragmentDpaBinding
-import com.alex.materialdiary.databinding.FragmentErrorBinding
-import java.lang.Exception
+import com.alex.materialdiary.R
+import com.alex.materialdiary.databinding.FragmentFatalErrorBinding
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class PDAFragment : Fragment() {
-    private var _binding: FragmentDpaBinding? = null
+class FatalErrorFragment : Fragment() {
+    private var _binding: FragmentFatalErrorBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val args: ErrorFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentDpaBinding.inflate(inflater, container, false)
+        _binding = FragmentFatalErrorBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        binding.toHome.setOnClickListener {
+            findNavController().navigate(R.id.to_diary)
+        }
     }
 
     override fun onDestroyView() {
