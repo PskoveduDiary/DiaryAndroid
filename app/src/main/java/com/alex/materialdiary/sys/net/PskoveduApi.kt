@@ -180,7 +180,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
         }
         return null
     }
-    suspend fun getUserInfo(): UserData? {
+    suspend fun getUserInfo(silent: Boolean = false): UserData? {
         val datas = jsonUtils.readJsonFileData("users.json")
         if (datas != null && datas.length > 100) {
             val entity = gson.fromJson(datas.toString(), UserInfo::class.java)
@@ -190,7 +190,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
         val cookies = CookieManager.getInstance().getCookie("one.pskovedu.ru")
         if (cookies == null) {
             Log.d("redirect", "no-cookies")
-            context.startActivity(i)
+            if (!silent) context.startActivity(i)
             return null
         } else {
             var X1: String?
@@ -199,7 +199,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
             if (X1 == null) {
                 CookieManager.getInstance().removeAllCookies(null)
                 Log.d("redirect", "x1-empty")
-                context.startActivity(i)
+                if (!silent) context.startActivity(i)
                 return null
             }
             else sid = X1

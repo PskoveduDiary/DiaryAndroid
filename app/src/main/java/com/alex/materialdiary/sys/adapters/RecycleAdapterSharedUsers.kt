@@ -14,11 +14,11 @@ import android.widget.TextView
 import androidx.navigation.NavDirections
 import com.alex.materialdiary.ui.fragments.ShareQRFragmentDirections
 
-class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: List<ShareUser>) :
+class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableList<ShareUser>) :
     RecyclerView.Adapter<RecycleAdapterSharedUsers.ViewHolder>() {
     private val inflater: LayoutInflater
     private val fragment: NewChangeUserFragment
-    private val users: List<ShareUser>
+    private val users: MutableList<ShareUser>
 
     init {
         inflater = LayoutInflater.from(context.requireContext())
