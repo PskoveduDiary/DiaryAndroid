@@ -1,7 +1,10 @@
 package com.alex.materialdiary.sys.net.models.get_user
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Parent (
     @SerializedName("SYS_GUID")
     var sysGuid: String? = null,
@@ -16,8 +19,8 @@ data class Parent (
     var secondname: String? = null,
 
     @SerializedName("SEX")
-    var sex: Any? = null,
+    var sex: String? = null,
 
     @SerializedName("SCHOOL")
     var school: SchoolInfo? = null
-)
+) : Parcelable

@@ -38,13 +38,6 @@
         </fragment>
 
         <fragment
-            android:id="@+id/UserChangeFragment"
-            android:name="com.alex.materialdiary.ui.fragments.ChangeUserFragment"
-            android:label="@string/users_label"
-            tools:layout="@layout/fragment_users">
-        </fragment>
-
-        <fragment
             android:id="@+id/NewChangeUserFragment"
             android:name="com.alex.materialdiary.ui.fragments.NewChangeUserFragment"
             android:label="@string/users_label"
@@ -266,9 +259,6 @@
     <action
         android:id="@+id/to_results"
         app:destination="@id/ResultsFragment" />
-    <action
-        android:id="@+id/to_ch_users"
-        app:destination="@id/UserChangeFragment" />
     <action
         android:id="@+id/to_marks"
         app:destination="@id/MarksFragment" />

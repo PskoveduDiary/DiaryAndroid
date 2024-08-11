@@ -18,6 +18,7 @@ import com.alex.materialdiary.ui.login.LoginActivity
 
 open class MyWebViewClient() : WebViewClient() {
 
+    @Deprecated("Deprecated in Java")
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         return handleUri(view, url)
     }

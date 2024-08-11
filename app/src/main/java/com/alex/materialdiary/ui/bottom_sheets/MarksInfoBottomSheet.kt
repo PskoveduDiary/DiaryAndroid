@@ -1,6 +1,5 @@
-package com.alex.materialdiary.sys
+package com.alex.materialdiary.ui.bottom_sheets
 
-import android.app.Dialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -9,16 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
-import androidx.navigation.fragment.navArgs
-import com.alex.materialdiary.ui.fragments.AverageFragmentArgs
 import com.alex.materialdiary.R
-import com.alex.materialdiary.databinding.FragmentMarksBinding
 import com.alex.materialdiary.databinding.MarksInfoBottomsheetBinding
-import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.sys.net.models.period_marks.PeriodMarksData
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import java.io.Serializable
 import java.text.DecimalFormat
 
 

@@ -1,7 +1,10 @@
 package com.alex.materialdiary.sys.net.models.get_user
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class UserData (
     @SerializedName("LOGIN")
     var login: String? = null,
@@ -22,11 +25,11 @@ data class UserData (
     var confirmation: String? = null,
 
     @SerializedName("CONFIRM_EXPIRATION")
-    var confirmExpiration: Any? = null,
+    var confirmExpiration: Int? = null,
 
     @SerializedName("SESSION_ID")
-    var sessionId: Any? = null,
+    var sessionId: String? = null,
 
     @SerializedName("SCHOOLS")
     var schools: List<Schools>
-)
+) : Parcelable

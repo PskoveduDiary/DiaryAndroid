@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alex.materialdiary.databinding.FragmentDiaryBinding
-import com.alex.materialdiary.sys.LessonBottomSheet
+import com.alex.materialdiary.ui.bottom_sheets.LessonBottomSheet
 import com.alex.materialdiary.sys.adapters.PagerVH
 import com.alex.materialdiary.sys.adapters.ProgramAdapterDiary
 import com.alex.materialdiary.sys.adapters.WeekAdapter

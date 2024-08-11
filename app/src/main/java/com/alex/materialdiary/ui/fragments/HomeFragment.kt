@@ -21,7 +21,7 @@ import com.alex.materialdiary.MainActivity
 import com.alex.materialdiary.R
 import com.alex.materialdiary.SheduleWidget
 import com.alex.materialdiary.databinding.FragmentHomeBinding
-import com.alex.materialdiary.sys.ChangeNameBottomSheet
+import com.alex.materialdiary.ui.bottom_sheets.ChangeNameBottomSheet
 import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.ReadWriteJsonFileUtils
 import com.alex.materialdiary.sys.adapters.RecycleAdapterAdverts

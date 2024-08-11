@@ -1,4 +1,4 @@
-package com.alex.materialdiary.sys
+package com.alex.materialdiary.ui.bottom_sheets
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.alex.materialdiary.ui.fragments.HomeFragment
 import com.alex.materialdiary.databinding.ChangeNameBottomsheetBinding
+import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.net.PskoveduApi
 import com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

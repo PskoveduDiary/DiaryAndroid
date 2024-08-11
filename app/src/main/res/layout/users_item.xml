@@ -38,13 +38,22 @@
                 app:tint="?attr/colorPrimaryVariant" />
 
             <ImageView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:visibility="visible"
+                app:srcCompat="@drawable/baseline_delete_24"
+                app:tint="?attr/colorPrimaryVariant" />
+
+            <ImageView
                 android:id="@+id/scanQr"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 app:srcCompat="@drawable/ic_baseline_qr_code_scanner_24"
-                app:tint="#FFFFFF" />
+                app:tint="?attr/colorPrimaryVariant"/>
 
             <TextView
                 android:id="@+id/user_Grade"
@@ -53,7 +62,7 @@
                 android:layout_weight="0"
                 android:gravity="end"
                 android:layout_marginEnd="3dp"
-                android:text="8Г класс"
+                android:text="Класс"
                 android:textColor="?attr/colorPrimaryVariant" />
 
         </LinearLayout>
@@ -70,14 +79,14 @@
                 android:id="@+id/user_Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ошибка"
+                android:text="Имя Фамилия"
                 android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/user_SchoolName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Произошла какая-то ошибка"
+                android:text="Школа"
                 android:layout_marginBottom="3dp"/>
 
         </LinearLayout>

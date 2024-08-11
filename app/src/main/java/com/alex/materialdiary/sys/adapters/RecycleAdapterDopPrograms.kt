@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.parseAsHtml
 import com.alex.materialdiary.ui.fragments.HomeFragment
-import com.alex.materialdiary.sys.DopBottomSheet
+import com.alex.materialdiary.ui.bottom_sheets.DopBottomSheet
 import com.alex.materialdiary.sys.net.models.dop_programs.DopProgramData
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration

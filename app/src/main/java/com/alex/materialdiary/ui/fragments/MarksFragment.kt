@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.materialdiary.R
 import com.alex.materialdiary.databinding.FragmentMarksBinding
-import com.alex.materialdiary.sys.MarksInfoBottomSheet
-import com.alex.materialdiary.sys.SortMarksBottomSheet
+import com.alex.materialdiary.ui.bottom_sheets.MarksInfoBottomSheet
+import com.alex.materialdiary.ui.bottom_sheets.SortMarksBottomSheet
 import com.alex.materialdiary.sys.adapters.RecycleAdapterMarksGroup
 import com.alex.materialdiary.sys.adapters.RecycleAdapterPeriodsGroup
 import com.alex.materialdiary.sys.net.PskoveduApi

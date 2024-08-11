@@ -1,4 +1,4 @@
-package com.alex.materialdiary.sys
+package com.alex.materialdiary.ui.bottom_sheets
 
 import android.os.Bundle
 import android.view.LayoutInflater

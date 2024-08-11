@@ -8,7 +8,7 @@ import com.alex.materialdiary.R
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.TextView
-import com.alex.materialdiary.sys.ChooseColorSchemeBottomSheet
+import com.alex.materialdiary.ui.bottom_sheets.ChooseColorSchemeBottomSheet
 import com.alex.materialdiary.sys.ColorSchemes
 import com.alex.materialdiary.sys.DiaryPreferences
 import com.alex.materialdiary.sys.net.models.period_marks.Mark
