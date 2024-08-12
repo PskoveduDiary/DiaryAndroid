@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object PskoveduClient {
     private var retrofit: Retrofit? = null
     private var endpoints: PskoveduEndpoints? = null
-    private const val baseUrl = "http://213.145.5.42:8090"//"https://diary.adlemx.ru/api/demo/"
+    private const val baseUrl = "https://diary.adlemx.ru/api/demo/"
         //"http://192.168.0.111:8000"//"http://213.145.5.42:8090"//"http://192.168.1.222:8000"////"https://api.pskovedu.ml"
 
     fun getClient(): Retrofit {

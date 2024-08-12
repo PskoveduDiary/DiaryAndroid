@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_margin="5dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.google.android.material.card.MaterialCardView
+android:layout_width="60dp"
+android:layout_height="60dp"
+    app:cardCornerRadius="10dp"
+    android:padding="5dp"
+    android:id="@+id/anchor_for_badge"
+    android:clipChildren="false"
+    android:outlineSpotShadowColor="@android:color/transparent"
+    android:outlineAmbientShadowColor="@android:color/transparent"
+    app:cardElevation="4dp"
+    app:strokeWidth="2dp"
+    app:cardBackgroundColor="?attr/colorPrimaryFixedDim"
+    app:strokeColor="@android:color/transparent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/mark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimaryFixed"
+            android:gravity="center"
+            android:text="5"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
+</FrameLayout>

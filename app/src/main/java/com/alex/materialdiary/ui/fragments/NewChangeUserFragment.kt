@@ -125,7 +125,7 @@ class NewChangeUserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getUserInfo()
         Handler(Looper.getMainLooper()).postDelayed(100) {
-            binding.addFab.show()
+            if (_binding != null) binding.addFab.show()
         }
         binding.addSiteFab.setOnClickListener {
             binding.addQrFab.hide()

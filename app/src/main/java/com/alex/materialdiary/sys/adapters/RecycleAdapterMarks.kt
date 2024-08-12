@@ -56,11 +56,6 @@ class RecycleAdapterMarks(
                 )
             )
         ) {
-            //itemView.setBackgroundColor(inflater.context.resources.getColor(R.color.new_mark))
-            //itemView.setCardBackgroundColor(inflater.context.resources.getColor(R.color.new_mark))
-            //holder.card.strokeColor = inflater.context.resources.getColor(R.color.two)
-            //holder.badgeDrawable.isVisible = true
-            //holder.card.cardElevation = 0F
             if (useBadge) holder.attachBadge()
             else {
                 holder.card.strokeColor = newColor

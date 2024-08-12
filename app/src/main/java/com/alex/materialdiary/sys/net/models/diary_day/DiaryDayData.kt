@@ -71,11 +71,11 @@ data class DiaryDayData (
     var homeworkPrevious: HomeworkPrevious? = null,
 
     @SerializedName("MARKS")
-    var marks: List<DiaryMark>? = null,
+    var marks: List<DiaryMark>,
 
     @SerializedName("ABSENCE")
-    var absence: List<Absence>? = null,
+    var absence: List<Absence>,
 
     @SerializedName("NOTES")
-    var notes: List<String>? = null,
+    var notes: List<String>,
 )  : Parcelable, Serializable

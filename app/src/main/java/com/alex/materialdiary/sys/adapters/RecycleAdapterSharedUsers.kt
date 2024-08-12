@@ -39,16 +39,17 @@ class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableLi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
         holder.Name.text = user.name
-        holder.Grade.text = user.classname + " класс"
-        holder.SchoolName.text = user.school
+//        holder.Grade.text = user.classname + " класс"
+        val navController = findNavController(
+            fragment.requireActivity(),
+            R.id.nav_host_fragment_content_main
+        )
+        holder.SchoolName.text = "${user.classname} класс, ${user.school}"
         holder.share.setOnClickListener {
             val action: NavDirections = ShareQRFragmentDirections.toShare(user)
-            findNavController(
-                fragment.requireActivity(),
-                R.id.nav_host_fragment_content_main
-            ).navigate(action)
+            navController.navigate(action)
         }
-        holder.itemView.setOnClickListener { getInstance().changeGuid(user.guid, user.name, fragment.findNavController()) }
+        holder.itemView.setOnClickListener { getInstance().changeGuid(user.guid, user.name, navController) }
         setAnimation(holder.itemView, position);
     }
 
@@ -57,17 +58,17 @@ class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableLi
     }
 
     class ViewHolder internal constructor(v: View) : RecyclerView.ViewHolder(v) {
-        var Grade: TextView
+//        var Grade: TextView
         var Name: TextView
         var SchoolName: TextView
-        var scan: ImageView
+//        var scan: ImageView
         var share: ImageView
 
         init {
-            Grade = v.findViewById(R.id.user_Grade)
+//            Grade = v.findViewById(R.id.user_Grade)
             Name = v.findViewById(R.id.user_Name)
             SchoolName = v.findViewById(R.id.user_SchoolName)
-            scan = v.findViewById(R.id.scanQr)
+//            scan = v.findViewById(R.id.scanQr)
             share = v.findViewById(R.id.shareQr)
         }
     }
@@ -77,7 +78,7 @@ class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableLi
         if (position > lastPosition) {
             val animation: Animation =
                 AnimationUtils.loadAnimation(inflater.context, android.R.anim.fade_in)
-            animation.startOffset = (position * 35).toLong()
+            animation.startOffset = (position * 45).toLong()
             viewToAnimate.startAnimation(animation)
             lastPosition = position
         }
