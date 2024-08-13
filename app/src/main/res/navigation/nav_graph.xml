@@ -50,15 +50,15 @@
                 android:label="@string/add_contact_label"
                 tools:layout="@layout/fragment_add_contact">
             </fragment>-->
-        <fragment
-            android:id="@+id/LessonFragment"
-            android:name="com.alex.materialdiary.ui.fragments.LessonFragment"
-            android:label="@string/lesson_label"
-            tools:layout="@layout/fragment_lesson">
-            <argument
-                android:name="lesson"
-                app:argType="com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData" />
-        </fragment>
+<!--        <fragment-->
+<!--            android:id="@+id/LessonFragment"-->
+<!--            android:name="com.alex.materialdiary.ui.fragments.LessonFragment"-->
+<!--            android:label="@string/lesson_label"-->
+<!--            tools:layout="@layout/fragment_lesson">-->
+<!--            <argument-->
+<!--                android:name="lesson"-->
+<!--                app:argType="com.alex.materialdiary.sys.net.models.diary_day.DiaryDayData" />-->
+<!--        </fragment>-->
         <!-- <fragment
              android:id="@+id/UserInfoFragment"
              android:name="com.alex.materialdiary.UserInfoFragment"
@@ -183,38 +183,19 @@
         tools:layout="@layout/fragment_scan_qr">
     </fragment>-->
 
-    <fragment
-        android:id="@+id/ScanSharedQrFragment"
-        android:name="com.alex.materialdiary.ui.fragments.ScanSharedQrFragment"
-        android:label="Сканировать QR-код"
-        tools:layout="@layout/fragment_scan_qr">
-    </fragment>
 
-    <fragment
-        android:id="@+id/WebLoginFragment"
-        android:name="com.alex.materialdiary.ui.fragments.WebLoginFragment"
-        android:label="Вход в веб-версию"
-        tools:layout="@layout/fragment_scan_qr">
-        <argument
-            android:name="guid"
-            app:argType="string" />
-        <argument
-            android:name="name"
-            app:argType="string" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/FeatureFragment"
-        android:name="com.alex.materialdiary.ui.fragments.FeatureFragment"
-        android:label="Получение ресурсов..."
-        tools:layout="@layout/fragment_request_feature" >
-        <argument
-            android:name="feature_name"
-            app:argType="string" />
-        <argument
-            android:name="description"
-            app:argType="string" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/FeatureFragment"-->
+<!--        android:name="com.alex.materialdiary.ui.fragments.FeatureFragment"-->
+<!--        android:label="Получение ресурсов..."-->
+<!--        tools:layout="@layout/fragment_request_feature" >-->
+<!--        <argument-->
+<!--            android:name="feature_name"-->
+<!--            app:argType="string" />-->
+<!--        <argument-->
+<!--            android:name="description"-->
+<!--            app:argType="string" />-->
+<!--    </fragment>-->
 <!--
     <fragment
         android:id="@+id/ChatFragment"
@@ -295,21 +276,21 @@
     <action
         android:id="@+id/to_average"
         app:destination="@id/AverageFragment" />
-    <action
-        android:id="@+id/to_lesson"
-        app:destination="@id/LessonFragment" />
+<!--    <action-->
+<!--        android:id="@+id/to_lesson"-->
+<!--        app:destination="@id/LessonFragment" />-->
     <action
         android:id="@+id/to_share"
         app:destination="@id/ShareQRFragment" />
     <action
         android:id="@+id/to_new_ch_users"
         app:destination="@id/NewChangeUserFragment" />
-    <action
-        android:id="@+id/to_scan_shared_qr"
-        app:destination="@id/ScanSharedQrFragment" />
-    <action
-        android:id="@+id/to_feature_install"
-        app:destination="@id/FeatureFragment" />
+<!--    <action-->
+<!--        android:id="@+id/to_scan_shared_qr"-->
+<!--        app:destination="@id/ScanSharedQrFragment" />-->
+<!--    <action-->
+<!--        android:id="@+id/to_feature_install"-->
+<!--        app:destination="@id/FeatureFragment" />-->
     <fragment
         android:id="@+id/ChecklistFragment"
         android:name="com.alex.materialdiary.ui.fragments.ChecklistFragment"

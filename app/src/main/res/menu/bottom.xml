@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.alex.materialdiary.MainActivity">
     <item
-        android:id="@+id/action_0"
+        android:id="@+id/HomeFragment"
         android:icon="@drawable/baseline_home_24"
         android:orderInCategory="100"
         android:title="Главная"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_1"
+        android:id="@+id/DiaryFragment"
         android:icon="@drawable/ic_baseline_book_24"
         android:orderInCategory="100"
         android:title="Дневник"
@@ -23,14 +23,14 @@
         android:visible="false"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_3"
+        android:id="@+id/MarksFragment"
         android:orderInCategory="100"
         android:title="Оценки"
         android:icon="@drawable/ic_baseline_looks_5_24"
         app:showAsAction="never"
         />
     <item
-    android:id="@+id/action_4"
+    android:id="@+id/OtherFragment"
     android:orderInCategory="100"
     android:title="Другое"
         android:icon="@drawable/ic_baseline_apps_24"

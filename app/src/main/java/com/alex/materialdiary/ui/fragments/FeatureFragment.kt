@@ -25,7 +25,7 @@ class FeatureFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
 
-    private val args: FeatureFragmentArgs by navArgs()
+//    private val args: FeatureFragmentArgs by navArgs()
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,43 +58,43 @@ class FeatureFragment : Fragment() {
         )
         val splitInstallManager = SplitInstallManagerFactory.create(requireContext())
         val manager = requireActivity().packageManager
-        binding.descriptionDelivery.text = args.description
+//        binding.descriptionDelivery.text = args.description
         val progressButton = binding.btn
         progressButton.normal(0)
-        if (splitInstallManager.installedModules.contains(args.featureName)) {
-            progressButton.normal(2)
-            val enabled = manager.getComponentEnabledSetting(ComponentName(
-                requireActivity(),
-                "com.alex.journals.JournalsActivity"
-            ))
-            if (enabled != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) try {
-                manager.setComponentEnabledSetting(
-                    ComponentName(
-                        requireActivity(),
-                        "com.alex.journals.JournalsActivity"
-                    ),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP
-                )
-            }
-            catch (_: Exception) {}
-        }
+//        if (splitInstallManager.installedModules.contains(args.featureName)) {
+//            progressButton.normal(2)
+//            val enabled = manager.getComponentEnabledSetting(ComponentName(
+//                requireActivity(),
+//                "com.alex.journals.JournalsActivity"
+//            ))
+//            if (enabled != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) try {
+//                manager.setComponentEnabledSetting(
+//                    ComponentName(
+//                        requireActivity(),
+//                        "com.alex.journals.JournalsActivity"
+//                    ),
+//                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//                    PackageManager.DONT_KILL_APP
+//                )
+//            }
+//            catch (_: Exception) {}
+//        }
         progressButton.setOnClickListener {
-            if (splitInstallManager.installedModules.contains(args.featureName)) {
-
-                val enabled = manager.getComponentEnabledSetting(ComponentName(
-                    requireActivity(),
-                    "com.alex.journals.JournalsActivity"
-                ))
-                if (enabled == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) return@setOnClickListener
-            }
+//            if (splitInstallManager.installedModules.contains(args.featureName)) {
+//
+//                val enabled = manager.getComponentEnabledSetting(ComponentName(
+//                    requireActivity(),
+//                    "com.alex.journals.JournalsActivity"
+//                ))
+//                if (enabled == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) return@setOnClickListener
+//            }
             val request =
                 SplitInstallRequest
                     .newBuilder()
                     // You can download multiple on demand modules per
                     // request by invoking the following method for each
                     // module you want to install.
-                    .addModule(args.featureName)
+//                    .addModule(args.featureName)
                     .build()
             var mySessionId = 0
             val listener = SplitInstallStateUpdatedListener { state ->

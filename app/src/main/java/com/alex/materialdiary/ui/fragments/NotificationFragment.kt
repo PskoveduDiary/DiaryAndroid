@@ -28,7 +28,7 @@ class NotificationFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
 
-    private val args: FeatureFragmentArgs by navArgs()
+//    private val args: FeatureFragmentArgs by navArgs()
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

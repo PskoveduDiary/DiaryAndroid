@@ -2,6 +2,7 @@ package com.alex.materialdiary
 
 //import com.alex.materialdiary.sys.common.Crypt
 
+import android.app.Fragment
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -19,6 +20,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.work.*
 import com.alex.materialdiary.containers.Storage
@@ -93,48 +95,48 @@ open class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+        NavigationUI.setupWithNavController(bottomNav, navController)
 
         checkBadge()
 
         if (PskoveduApi.getInstance(this, navController).guid == "") {
             binding.contentMain.bottomNavigation.visibility = View.GONE
         }
-
-        bottomNav.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
-            when (it.itemId) {
-                R.id.action_0 -> {
-                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_home)
-                    return@OnItemSelectedListener true
-                }
-
-                R.id.action_1 -> {
-                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
-                    return@OnItemSelectedListener true
-                }
-
-                R.id.action_3 -> {
-                    bottomNav.getOrCreateBadge(R.id.action_3).isVisible = false
-                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
-                    return@OnItemSelectedListener true
-                }
-
-                R.id.action_4 -> {
-                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_other)
-                    return@OnItemSelectedListener true
-                }
-
-                else -> {
-                    return@OnItemSelectedListener false
-                }
-            }
-        })
+//        bottomNav.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
+//            when (it.itemId) {
+//                R.id.HomeFragment -> {
+//                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_home)
+//                    return@OnItemSelectedListener true
+//                }
+//
+//                R.id.DiaryFragment -> {
+//                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_diary)
+//                    return@OnItemSelectedListener true
+//                }
+//
+//                R.id.MarksFragment -> {
+//                    bottomNav.getOrCreateBadge(R.id.MarksFragment).isVisible = false
+//                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
+//                    return@OnItemSelectedListener true
+//                }
+//
+//                R.id.OtherFragment -> {
+//                    findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_other)
+//                    return@OnItemSelectedListener true
+//                }
+//
+//                else -> {
+//                    return@OnItemSelectedListener false
+//                }
+//            }
+//        })
         bottomNav.setOnItemReselectedListener {
             when (it.itemId) {
-                R.id.action_3 -> {
+                R.id.MarksFragment -> {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_marks)
                 }
 
-                R.id.action_4 -> {
+                R.id.OtherFragment -> {
                     findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.to_other)
                 }
 
@@ -274,7 +276,7 @@ open class MainActivity : AppCompatActivity() {
                 "diary" -> {
                     navController.navigate(R.id.to_diary)
 
-                    bottomNav.selectedItemId = R.id.action_1
+//                    bottomNav.selectedItemId = R.id.action_1
                     }
             }
         }
@@ -309,7 +311,7 @@ open class MainActivity : AppCompatActivity() {
                         }
                     }
                     if (diffs > 0) {
-                        val badge = bottomNav.getOrCreateBadge(R.id.action_3)
+                        val badge = bottomNav.getOrCreateBadge(R.id.MarksFragment)
                         badge.isVisible = true
                         badge.number = diffs
                     }

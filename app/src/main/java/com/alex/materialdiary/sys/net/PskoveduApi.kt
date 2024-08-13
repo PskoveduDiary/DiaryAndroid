@@ -150,9 +150,11 @@ class PskoveduApi(context: Context, navController: NavController?) {
         if (guid.length > 1) apikey = Crypt().encryptSYS_GUID(guid)
         DPrefs.set(DiaryPreferences.GUID, guid)
         CoroutineScope(Dispatchers.IO).launch {
-            checkPdaKey(name, guid, navController)
+            checkPdaKey(name, guid, null)
             forceUpdatePeriods()
-            navController.navigate(R.id.to_home)
+            withContext(Dispatchers.Main) {
+                navController.navigate(R.id.to_home)
+            }
         }
     }
 
@@ -169,8 +171,8 @@ class PskoveduApi(context: Context, navController: NavController?) {
         return ""
     }
 
-    fun getUserName(): String? {
-        if (DPrefs.contains("name")) return DPrefs.get("name")
+    fun getUserName(official: Boolean = false): String? {
+        if (DPrefs.contains("name") and !official) return DPrefs.get("name")
         val datas = jsonUtils.readJsonFileData("users.json")
         if (datas != null) {
             val entity = gson.fromJson(datas.toString(), UserInfo::class.java)
@@ -309,7 +311,11 @@ class PskoveduApi(context: Context, navController: NavController?) {
 
     suspend fun getDay(date: String = ""): DiaryDay? {
         val body = ClassicBody()
-        if (pdaKey === "") return null
+        if (pdaKey === "") {
+            getUserName(official = true)?.let {
+                checkPdaKey(it, guid, null)
+            }
+        }
         body.guid = guid
         body.apikey = apikey
         body.pdakey = pdaKey
@@ -488,6 +494,7 @@ class PskoveduApi(context: Context, navController: NavController?) {
             val pda = endpoints.setPda(pdBody) ?: return
             if (pda.status == "error") Toaster.toast("Ошибка PDA №2")
             else if (pda.status == "ok") {
+                pdaKey = pda.pdakey
                 DPrefs.set(DiaryPreferences.PDA, pda.pdakey)
                 DPrefs.set(DiaryPreferences.PDA_GUID, guid)
                 try {

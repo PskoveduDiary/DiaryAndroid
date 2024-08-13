@@ -97,8 +97,8 @@ class AboutFragment : PreferenceFragmentCompat() {
         }
         val teacher = preferenceManager.findPreference<Preference>("teach_feature") as Preference
         teacher.setOnPreferenceClickListener {
-            val action = NavGraphDirections.toFeatureInstall("teacher_features", "Загрузите дополнительный модуль для управления журналами!")
-            findNavController().navigate(action)
+//            val action = NavGraphDirections.toFeatureInstall("teacher_features", "Загрузите дополнительный модуль для управления журналами!")
+//            findNavController().navigate(action)
 
             true
         }

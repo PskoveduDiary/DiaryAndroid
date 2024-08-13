@@ -60,7 +60,7 @@ class DiaryFragment : Fragment() {
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 current_date = LocalDate(year, monthOfYear + 1, dayOfMonth)
                 getDay(current_date)
-                binding.lessons.adapter = null
+//                binding.lessons.adapter = null
                 (binding.datePickerPager.adapter as WeekAdapter).clearSelection()
                 val weeks =
                     Weeks.weeksBetween(
@@ -98,7 +98,7 @@ class DiaryFragment : Fragment() {
         binding.today.setOnClickListener {
             current_date = LocalDate.now()
             getDay(current_date)
-            binding.lessons.adapter = null
+//            binding.lessons.adapter = null
             (binding.datePickerPager.adapter as WeekAdapter).clearSelection()
             binding.datePickerPager.currentItem = 50
             Handler().postDelayed({
