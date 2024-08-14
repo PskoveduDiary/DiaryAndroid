@@ -24,7 +24,6 @@ class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableLi
     private val fragment: NewChangeUserFragment
     private val users: MutableList<ShareUser>
     private var lastPosition = -1
-
     init {
         inflater = LayoutInflater.from(context.requireContext())
         this.users = users
@@ -49,7 +48,15 @@ class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableLi
             val action: NavDirections = ShareQRFragmentDirections.toShare(user)
             navController.navigate(action)
         }
+        if (user.allowDelete == false){
+            holder.delete.visibility = View.GONE
+        }
         holder.itemView.setOnClickListener { getInstance().changeGuid(user.guid, user.name, navController) }
+        holder.delete.setOnClickListener {
+            getInstance().removeShared(user.guid)
+            users.remove(user)
+            notifyItemRemoved(position)
+        }
         setAnimation(holder.itemView, position);
     }
 
@@ -63,6 +70,7 @@ class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableLi
         var SchoolName: TextView
 //        var scan: ImageView
         var share: ImageView
+        var delete: ImageView
 
         init {
 //            Grade = v.findViewById(R.id.user_Grade)
@@ -70,6 +78,7 @@ class RecycleAdapterSharedUsers(context: NewChangeUserFragment, users: MutableLi
             SchoolName = v.findViewById(R.id.user_SchoolName)
 //            scan = v.findViewById(R.id.scanQr)
             share = v.findViewById(R.id.shareQr)
+            delete = v.findViewById(R.id.delete)
         }
     }
 

@@ -10,5 +10,6 @@ data class ShareUser(
     val school: String,
     val classname: String,
     val snils: String?,
-    val grade: String?
+    val grade: String?,
+    val allowDelete: Boolean? = true
 ) : Parcelable

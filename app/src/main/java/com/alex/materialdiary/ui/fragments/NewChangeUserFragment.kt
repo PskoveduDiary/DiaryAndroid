@@ -46,7 +46,6 @@ import java.util.concurrent.TimeUnit
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class NewChangeUserFragment : Fragment() {
-    private lateinit var webView: WebView
     private var _binding: FragmentChUserNewBinding? = null
 
     // This property is only valid between onCreateView and
@@ -179,7 +178,8 @@ class NewChangeUserFragment : Fragment() {
                         school = school.shortName!!,
                         classname = participant.grade!!.name!!,
                         snils = null,
-                        grade = participant.grade!!.sysGuid
+                        grade = participant.grade!!.sysGuid,
+                        allowDelete = false
                     )
                 )
             } else {
@@ -192,7 +192,8 @@ class NewChangeUserFragment : Fragment() {
                             school = school.shortName!!,
                             classname = participant.grade!!.name!!,
                             snils = null,
-                            grade = participant.grade!!.sysGuid
+                            grade = participant.grade!!.sysGuid,
+                            allowDelete = false
                         )
                     )
                 }

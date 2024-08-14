@@ -230,46 +230,6 @@ class PskoveduApi(context: Context, navController: NavController?) {
         return null
     }
 
-//    suspend fun getUserInfo(silent: Boolean = false): UserData? {
-//        val datas = jsonUtils.readJsonFileData("users.json")
-//        if (datas != null && datas.length > 100) {
-//            val entity = gson.fromJson(datas.toString(), UserInfo::class.java)
-//            return entity.data
-//        }
-//        val i = Intent(context, LoginActivity::class.java)
-//        val cookies = CookieManager.getInstance().getCookie("one.pskovedu.ru")
-//        if (cookies == null) {
-//            Log.d("redirect", "no-cookies")
-//            if (!silent) context.startActivity(i)
-//            return null
-//        } else {
-//            var X1: String?
-//            val split = cookies.split("; ".toRegex()).toTypedArray()
-//            X1 = split.find { it.startsWith("X1_SSO=") }?.replace("X1_SSO=", "")
-//            if (X1 == null) {
-//                CookieManager.getInstance().removeAllCookies(null)
-//                Log.d("redirect", "x1-empty")
-//                if (!silent) context.startActivity(i)
-//                return null
-//            } else sid = X1
-//        }
-//        val req = UserInfoRequest(Crypt().encryptSYS_GUID(sid), sid)
-//        try {
-//            val user = endpoints.getUserInfo(req) ?: return null
-//            if (!user.success) return null
-//            jsonUtils.createJsonFileData("users.json", gson.toJson(user))
-//            return user.data
-//        } catch (e: HttpException) {
-//            HttpError()
-//        } catch (e: ConnectException) {
-//            ConnectError()
-//        } catch (e: Exception) {
-//            FirebaseCrashlytics.getInstance().recordException(e)
-//            UnknownError()
-//        }
-//        return null
-//    }
-
     fun getShared(): List<ShareUser> {
         val readed = jsonUtils.readJsonFileData("shared.json") ?: return ArrayList()
         val listType = object : TypeToken<ArrayList<ShareUser>>() {}.type
@@ -278,6 +238,17 @@ class PskoveduApi(context: Context, navController: NavController?) {
 
     fun addShared(shareUser: ShareUser?) {
         val current = getShared() + shareUser
+        val json = gson.toJson(current)
+        jsonUtils.createJsonFileData("shared.json", json)
+    }
+
+
+    fun removeShared(guid: String) {
+        val current = getShared().toMutableList()
+        val forRemove = current.find {
+            it.guid == guid
+        }
+        current.remove(forRemove)
         val json = gson.toJson(current)
         jsonUtils.createJsonFileData("shared.json", json)
     }

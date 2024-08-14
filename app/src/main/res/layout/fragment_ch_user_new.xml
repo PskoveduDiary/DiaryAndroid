@@ -6,42 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.NewChangeUserFragment">
 
-        <ScrollView
-            android:id="@+id/scrollView2"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/policy_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_margin="5dp"
+                tools:itemCount="5"
+                tools:listitem="@layout/users_item" />
+        </LinearLayout>
+    </ScrollView>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:itemCount="30"
-                    tools:listitem="@layout/users_item" />
-            </LinearLayout>
-        </ScrollView>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="Добавить"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="Добавить"
-            android:visibility="invisible"
-            android:id="@+id/add_fab"
-            app:icon="@drawable/ic_baseline_add_24"
-            android:layout_marginBottom="16dp"
-            android:layout_marginHorizontal="16dp">
-
-        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+    </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/add_qr_fab"
@@ -80,12 +81,14 @@
         </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
     <TextView
+        android:id="@+id/policy_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Продолжая, вы соглашаетесь на передачу персональных данных"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
         android:padding="5dp"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+        android:visibility="gone"
+        android:text="Продолжая, вы соглашаетесь на передачу персональных данных. Нажмите чтобы узнать больше"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
